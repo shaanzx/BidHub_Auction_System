@@ -9,5 +9,9 @@ public interface RegisterService {
 
     int saveUser(UserDTO userDTO);
 
+    UserDTO loadUserDetailsByUsername(String username);
+
+    UserDTO searchUser(String username);
+
 
 }

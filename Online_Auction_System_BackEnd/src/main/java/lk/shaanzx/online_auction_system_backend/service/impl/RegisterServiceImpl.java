@@ -40,15 +40,31 @@ public class RegisterServiceImpl implements UserDetailsService, RegisterService 
         }
     }
 
+    @Override
+    public UserDTO searchUser(String username) {
+        if (registerRepo.existsByEmail(username)) {
+            User user= registerRepo.findByEmail(username);
+            return modelMapper.map(user,UserDTO.class);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public UserDTO loadUserDetailsByUsername(String username) throws UsernameNotFoundException {
+        User user = registerRepo.findByEmail(username);
+        return modelMapper.map(user,UserDTO.class);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = registerRepo.findByEmail(email);
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), getAuthority(user));
+    }
 
     private Set<SimpleGrantedAuthority> getAuthority(User user) {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole()));
         return authorities;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
     }
 }
