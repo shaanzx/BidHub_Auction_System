@@ -53,6 +53,14 @@ body{
   right: 0;
   padding: 0 60px;
   color: white;
+
+
+}
+
+.overflow-controller{
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 300px;
 }
 .form-box.register .animation{
   transform: translateX(120%);
@@ -60,12 +68,15 @@ body{
   opacity:0;
   transition-delay: calc(.1s * var(--S));
   transition-delay: calc(.1s * var(--D));
+
 }
 .container.active .form-box.register .animation{
   transform: translateX(0%);
   opacity: 1;
   transition-delay: calc(.1s * var(--li));
+
 }
+
 .form-box h2{
   font-size: 32px;
   text-align: center;
@@ -154,7 +165,7 @@ body{
 }
 .regi-link a{
   text-decoration: none;
-  color: blue;
+  color: rgb(35, 209, 166);
   font-weight: 600;
 }
 .regi-link a:hover{
@@ -250,4 +261,9 @@ body{
 .container.active .curved-shape2 {
   transform: rotate(-11deg) skewY(-41deg);
   transition-delay: 1.2s;
+}
+
+/* Modern scrollbar styling */
+.overflow-controller::-webkit-scrollbar {
+  width: 8px;
 }
