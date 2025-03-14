@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Online_Auction_System.iml" filepath="$PROJECT_DIR$/.idea/Online_Auction_System.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Online_Auction_System_BackEnd/Online_Auction_System_BackEnd.iml" filepath="$PROJECT_DIR$/Online_Auction_System_BackEnd/Online_Auction_System_BackEnd.iml" />
       <module fileurl="file://$PROJECT_DIR$/Online_Auction_System_FrontEnd.iml" filepath="$PROJECT_DIR$/Online_Auction_System_FrontEnd.iml" />
     </modules>
   </component>

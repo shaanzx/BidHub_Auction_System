@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Login & Register</title>
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="css/style.css">
   <!-- SweetAlert CSS -->
@@ -13,6 +13,8 @@
 <div class="container">
   <div class="curved-shape animation"></div>
   <div class="curved-shape2"></div>
+
+  <!-- Login Form -->
   <div class="form-box login">
     <h2 class="animation" style="--D:0; --S:21;">Login</h2>
     <form id="loginForm">
@@ -30,16 +32,12 @@
         <button class="btn" type="submit">Login</button>
       </div>
       <div class="regi-link animation" style="--D:4; --S:25;">
-        <p>Don't have an account ?
-          <a href="#" class="SignUpLink">Sign Up</a></p>
+        <p>Don't have an account? <a href="#" class="SignUpLink">Sign Up</a></p>
       </div>
     </form>
   </div>
-  <div class="info-content login">
-    <h2 class="animation" style="--D:0; --S:21;">WELCOME BACK!</h2>
-    <p class="animation" style="--D:1; --S:22;">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam, aliquam!
-    </p>
-  </div>
+
+  <!-- Register Form -->
   <div class="form-box register">
     <h2 class="animation" style="--li:17; --S:0">Register</h2>
     <form id="registerForm">
@@ -52,7 +50,7 @@
         <div class="input-box animation" style="--li:19; --S:2;">
           <input type="email" id="registerEmail" required>
           <label for="registerEmail">Email</label>
-          <i class='bx bxs-envelope' ></i>
+          <i class='bx bxs-envelope'></i>
         </div>
         <div class="input-box animation" style="--li:20; --S:3;">
           <input type="text" id="registerAddress" required>
@@ -74,28 +72,170 @@
           <label for="registerPassword">Password</label>
           <i class='bx bxs-lock-alt'></i>
         </div>
-
         <div class="input-box animation" style="--li:20; --S:1;">
           <button class="btn" type="submit">Register</button>
         </div>
         <div class="regi-link animation" style="--li:21; --S:2;">
-          <p>Don't have an account ?
-            <a href="#" class="SignInLink">Sign In</a></p>
+          <p>Already have an account? <a href="#" class="SignInLink">Sign In</a></p>
         </div>
       </div>
     </form>
   </div>
+
+  <!-- Info Contents -->
+  <div class="info-content login">
+    <h2 class="animation" style="--D:0; --S:21;">WELCOME BACK!</h2>
+    <p class="animation" style="--D:1; --S:22;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+  </div>
   <div class="info-content register">
-    <h2 class="animation" style="--li:17; --S:0;">WELCOME BACK!</h2>
-    <p class="animation" style="--li:18; --S:1;">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam, aliquam!
-    </p>
+    <h2 class="animation" style="--li:17; --S:0;">WELCOME FRIEND!</h2>
+    <p class="animation" style="--li:18; --S:1;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
   </div>
 </div>
-<script src="js/index.js"></script>
+
+<!--<script src="js/index.js"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+  $(document).ready(function() {
+    const loginForm = $('#loginForm');
+    const registerForm = $('#registerForm');
+    const successAlert = $('#alert-success');
+    const errorMessage = $('#error-message');
+    const errorAlert = $('#alert-error');
+    // Login Form Submission
+    loginForm.submit(function(e) {
+      e.preventDefault();
+      const email = $('#loginEmail').val().trim();
+      const password = $('#loginPassword').val().trim();
 
+      $.ajax({
+        url: 'http://localhost:8082/api/v1/login/authenticate',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ userEmail: email, userPassword: password }),
+        success: function(response) {
+          if (response.code === '201' || response.code === 'CREATED') {
+            // Set token in localStorage
+            localStorage.setItem('authToken', response.data.token);
+            localStorage.setItem('userEmail', response.data.email);
+
+            // Show success alert
+            Swal.fire({
+              icon: 'success',
+              title: 'Login Successful!',
+              text: 'Redirecting to dashboard...',
+              timer: 1500,
+              showConfirmButton: false
+            }).then(() => {
+              // Redirect to dashboard
+              window.location.href = 'dashboard.html';
+            });
+          } else {
+            // Show error alert if login fails
+            Swal.fire({
+              icon: 'error',
+              title: 'Login Failed',
+              text: response.message || 'Invalid credentials. Please try again.',
+            });
+          }
+        },
+        error: function(xhr) {
+          // Show error alert for server errors
+          const message = xhr.responseJSON?.message || 'Login failed. Please try again later.';
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: message,
+          });
+        }
+      });
+    });
+
+    // Register Form Submission
+    registerForm.submit(function(e) {
+      e.preventDefault();
+      const userData = {
+        userName: $('#registerUsername').val().trim(),
+        userEmail: $('#registerEmail').val().trim(),
+        userAddress: $('#registerAddress').val().trim(),
+        userContact: $('#registerContact').val().trim(),
+        userNIC: $('#registerNIC').val().trim(),
+        userPassword: $('#registerPassword').val().trim(),
+        userRole: 'USER',
+      };
+
+      $.ajax({
+        url: 'http://localhost:8082/api/v1/user/register',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(userData),
+        success: function(response) {
+          successAlert.removeClass('d-none');
+          loginForm[0].reset();
+          if (response.data && response.data.token) {
+            // Set token in localStorage
+            localStorage.setItem('authToken', response.data.token);
+            localStorage.setItem('userEmail', response.data.email);
+            console.log(this.success)
+            console.log(response.data.token)
+
+            // Show success alert
+            Swal.fire({
+              icon: 'success',
+              title: 'Registration Successful!',
+              text: 'Redirecting to dashboard...',
+              timer: 1500,
+              showConfirmButton: false
+            }).then(() => {
+              // Redirect to dashboard
+              window.location.href = 'dashboard.html';
+            });
+
+            // Clear form after successful registration
+            $('#registerForm')[0].reset();
+          } else {
+            // Show error alert if registration fails
+            Swal.fire({
+              icon: 'error',
+              title: 'Registration Failed',
+              text: response.message || 'Registration failed. Please try again.',
+            });
+          }
+        },
+        error: function(xhr) {
+          // Show error alert for server errors
+          const message = xhr.responseJSON?.message || 'Registration failed. Please try again later.';
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: message,
+          });
+        }
+      });
+    });
+  });
+</script>
+<script>
+  $(document).ready(function() {
+    // Toggle between forms
+    $('.SignUpLink, .SignInLink').click(function(e) {
+      e.preventDefault();
+      $('.container').toggleClass('active');
+    });
+
+    // Login AJAX
+    $('#loginForm').submit(function(e) {
+      e.preventDefault();
+      // Your existing login AJAX code
+    });
+
+    // Register AJAX
+    $('#registerForm').submit(function(e) {
+      e.preventDefault();
+      // Your existing register AJAX code
+    });
+  });
 </script>
 </body>
 </html>

@@ -7,7 +7,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lk.shaanzx.online_auction_system_backend.service.impl.RegisterServiceImpl;
+
+import lk.shaanzx.online_auction_system_backend.service.impl.UserServiceImpl;
 import lk.shaanzx.online_auction_system_backend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +26,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
     @Autowired
-    private RegisterServiceImpl registerService;
+    private UserServiceImpl userService;
     @Value("${jwt.secret}")
     private String secretKey;
 
@@ -47,7 +48,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (null != email && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails
-                    = registerService.loadUserByUsername(email);
+                    = userService.loadUserByUsername(email);
 
             if (jwtUtil.validateToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken

@@ -1,9 +1,10 @@
 package lk.shaanzx.online_auction_system_backend.controller;
 
+import jakarta.validation.Valid;
 import lk.shaanzx.online_auction_system_backend.dto.AuthDTO;
 import lk.shaanzx.online_auction_system_backend.dto.ResponseDTO;
 import lk.shaanzx.online_auction_system_backend.dto.UserDTO;
-import lk.shaanzx.online_auction_system_backend.service.impl.RegisterServiceImpl;
+import lk.shaanzx.online_auction_system_backend.service.impl.UserServiceImpl;
 import lk.shaanzx.online_auction_system_backend.util.JwtUtil;
 import lk.shaanzx.online_auction_system_backend.util.VarList;
 import org.springframework.http.HttpStatus;
@@ -13,33 +14,33 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/login")
+@RequestMapping("api/v1/auth")
 @CrossOrigin(origins = "*")
-public class LoginController {
+public class AuthController {
 
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
-    private final RegisterServiceImpl registerService;
+    private final UserServiceImpl registerService;
     private final ResponseDTO responseDTO;
 
     //constructor injection
-    public LoginController(JwtUtil jwtUtil, AuthenticationManager authenticationManager, RegisterServiceImpl registerService, ResponseDTO responseDTO) {
+    public AuthController(JwtUtil jwtUtil, AuthenticationManager authenticationManager, UserServiceImpl registerService, ResponseDTO responseDTO) {
         this.jwtUtil = jwtUtil;
         this.authenticationManager = authenticationManager;
         this.registerService = registerService;
         this.responseDTO = responseDTO;
     }
     @PostMapping("authenticate")
-    public ResponseEntity<ResponseDTO> authenticate(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<ResponseDTO> authenticate(@Valid @RequestBody UserDTO userDTO) {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(userDTO.getUserEmail(), userDTO.getUserPassword()));
+                    new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new ResponseDTO(VarList.Unauthorized, "Invalid Credentials", e.getMessage()));
         }
 
-        UserDTO loadedUser = registerService.loadUserDetailsByUsername(userDTO.getUserEmail());
+        UserDTO loadedUser = registerService.loadUserDetailsByUsername(userDTO.getEmail());
         if (loadedUser == null) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(new ResponseDTO(VarList.Conflict, "Authorization Failure! Please Try Again", null));
@@ -52,7 +53,7 @@ public class LoginController {
         }
 
         AuthDTO authDTO = new AuthDTO();
-        authDTO.setEmail(loadedUser.getUserEmail());
+        authDTO.setEmail(loadedUser.getEmail());
         authDTO.setToken(token);
 
         return ResponseEntity.status(HttpStatus.CREATED)

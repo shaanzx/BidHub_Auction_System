@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+
 @Component
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:otherprops.properties")
 public class JwtUtil implements Serializable {
@@ -63,8 +64,8 @@ public class JwtUtil implements Serializable {
     //generate token for user
     public String generateToken(UserDTO userDTO) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role",userDTO.getUserRole());
-        return doGenerateToken(claims, userDTO.getUserEmail());
+        claims.put("role",userDTO.getRole());
+        return doGenerateToken(claims, userDTO.getEmail());
     }
 
     //while creating the token -

@@ -1,9 +1,10 @@
 package lk.shaanzx.online_auction_system_backend.config;
 
-import lk.shaanzx.online_auction_system_backend.service.impl.RegisterServiceImpl;
+import lk.shaanzx.online_auction_system_backend.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -23,7 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
     @Autowired
-    private RegisterServiceImpl registerService;
+    private UserServiceImpl registerService;
     @Autowired
     private JwtFilter jwtFilter;
     @Bean
@@ -45,15 +46,17 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/v1/**",
-                                "/api/v1/login/authenticate",
+                                "/api/v1/categories/**",
+                                "/api/v1/auth/authenticate",
                                 "/api/v1/user/register",
                                 "/api/v1/auth/refreshToken",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
+
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

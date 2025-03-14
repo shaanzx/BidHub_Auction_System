@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Items - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/adminForm.css">
+</head>
+<body>
+<div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar" class="active">
+        <div class="sidebar-header">
+            <h3>Admin Panel</h3>
+        </div>
+
+        <ul class="list-unstyled components">
+            <li>
+                <a href="dashboard.html">
+                    <i class="bi bi-house-door"></i> Home
+                </a>
+            </li>
+            <li>
+                <a href="customer.html">
+                    <i class="bi bi-people"></i> Admins
+                </a>
+            </li>
+            <li>
+                <a href="category.html">
+                    <i class="bi bi-grid"></i> Categories
+                </a>
+            </li>
+            <li class="active">
+                <a href="item.html">
+                    <i class="bi bi-box"></i> Items
+                </a>
+            </li>
+            <li>
+                <a href="bids.html">
+                    <i class="bi bi-graph-up"></i> Bid Management
+                </a>
+            </li>
+            <li>
+                <a href="payments.html">
+                    <i class="bi bi-credit-card"></i> Payments
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Page Content -->
+    <div id="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <button type="button" id="sidebarCollapse" class="btn btn-dark">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="ms-auto d-flex align-items-center">
+                    <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle text-dark" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> Admin
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Items Content -->
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Item Management</h2>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#itemModal">
+                    <i class="bi bi-plus"></i> Add New Item
+                </button>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search items...">
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="statusFilter">
+                                <option value="">Filter by Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="disapproved">Disapproved</option>
+                                <option value="onbid">On Bid</option>
+                                <option value="soldout">Sold Out</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="categoryFilter">
+                                <option value="">Filter by Category</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="fashion">Fashion</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="sortBy">
+                                <option value="code">Sort by Code</option>
+                                <option value="name">Sort by Name</option>
+                                <option value="price">Sort by Price</option>
+                                <option value="status">Sort by Status</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Items Table -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th> Code</th>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                                <th>User Email</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody id="itemTableBody">
+                            <tr>
+                                <td>ITEM001</td>
+                                <td><img src="https://via.placeholder.com/50" alt="Item" class="img-thumbnail"></td>
+                                <td>iPhone 13</td>
+                                <td>Latest model, perfect condition</td>
+                                <td>799.99</td>
+                                <td>Electronics</td>
+                                <td>user@example.com</td>
+                                <td>
+                                    <select class="form-select form-select-sm status-select" onchange="updateStatus(this)">
+                                        <option value="pending" selected>Pending</option>
+                                        <option value="approved">Approved</option>
+                                        <option value="disapproved">Disapproved</option>
+                                        <option value="onbid">On Bid</option>
+                                        <option value="soldout">Sold Out</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary me-1" onclick="editItem(this)">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteItem(this)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>ITEM002</td>
+                                <td><img src="https://via.placeholder.com/50" alt="Item" class="img-thumbnail"></td>
+                                <td>Designer Watch</td>
+                                <td>Luxury timepiece</td>
+                                <td>299.99</td>
+                                <td>Fashion</td>
+                                <td>seller@example.com</td>
+                                <td>
+                                    <select class="form-select form-select-sm status-select" onchange="updateStatus(this)">
+                                        <option value="pending">Pending</option>
+                                        <option value="approved" selected>Approved</option>
+                                        <option value="disapproved">Disapproved</option>
+                                        <option value="onbid">On Bid</option>
+                                        <option value="soldout">Sold Out</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary me-1" onclick="editItem(this)">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteItem(this)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav class="mt-4">
+                        <ul class="pagination justify-content-end">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Item Modal -->
+<div class="modal fade" id="itemModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Add New Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="itemForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="itemCode" class="form-label">Item Code</label>
+                                <input type="text" class="form-control" id="itemCode" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="itemName" class="form-label">Item Name</label>
+                                <input type="text" class="form-control" id="itemName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea class="form-control" id="description" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Price ($)</label>
+                                <input type="number" class="form-control" id="price" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Category</label>
+                                <select class="form-select" id="category" required>
+                                    <option value="">Select Category</option>
+                                    <option value="electronics">Electronics</option>
+                                    <option value="fashion">Fashion</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="userEmail" class="form-label">User Email</label>
+                                <input type="email" class="form-control" id="userEmail" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Status</label>
+                                <select class="form-select" id="status" required>
+                                    <option value="pending">Pending</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="disapproved">Disapproved</option>
+                                    <option value="onbid">On Bid</option>
+                                    <option value="soldout">Sold Out</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="itemImage" class="form-label">Item Image</label>
+                                <input type="file" class="form-control" id="itemImage" accept="image/*">
+                                <div id="imagePreview" class="mt-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="saveItem()">Save Item</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/item.js"></script>
+</body>
+</html>

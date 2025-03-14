@@ -53,14 +53,15 @@ body{
   right: 0;
   padding: 0 60px;
   color: white;
-
-
+  z-index: 2;
+  pointer-events: all;
 }
 
 .overflow-controller{
   overflow-y: scroll;
   overflow-x: hidden;
   height: 300px;
+
 }
 .form-box.register .animation{
   transform: translateX(120%);
@@ -266,4 +267,14 @@ body{
 /* Modern scrollbar styling */
 .overflow-controller::-webkit-scrollbar {
   width: 8px;
+}
+
+.curved-shape,
+.curved-shape2 {
+  pointer-events: none;
+}
+
+.input-box input {
+  z-index: 3;
+  position: relative;
 }
