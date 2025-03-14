@@ -5,10 +5,12 @@ import lk.shaanzx.online_auction_system_backend.entity.Category;
 import lk.shaanzx.online_auction_system_backend.repo.CategoryRepo;
 import lk.shaanzx.online_auction_system_backend.service.CategoryService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -35,16 +37,29 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void updateCategory(CategoryDTO categoryDTO) {
+        Optional<Category> optionalCustomer = categoryRepo.findById(categoryDTO.getCategoryCode());
+        if (optionalCustomer.isPresent()) {
+            Category customer = optionalCustomer.get();
+            modelMapper.map(categoryDTO, customer);
+            categoryRepo.save(customer);
 
+        } else {
+            throw new RuntimeException("Category not found");
+        }
     }
 
     @Override
     public void deleteCategory(String categoryCode) {
-
+        Optional<Category> optionalCustomer = categoryRepo.findById(String.valueOf(categoryCode));
+        if (optionalCustomer.isPresent()) {
+            categoryRepo.deleteById(String.valueOf(categoryCode));
+        } else {
+            throw new RuntimeException("Category not found");
+        }
     }
 
     @Override
     public List<CategoryDTO> getCategories() {
-        return List.of();
+        return  modelMapper.map(categoryRepo.findAll(),new TypeToken<List<CategoryDTO>>(){}.getType());
     }
 }
