@@ -4,6 +4,7 @@ import lk.shaanzx.online_auction_system_backend.dto.CategoryDTO;
 import lk.shaanzx.online_auction_system_backend.entity.Category;
 import lk.shaanzx.online_auction_system_backend.repo.CategoryRepo;
 import lk.shaanzx.online_auction_system_backend.service.CategoryService;
+import lk.shaanzx.online_auction_system_backend.util.VarList;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,38 +29,41 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void addCategory(CategoryDTO categoryDTO) {
+    public int addCategory(CategoryDTO categoryDTO) {
         if (categoryRepo.existsById(categoryDTO.getCategoryCode())) {
-            throw new RuntimeException("Category already exists");
-        }
-        categoryRepo.save(modelMapper.map(categoryDTO, Category.class));
-    }
-
-    @Override
-    public void updateCategory(CategoryDTO categoryDTO) {
-        Optional<Category> optionalCustomer = categoryRepo.findById(categoryDTO.getCategoryCode());
-        if (optionalCustomer.isPresent()) {
-            Category customer = optionalCustomer.get();
-            modelMapper.map(categoryDTO, customer);
-            categoryRepo.save(customer);
-
-        } else {
-            throw new RuntimeException("Category not found");
+            return VarList.Not_Acceptable;
+        }else {
+            categoryRepo.save(modelMapper.map(categoryDTO, Category.class));
+            return VarList.Created;
         }
     }
 
     @Override
-    public void deleteCategory(String categoryCode) {
-        Optional<Category> optionalCustomer = categoryRepo.findById(String.valueOf(categoryCode));
-        if (optionalCustomer.isPresent()) {
-            categoryRepo.deleteById(String.valueOf(categoryCode));
-        } else {
-            throw new RuntimeException("Category not found");
+    public int updateCategory(CategoryDTO categoryDTO) {
+        if (categoryRepo.existsById(categoryDTO.getCategoryCode())) {
+            categoryRepo.save(modelMapper.map(categoryDTO, Category.class));
+            return VarList.OK;
+        }else {
+            return VarList.Not_Found;
+        }
+    }
+
+    @Override
+    public int deleteCategory(String categoryCode) {
+        if (categoryRepo.existsById(categoryCode)) {
+            categoryRepo.deleteById(categoryCode);
+            return VarList.OK;
+        }else {
+            return VarList.Not_Found;
         }
     }
 
     @Override
     public List<CategoryDTO> getCategories() {
-        return  modelMapper.map(categoryRepo.findAll(),new TypeToken<List<CategoryDTO>>(){}.getType());
+        if (categoryRepo.findAll().isEmpty()) {
+            return null;
+        }else {
+            return modelMapper.map(categoryRepo.findAll(), new TypeToken<List<CategoryDTO>>(){}.getType());
+        }
     }
 }

@@ -5,11 +5,11 @@ import lk.shaanzx.online_auction_system_backend.dto.CategoryDTO;
 import java.util.List;
 
 public interface CategoryService {
-    void addCategory(CategoryDTO categoryDTO);
+    int addCategory(CategoryDTO categoryDTO);
 
-    void updateCategory(CategoryDTO categoryDTO);
+    int updateCategory(CategoryDTO categoryDTO);
 
-    void deleteCategory(String categoryCode);
+    int deleteCategory(String categoryCode);
 
     List<CategoryDTO> getCategories();
 
