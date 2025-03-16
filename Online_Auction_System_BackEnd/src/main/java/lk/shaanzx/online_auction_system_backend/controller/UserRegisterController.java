@@ -7,7 +7,6 @@ import lk.shaanzx.online_auction_system_backend.dto.UserDTO;
 import lk.shaanzx.online_auction_system_backend.service.UserService;
 import lk.shaanzx.online_auction_system_backend.util.JwtUtil;
 import lk.shaanzx.online_auction_system_backend.util.VarList;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

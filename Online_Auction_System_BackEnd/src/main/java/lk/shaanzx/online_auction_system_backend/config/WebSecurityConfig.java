@@ -46,15 +46,20 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/v1/categories/**",
                                 "/api/v1/auth/authenticate",
                                 "/api/v1/user/register",
                                 "/api/v1/auth/refreshToken",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").hasAnyAuthority("ADMIN")
-                        .anyRequest().authenticated()
+                                "/swagger-ui.html")
+                                .permitAll()
+                                .requestMatchers("/api/v1/categories/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/v1/items/**").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/api/v1/items/**").permitAll()
+                                .requestMatchers(HttpMethod.PUT,"/api/v1/items/**").permitAll()
+                                .requestMatchers(HttpMethod.DELETE,"/api/v1/items/**").permitAll()
+                                .anyRequest().
+                                authenticated()
                 )
 
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
