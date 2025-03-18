@@ -66,7 +66,7 @@ public class ItemController {
     @PutMapping(value = "/updateItem", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ResponseDTO> updateItem(
             @Valid
-            @PathVariable(value = "code") String code,
+            @RequestParam("code") String code,
             @RequestParam("name") String name,
             @RequestParam("description") String description,
             @RequestParam("price") double price,
