@@ -1,5 +1,6 @@
 package lk.shaanzx.online_auction_system_backend.controller;
 
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.validation.Valid;
 import lk.shaanzx.online_auction_system_backend.dto.ItemDTO;
 import lk.shaanzx.online_auction_system_backend.dto.ResponseDTO;
@@ -14,13 +15,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(value = "/api/v1/items")
+@MultipartConfig(fileSizeThreshold = 10 * 1024 * 1024, maxFileSize = 10 * 1024 * 1024, maxRequestSize = 10 * 1024 * 1024)
 @CrossOrigin(origins = "*")
 public class ItemController {
 
     @Autowired
     private ItemService itemService;
 
-    @PostMapping(value = "/addItem")
+    @PostMapping(value = "/addItem" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ResponseDTO> addItem(
             @Valid
             @RequestParam("code") String code,
@@ -61,14 +63,47 @@ public class ItemController {
     }
 
 
-    @PutMapping(value = "/updateItem")
-    public ResponseEntity<ResponseDTO> updateItem(@Valid @RequestBody ItemDTO itemDTO){
-        if (itemService.updateItem(itemDTO) == VarList.OK) {
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", updateItem(itemDTO)));
-        } else if (itemService.updateItem(itemDTO) == VarList.Not_Found) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDTO(VarList.Not_Found, "Item not found", null));
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
+    @PutMapping(value = "/updateItem", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ResponseDTO> updateItem(
+            @Valid
+            @PathVariable(value = "code") String code,
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("price") double price,
+            @RequestParam("status") String status,
+            @RequestParam("categoryCode") String categoryCode,
+            @RequestParam("userId") String userId,
+            @RequestParam(value = "image") MultipartFile image){
+
+        try {
+            ItemDTO itemDTO = new ItemDTO();
+            itemDTO.setCode(code);
+            itemDTO.setName(name);
+            itemDTO.setDescription(description);
+            itemDTO.setPrice(price);
+            itemDTO.setStatus(status);
+            itemDTO.setCategoryCode(categoryCode);
+            itemDTO.setUserId(userId);
+
+            if (image != null && image.isEmpty()) {
+                itemDTO.setImage(image);
+            }
+
+            int response = itemService.updateItem(itemDTO);
+
+            if (response == VarList.OK) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ResponseDTO(VarList.OK, "Success", itemDTO));
+            } else if (response == VarList.Not_Found) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ResponseDTO(VarList.Not_Found, "Item not found", null));
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                        .body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDTO(VarList.Bad_Gateway, "Exception: " + e.getMessage(), null));
         }
     }
 

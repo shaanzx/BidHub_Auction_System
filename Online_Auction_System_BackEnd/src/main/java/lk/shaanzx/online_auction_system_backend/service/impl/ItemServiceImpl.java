@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -56,6 +57,7 @@ public class ItemServiceImpl implements ItemService {
             category.setCode(itemDTO.getCategoryCode());
             item.setCategoryCode(category);
 
+
             User user = new User();
             user.setId(UUID.fromString(itemDTO.getUserId()));
             item.setUserId(user);
@@ -73,13 +75,49 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public int updateItem(ItemDTO itemDTO) {
-        if (itemRepo.existsById(itemDTO.getCode())) {
-            itemRepo.save(modelMapper.map(itemDTO, Item.class));
+        try {
+            Optional<Item> optionalItem = itemRepo.findById(itemDTO.getCode());
+            if (optionalItem.isEmpty()) {
+                return VarList.Not_Found;
+            }
+
+            Item item = optionalItem.get();
+
+            item.setName(itemDTO.getName());
+            item.setDescription(itemDTO.getDescription());
+            item.setPrice(itemDTO.getPrice());
+            item.setStatus(itemDTO.getStatus());
+
+            Category category = new Category();
+            category.setCode(itemDTO.getCategoryCode());
+            item.setCategoryCode(category);
+
+            User user = new User();
+            user.setId(UUID.fromString(itemDTO.getUserId()));
+            item.setUserId(user);
+
+            if (itemDTO.getImage() != null && !itemDTO.getImage().isEmpty()) {
+                if (item.getImagePath() != null) {
+                    Path oldImagePath = Paths.get(item.getImagePath());
+                    Files.deleteIfExists(oldImagePath);
+                }
+
+                String fileName = UUID.randomUUID() + "_" + itemDTO.getImage().getOriginalFilename();
+                Path filePath = Paths.get(UPLOAD_DIR, fileName);
+                Files.createDirectories(filePath.getParent());
+                Files.write(filePath, itemDTO.getImage().getBytes());
+                item.setImagePath(filePath.toString());
+            }
+
+            itemRepo.save(item);
             return VarList.OK;
-        } else {
-            return VarList.Not_Found;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return VarList.Bad_Gateway;
         }
     }
+
 
     @Override
     public int deleteItem(String itemCode) {
