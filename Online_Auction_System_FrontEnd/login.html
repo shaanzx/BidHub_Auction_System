@@ -6,6 +6,7 @@
   <title>Login - Online Auction System</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <link rel="stylesheet" href="css/auth.css">
 </head>
 <body class="bg-light">
@@ -72,6 +73,92 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="js/auth.js"></script>
+<script>
+  $(document).ready(function() {
+    // Toggle password visibility
+    $('#toggleLoginPassword').click(function() {
+      const passwordField = $('#loginPassword');
+      const icon = $(this).find('i');
+      const type = passwordField.attr('type') === 'password' ? 'text' : 'password';
+      passwordField.attr('type', type);
+      icon.toggleClass('bi-eye bi-eye-slash');
+    });
+
+    // Handle form submission
+    $('#loginForm').submit(function(e) {
+      e.preventDefault();
+
+      // Validate form
+      if (!this.checkValidity()) {
+        e.stopPropagation();
+        $(this).addClass('was-validated');
+        return;
+      }
+
+      // Prepare login data
+      const loginData = {
+        email: $('#loginEmail').val().trim(),
+        password: $('#loginPassword').val().trim()
+      };
+
+      // Show loading state
+      const submitBtn = $(this).find('button[type="submit"]');
+      submitBtn.prop('disabled', true);
+      submitBtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging in...');
+
+      // AJAX request to authenticate
+      $.ajax({
+        url: 'http://localhost:8082/api/v1/auth/authenticate',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(loginData),
+        success: function(response) {
+          if (response.code === 201 && response.data) {
+            // Store token in localStorage
+            localStorage.setItem('authToken', response.data.token);
+            localStorage.setItem('userEmail', response.data.email);
+
+            // Determine user role and redirect (you'll need to adjust this based on your actual role handling)
+            // This assumes you'll add role to the AuthDTO response
+            const role = 'USER'; // Default to USER, you should get this from your backend
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Login Successful!',
+              showConfirmButton: false,
+              timer: 1500
+            }).then(() => {
+              window.location.href = role === 'ADMIN' ? 'dashboard.html' : 'customer.html';
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Login Failed',
+              text:  'Invalid credentials'
+            });
+          }
+        },
+        error: function(xhr) {
+          let errorMessage = 'Login failed. Please try again.';
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            errorMessage = xhr.responseJSON.message;
+          }
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: errorMessage
+          });
+        },
+        complete: function() {
+          submitBtn.prop('disabled', false);
+          submitBtn.text('Login');
+        }
+      });
+    });
+  });
+</script>
 </body>
 </html>
