@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Online Auction System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Add to your head section -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="bg-light">
+<div class="container">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h1 class="fs-2 fw-bold">Create Account</h1>
+                        <p class="text-muted">Join our auction community today</p>
+                    </div>
+
+                    <!-- Google Sign Up Button -->
+                    <div class="d-grid gap-2 mb-4">
+                        <button class="btn btn-outline-dark" type="button">
+                            <span class="google-icon"></span>
+                            Sign up with Google
+                        </button>
+                    </div>
+
+                    <div class="divider mb-4">
+                        <span class="divider-text">or register with email</span>
+                    </div>
+
+                    <form id="registrationForm" novalidate>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="name" required
+                                   pattern="^[A-Za-z ]+$">
+                            <div class="invalid-feedback">
+                                Name must contain only letters and spaces
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" required
+                                   >
+                            <div class="invalid-feedback">
+                                Please enter a valid email address
+                            </div>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" class="form-control" id="address" required
+                                   pattern="^[A-Za-z0-9 ]+$">
+                            <div class="invalid-feedback">
+                                Address must contain only letters, numbers and spaces
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="contact" class="form-label">Contact Number</label>
+                            <input type="tel" class="form-control" id="contact" required
+                                   pattern="^(0\d{9}|\+94\d{9})$">
+                            <div class="invalid-feedback">
+                                Please enter a valid phone number (0XXXXXXXXX or +94XXXXXXXXX)
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="nic" class="form-label">NIC Number</label>
+                            <input type="text" class="form-control" id="nic" required
+                                   pattern="^(\d{9}V|\d{12})$">
+                            <div class="invalid-feedback">
+                                Please enter a valid NIC number (9 digits + V or 12 digits)
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="password" required
+                                       pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$">
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback">
+                                Password must be at least 8 characters with letters and numbers
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="confirmPassword" required>
+                                <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback">
+                                Passwords do not match
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button class="btn btn-primary btn-lg" type="submit">Create Account</button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="mb-0">Already have an account? <a href="login.html" class="text-primary">Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery පළමුව ලොඩ් කරන්න -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- පසුව Bootstrap ලොඩ් කරන්න -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="js/auth.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Password visibility toggle
+        $('.toggle-password').click(function() {
+            const input = $(this).siblings('input');
+            const icon = $(this).find('i');
+            const type = input.attr('type') === 'password' ? 'text' : 'password';
+            input.attr('type', type);
+            icon.toggleClass('bi-eye bi-eye-slash');
+        });
+
+        // Form submission handler
+        $('#registrationForm').submit(function(e) {
+            e.preventDefault();
+
+            // Validate form
+            if (!validateForm()) {
+                return false;
+            }
+            const password = $('#password').val().trim();
+            if(!password) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Password cannot be empty!'
+                });
+                return false;
+            }
+
+            // Prepare user data
+            const userData = {
+                name: $('#name').val().trim(),
+                email: $('#email').val().trim(),
+                address: $('#address').val().trim(),
+                contact: $('#contact').val().trim(),
+                nic: $('#nic').val().trim(),
+                password,
+                role: 'USER'
+            };
+
+            // Show loading state
+            const submitBtn = $(this).find('button[type="submit"]');
+            submitBtn.prop('disabled', true);
+            submitBtn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Registering...');
+
+            // AJAX request
+            $.ajax({
+                url: 'http://localhost:8082/api/v1/user/register',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(userData),
+                success: function(data) {
+                    console.log(data.code)
+                    if (data.code === 201 || data.status === 'CREATED') {
+                        localStorage.setItem('authToken', data.data.token);
+                        localStorage.setItem('userEmail', data.data.email);
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Registration Successful!',
+                            text: 'You will be redirected shortly...',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.href = 'login.html';
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Registration Failed',
+                            text: data.message || 'Registration failed. Please try again.'
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    let errorMessage = 'Registration failed. Please try again.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: errorMessage
+                    });
+                },
+                complete: function() {
+                    submitBtn.prop('disabled', false);
+                    submitBtn.text('Create Account');
+                }
+            });
+        });
+
+        // Form validation
+        function validateForm() {
+            const form = $('#registrationForm')[0];
+
+            // Password match check
+            if ($('#password').val() !== $('#confirmPassword').val()) {
+                $('#confirmPassword').addClass('is-invalid');
+                $('#passwordMismatchError').show();
+                return false;
+            } else {
+                $('#confirmPassword').removeClass('is-invalid');
+                $('#passwordMismatchError').hide();
+            }
+
+            // General form validation
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated');
+                return false;
+            }
+
+            return true;
+        }
+    });
+</script>
+</body>
+</html>

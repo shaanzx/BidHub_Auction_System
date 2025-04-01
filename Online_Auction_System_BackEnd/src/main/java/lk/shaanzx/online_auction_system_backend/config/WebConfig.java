@@ -7,10 +7,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    @Override
+/*    @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/v1/items/**")
-                .allowedOrigins("http://localhost:3000")  // Frontend (React) origin එක allow කරනවා
+                .allowedOrigins("*")  // Frontend (React) origin එක allow කරනවා
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*");
     }
@@ -18,5 +18,5 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("file:C:\\Users\\shaanzx\\IdeaProjects\\Online_Auction_System_FrontEnd\\src\\assets\\images\\");
-    }
+    }*/
 }

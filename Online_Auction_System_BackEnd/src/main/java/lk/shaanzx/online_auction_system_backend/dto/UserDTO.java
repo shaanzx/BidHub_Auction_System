@@ -13,7 +13,6 @@ public class UserDTO {
     @Pattern(regexp = "^[A-Za-z ]+$", message = "Name must be at least 3 characters long")
     @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters long")
     private String name;
-    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", message = "Invalid email format")
     private String email;
     @Pattern(regexp = "^[A-Za-z0-9 ]+$", message = "Address must be at least 3 characters long")
     private String address;

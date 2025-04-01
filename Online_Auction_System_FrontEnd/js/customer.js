@@ -129,3 +129,4 @@ function toggleStatus(checkbox) {
     const label = checkbox.nextElementSibling;
     label.textContent = checkbox.checked ? 'Active' : 'Inactive';
 }
+

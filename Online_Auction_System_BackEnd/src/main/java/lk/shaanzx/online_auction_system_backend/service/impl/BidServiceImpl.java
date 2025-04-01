@@ -47,7 +47,33 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public int updateBid(String itemCode, Double highestPrice) {
-        return 0;
+    public int updateHighestBidPrice(String itemCode, Double highestPrice) {
+        try {
+            Bid bid = bidRepo.findByItemCode(itemCode);
+            if (bid == null) {
+                return VarList.Not_Found;
+            }
+
+            bid.setHighestPrice(highestPrice);
+            bidRepo.save(bid);
+            return VarList.OK;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return VarList.Internal_Server_Error;
+        }
+    }
+
+    @Override
+    public double getHighestBidPrice(String itemCode) {
+        try {
+            Bid bid = bidRepo.findByItemCode(itemCode);
+            if (bid == null) {
+                return VarList.Not_Found;
+            }
+            return bid.getHighestPrice();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return VarList.Internal_Server_Error;
+        }
     }
 }

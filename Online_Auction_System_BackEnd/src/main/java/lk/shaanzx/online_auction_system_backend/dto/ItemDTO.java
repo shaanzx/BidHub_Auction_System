@@ -17,6 +17,7 @@ public class ItemDTO {
     @Pattern(regexp = "^[A-Za-z ]+$", message = "Description must be at least 3 characters long")
     private String description;
     private MultipartFile image;
+    private String imagePath;
     private double price;
     @Pattern(regexp = "^(Pending|Approved|Disapproved|On Bid|Sold Out)$", message = "Invalid status format")
     private String status;

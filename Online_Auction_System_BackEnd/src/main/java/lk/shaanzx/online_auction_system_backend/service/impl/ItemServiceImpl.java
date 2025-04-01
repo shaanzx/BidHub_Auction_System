@@ -8,7 +8,6 @@ import lk.shaanzx.online_auction_system_backend.repo.ItemRepo;
 import lk.shaanzx.online_auction_system_backend.service.ItemService;
 import lk.shaanzx.online_auction_system_backend.util.VarList;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +18,13 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
 
-    private static final String UPLOAD_DIR = "uploads/";  // 🔥 Folder to store images
+    private static final String UPLOAD_DIR = "uploads/";
+
 
     @Autowired
     private ItemRepo itemRepo;
@@ -37,13 +38,11 @@ public class ItemServiceImpl implements ItemService {
                 return VarList.Not_Acceptable;
             }
 
-            // 🔥 Save Image File
             String fileName = UUID.randomUUID() + "_" + itemDTO.getImage().getOriginalFilename();
             Path filePath = Paths.get(UPLOAD_DIR, fileName);
             Files.createDirectories(filePath.getParent()); // Ensure directory exists
             Files.write(filePath, itemDTO.getImage().getBytes());
 
-            // 🔥 Map DTO to Entity
             Item item = new Item();
             item.setCode(itemDTO.getCode());
             item.setName(itemDTO.getName());
@@ -52,7 +51,6 @@ public class ItemServiceImpl implements ItemService {
             item.setPrice(itemDTO.getPrice());
             item.setStatus(itemDTO.getStatus());
 
-            // 🔥 Set Category & User (Assuming Category & User exist)
             Category category = new Category();
             category.setCode(itemDTO.getCategoryCode());
             item.setCategoryCode(category);
@@ -62,7 +60,6 @@ public class ItemServiceImpl implements ItemService {
             user.setId(UUID.fromString(itemDTO.getUserId()));
             item.setUserId(user);
 
-            // 🔥 Save Item
             itemRepo.save(item);
             return VarList.Created;
 
@@ -131,13 +128,27 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDTO> getItems() {
-        if (itemRepo.findAll().isEmpty()) {
-            return null;
-        } else {
-            return modelMapper.map(itemRepo.findAll(), new TypeToken<List<ItemDTO>>() {
-            }.getType());
-        }
+        return itemRepo.findAll().stream().map(item -> {
+            ItemDTO itemDTO = new ItemDTO();
+            itemDTO.setCode(item.getCode());
+            itemDTO.setName(item.getName());
+            itemDTO.setDescription(item.getDescription());
+            itemDTO.setPrice(item.getPrice());
+            itemDTO.setStatus(item.getStatus());
+            itemDTO.setCategoryCode(item.getCategoryCode().getCode());
+            itemDTO.setUserId(item.getUserId().getId().toString());
+
+            if (item.getImagePath() != null) {
+                itemDTO.setImagePath("http://localhost:8080/uploads/" + item.getImagePath());
+            } else {
+                itemDTO.setImagePath(null);
+            }
+
+            return itemDTO;
+        }).collect(Collectors.toList());
     }
+
+
 
     @Override
     public String getNextItemCode() {

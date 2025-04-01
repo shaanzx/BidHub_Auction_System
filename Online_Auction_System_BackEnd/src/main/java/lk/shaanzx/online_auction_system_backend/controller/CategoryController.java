@@ -8,6 +8,7 @@ import lk.shaanzx.online_auction_system_backend.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +19,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping(value = "/addCategory")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ResponseDTO> addCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
         int response = categoryService.addCategory(categoryDTO);
         if (response == VarList.Created) {
@@ -31,7 +32,7 @@ public class CategoryController {
     }
 
     @PutMapping(value = "/updateCategory")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ResponseDTO> updateCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
         int response = categoryService.updateCategory(categoryDTO);
         if (response == VarList.OK) {
@@ -66,7 +67,7 @@ public class CategoryController {
     }
 
     @GetMapping(value = "getNextCategoryCode")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ResponseDTO> getNextCategoryCode() {
         String categoryCode=categoryService.getNextCategoryCode();
         if (categoryCode != null) {
