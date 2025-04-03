@@ -117,13 +117,10 @@
         data: JSON.stringify(loginData),
         success: function(response) {
           if (response.code === 201 && response.data) {
-            // Store token in localStorage
             localStorage.setItem('authToken', response.data.token);
             localStorage.setItem('userEmail', response.data.email);
 
-            // Determine user role and redirect (you'll need to adjust this based on your actual role handling)
-            // This assumes you'll add role to the AuthDTO response
-            const role = 'USER'; // Default to USER, you should get this from your backend
+            const role = 'USER';
 
             Swal.fire({
               icon: 'success',

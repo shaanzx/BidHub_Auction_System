@@ -24,4 +24,6 @@ public class UserDTO {
     private String password;
     @Pattern(regexp = "^(USER|ADMIN)$", message = "Invalid user role format")
     private String role;
+    @Pattern(regexp = "^(Active|Inactive)$", message = "Invalid user status format")
+    private String status;
 }

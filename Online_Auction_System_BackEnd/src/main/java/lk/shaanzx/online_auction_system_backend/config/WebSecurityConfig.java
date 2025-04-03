@@ -54,11 +54,9 @@ public class WebSecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html")
                                 .permitAll()
-                                .requestMatchers("/api/v1/categories/**").permitAll()
-                                .requestMatchers(HttpMethod.GET,"/api/v1/items/**").permitAll()
-                                .requestMatchers(HttpMethod.POST,"/api/v1/items/**").permitAll()
-                                .requestMatchers(HttpMethod.PUT,"/api/v1/items/**").permitAll()
-                                .requestMatchers(HttpMethod.DELETE,"/api/v1/items/**").permitAll()
+                                .requestMatchers("/api/v1/categories/**").hasAnyAuthority("ADMIN")
+                                .requestMatchers("/api/v1/admin/**").permitAll()
+                                .requestMatchers("api/v1/items/**").permitAll()
                                 .anyRequest().
                                 authenticated()
                 )

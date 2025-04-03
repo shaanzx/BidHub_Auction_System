@@ -26,7 +26,7 @@ public class AdminController {
     private JwtUtil jwtUtil;
 
     @PostMapping(value = "/register")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ResponseDTO> registerUser(@Valid @RequestBody  UserDTO userDTO) {
         try {
             int res = userService.saveUser(userDTO);
@@ -51,6 +51,52 @@ public class AdminController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
+        }
+    }
+
+    @GetMapping(value = "/getUsers")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<ResponseDTO> getUsers() {
+        if (userService.getUsers() != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", userService.getUsers()));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseDTO(VarList.Bad_Gateway, "No data found", null));
+        }
+    }
+
+    @PutMapping(value = "/updateUser")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<ResponseDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
+        if (userService.updateUser(userDTO) == VarList.OK) {
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", null));
+        } else if (userService.updateUser(userDTO) == VarList.Not_Found) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDTO(VarList.Not_Found, "User not found", null));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
+        }
+    }
+
+    @PutMapping(value = "/updateUserStatus")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<ResponseDTO> updateUserStatus(@Valid @RequestBody UserDTO userDTO) {
+        if (userService.updateUserStatus(userDTO) == VarList.OK) {
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", null));
+        } else if (userService.updateUserStatus(userDTO) == VarList.Not_Found) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDTO(VarList.Not_Found, "User not found", null));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
+        }
+    }
+
+    @DeleteMapping(value = "/deleteUser")
+   // @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<ResponseDTO> deleteUser(@Valid @RequestParam("email")String email) {
+        if (userService.deleteUser(email) == VarList.OK) {
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", null));
+        } else if (userService.deleteUser(email) == VarList.Not_Found) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDTO(VarList.Not_Found, "User not found", null));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
         }
     }
 }

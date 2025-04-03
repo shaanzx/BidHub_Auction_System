@@ -1,12 +1,14 @@
 package lk.shaanzx.online_auction_system_backend.service.impl;
 
 
+import lk.shaanzx.online_auction_system_backend.dto.CategoryDTO;
 import lk.shaanzx.online_auction_system_backend.dto.UserDTO;
 import lk.shaanzx.online_auction_system_backend.entity.User;
 import lk.shaanzx.online_auction_system_backend.repo.UserRepository;
 import lk.shaanzx.online_auction_system_backend.service.UserService;
 import lk.shaanzx.online_auction_system_backend.util.VarList;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,33 +18,77 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Autowired
-    private UserRepository registerRepo;
+    private UserRepository userRepo;
 
     @Autowired
     private ModelMapper modelMapper;
 
     @Override
     public int saveUser(UserDTO userDTO) {
-        if (registerRepo.existsByEmail(userDTO.getEmail())) {
+        if (userRepo.existsByEmail(userDTO.getEmail())) {
             return VarList.Not_Acceptable; // Email already exists
         } else {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-            registerRepo.save(modelMapper.map(userDTO, User.class));
+            userRepo.save(modelMapper.map(userDTO, User.class));
             return VarList.Created; // User saved successfully
         }
     }
 
     @Override
+    public List<UserDTO> getUsers() {
+        if (userRepo.findAll().isEmpty()) {
+            return null;
+        }else {
+            return modelMapper.map(userRepo.findAll(), new TypeToken<List<UserDTO>>(){}.getType());
+        }
+    }
+
+    @Override
+    public int deleteUser(String email) {
+        if (userRepo.existsByEmail(email)) {
+            boolean isDeleted = userRepo.deleteByEmail(email);
+            if (isDeleted) {
+                return VarList.OK;
+            } else {
+                return VarList.Not_Found;
+            }
+        } else {
+            return VarList.Not_Found;
+        }
+    }
+
+    @Override
+    public int updateUser(UserDTO userDTO) {
+        if (userRepo.existsByEmail(userDTO.getEmail())) {
+            userRepo.save(modelMapper.map(userDTO, User.class));
+            return VarList.OK;
+        } else {
+            return VarList.Not_Found;
+        }
+    }
+
+    @Override
+    public int updateUserStatus(UserDTO userDTO) {
+        if (userRepo.existsByEmail(userDTO.getEmail())) {
+            userRepo.save(modelMapper.map(userDTO, User.class));
+            return VarList.OK;
+        } else {
+            return VarList.Not_Found;
+        }
+    }
+
+    @Override
     public UserDTO searchUser(String username) {
-        if (registerRepo.existsByEmail(username)) {
-            User user = registerRepo.findByEmail(username);
+        if (userRepo.existsByEmail(username)) {
+            User user = userRepo.findByEmail(username);
             return modelMapper.map(user, UserDTO.class);
         } else {
             return null; // User not found
@@ -50,7 +96,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     public UserDTO loadUserDetailsByUsername(String username) throws UsernameNotFoundException {
-        User user = registerRepo.findByEmail(username);
+        User user = userRepo.findByEmail(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -59,7 +105,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = registerRepo.findByEmail(email);
+        User user = userRepo.findByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
