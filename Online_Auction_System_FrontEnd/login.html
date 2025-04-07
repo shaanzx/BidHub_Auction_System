@@ -116,25 +116,30 @@
         contentType: 'application/json',
         data: JSON.stringify(loginData),
         success: function(response) {
-          if (response.code === 201 && response.data) {
+          if ((response.code === 201 || response.code === 200) && response.data) {
+            // Store user data in localStorage
             localStorage.setItem('authToken', response.data.token);
             localStorage.setItem('userEmail', response.data.email);
+            localStorage.setItem('role', response.data.role);
 
-            const role = 'USER';
-
+            // Show success message
             Swal.fire({
               icon: 'success',
               title: 'Login Successful!',
               showConfirmButton: false,
               timer: 1500
             }).then(() => {
-              window.location.href = role === 'ADMIN' ? 'dashboard.html' : 'customer.html';
+              // Redirect based on role
+              window.location.href = response.data.role === 'ADMIN'
+                      ? 'dashboard.html'
+                      : 'index.html';
             });
           } else {
+            // Handle other success codes or malformed responses
             Swal.fire({
               icon: 'error',
               title: 'Login Failed',
-              text:  'Invalid credentials'
+              text: response.message || 'Invalid credentials'
             });
           }
         },
