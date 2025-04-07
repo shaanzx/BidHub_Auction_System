@@ -1,270 +1,3 @@
-<!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BidHub - Online Auction Platform</title>
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/node_modules/swiper/swiper-bundle.min.css">
-    <link rel="stylesheet" href="../css/userPageCSS/Loginstyle.css">
-</head>
-<body>
-&lt;!&ndash; Navigation Bar &ndash;&gt;
-<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
-    <div class="container">
-        <a class="navbar-brand fw-bold text-primary" href="/">
-            <i class="bi bi-hammer"></i> BidHub
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" href="/">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/auctions">Auctions</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/calendar">Calendar</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/blog">Blog</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/for-seller">For Seller</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/about">About Us</a>
-                </li>
-            </ul>
-            <form class="d-flex me-3">
-                <div class="input-group">
-                    <input class="form-control" type="search" placeholder="Search auctions...">
-                    <button class="btn btn-outline-primary" type="submit">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-            </form>
-            <div class="d-flex" id="authButtons">
-                <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signupModal">Sign Up</button>
-            </div>
-        </div>
-    </div>
-</nav>
-
-&lt;!&ndash; Hero Section with Swiper &ndash;&gt;
-<section class="hero-section mt-5 pt-4">
-    <div class="swiper heroSwiper">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide">
-                <div class="position-relative">
-                    <img src="https://images.unsplash.com/photo-1595078475328-1ab05d0a6a0e?auto=format&fit=crop&w=1600&h=600&q=80"
-                         class="w-100" alt="Luxury Watch Auction">
-                    <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
-                        <h1 class="display-4 fw-bold">Discover Unique Treasures</h1>
-                        <p class="lead">Bid on exclusive items from around the world</p>
-                        <a href="/auctions" class="btn btn-primary btn-lg">Start Bidding</a>
-                    </div>
-                </div>
-            </div>
-            <div class="swiper-slide">
-                <div class="position-relative">
-                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1600&h=600&q=80"
-                         class="w-100" alt="Art Auction">
-                    <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
-                        <h1 class="display-4 fw-bold">Fine Art & Collectibles</h1>
-                        <p class="lead">Curated selection of premium artworks</p>
-                        <a href="/auctions/art" class="btn btn-primary btn-lg">Explore Art</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-    </div>
-</section>
-
-&lt;!&ndash; New Arrivals Section &ndash;&gt;
-<section class="container my-5">
-    <h2 class="text-center mb-4">New Arrivals</h2>
-    <div class="row g-4">
-        &lt;!&ndash; Example Auction Item Card &ndash;&gt;
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
-                <div class="position-relative">
-                    <img src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=400&h=300&q=80"
-                         class="card-img-top" alt="Vintage Watch">
-                    <div class="position-absolute top-0 end-0 m-2">
-                        <span class="badge bg-danger">Hot</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Vintage Omega Speedmaster</h5>
-                    <p class="card-text">1969 Limited Edition chronograph in excellent condition. Original box and papers included.</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <p class="mb-0">Current Bid:</p>
-                            <h4 class="text-primary">$12,500</h4>
-                        </div>
-                        <div class="text-end">
-                            <small class="text-muted">Ends in:</small>
-                            <p class="mb-0 text-danger">2d 14h 35m</p>
-                        </div>
-                    </div>
-                    <a href="#" class="btn btn-primary w-100 mt-3">Place Bid</a>
-                </div>
-            </div>
-        </div>
-        &lt;!&ndash; Add more auction items here &ndash;&gt;
-    </div>
-</section>
-
-&lt;!&ndash; Featured Categories &ndash;&gt;
-<section class="bg-light py-5">
-    <div class="container">
-        <h2 class="text-center mb-4">Featured Categories</h2>
-        <div class="row g-4">
-            <div class="col-md-3">
-                <div class="card text-center h-100">
-                    <div class="card-body">
-                        <i class="bi bi-watch fs-1 text-primary"></i>
-                        <h5 class="card-title mt-3">Watches</h5>
-                        <p class="card-text">Luxury & Vintage Timepieces</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-center h-100">
-                    <div class="card-body">
-                        <i class="bi bi-palette fs-1 text-primary"></i>
-                        <h5 class="card-title mt-3">Art</h5>
-                        <p class="card-text">Fine Art & Paintings</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-center h-100">
-                    <div class="card-body">
-                        <i class="bi bi-gem fs-1 text-primary"></i>
-                        <h5 class="card-title mt-3">Jewelry</h5>
-                        <p class="card-text">Precious Gems & Jewelry</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-center h-100">
-                    <div class="card-body">
-                        <i class="bi bi-car-front fs-1 text-primary"></i>
-                        <h5 class="card-title mt-3">Cars</h5>
-                        <p class="card-text">Classic & Luxury Vehicles</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-&lt;!&ndash; Footer &ndash;&gt;
-<footer class="bg-dark text-light py-5 mt-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <h5 class="mb-3">About BidHub</h5>
-                <p>Your trusted platform for online auctions. Discover unique items and bid with confidence.</p>
-            </div>
-            <div class="col-md-4">
-                <h5 class="mb-3">Quick Links</h5>
-                <ul class="list-unstyled">
-                    <li><a href="/auctions" class="text-light">Current Auctions</a></li>
-                    <li><a href="/how-it-works" class="text-light">How It Works</a></li>
-                    <li><a href="/contact" class="text-light">Contact Us</a></li>
-                    <li><a href="/terms" class="text-light">Terms & Conditions</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <h5 class="mb-3">Newsletter</h5>
-                <p>Subscribe to get updates on new auctions</p>
-                <form class="mb-3">
-                    <div class="input-group">
-                        <input type="email" class="form-control" placeholder="Enter your email">
-                        <button class="btn btn-primary" type="submit">Subscribe</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <hr class="my-4">
-        <div class="text-center">
-            <p class="mb-0">&copy; 2023 BidHub. All rights reserved.</p>
-        </div>
-    </div>
-</footer>
-
-&lt;!&ndash; Login Modal &ndash;&gt;
-<div class="modal fade" id="loginModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Login to BidHub</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="loginForm">
-                    <div class="mb-3">
-                        <label for="loginEmail" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="loginEmail" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="loginPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="loginPassword" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-&lt;!&ndash; Sign Up Modal &ndash;&gt;
-<div class="modal fade" id="signupModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Create Account</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="signupForm">
-                    <div class="mb-3">
-                        <label for="signupName" class="form-label">Full Name</label>
-                        <input type="text" class="form-control" id="signupName" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="signupEmail" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="signupEmail" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="signupPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="signupPassword" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Sign Up</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/node_modules/swiper/swiper-bundle.min.js"></script>
-<script src="../js/userPageJS/main.js"></script>
-</body>
-</html>-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -274,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    <link rel="stylesheet" href="../css/userIndex.css">
+    <link rel="stylesheet" href="css/userIndex.css">
 </head>
 <body>
 <!-- Top Bar -->
@@ -309,27 +42,17 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                        Categories
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Fine Art</a></li>
-                        <li><a class="dropdown-item" href="#">Jewelry</a></li>
-                        <li><a class="dropdown-item" href="#">Watches</a></li>
-                        <li><a class="dropdown-item" href="#">Furniture</a></li>
-                        <li><a class="dropdown-item" href="#">Decorative Art</a></li>
-                        <li><a class="dropdown-item" href="#">Asian Art</a></li>
-                    </ul>
+                <li class="nav-item">
+                    <a class="nav-link active" href="userIndex.html">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Live Auctions</a>
+                    <a class="nav-link" href="auction.html">Auctions</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Upcoming</a>
+                    <a class="nav-link" href="#">News</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Past Sales</a>
+                    <a class="nav-link" href="#">Sale With US</a>
                 </li>
             </ul>
             <div class="d-flex align-items-center">
@@ -652,6 +375,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script src="../js/userIndex.js"></script>
+<script src="js/userIndex.js"></script>
 </body>
 </html>

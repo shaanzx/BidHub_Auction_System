@@ -48,4 +48,9 @@ public class BidController {
         double highestBidPrice = bidService.getHighestBidPrice(itemDTO.getCode());
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", highestBidPrice));
     }
+
+    @GetMapping(value = "getAllActiveBids")
+    public ResponseEntity<ResponseDTO> getAllActiveBids() {
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", bidService.getAllActiveBids()));
+    }
 }

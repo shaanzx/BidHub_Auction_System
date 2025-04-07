@@ -41,7 +41,17 @@
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-						<li><a class="nav-link" href="login.html"><i class="fa fa-user"></i></a></li> <!-- Sign In Icon -->
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="fa fa-user"></i>
+							</a>
+							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" style="font-size: 0.875rem;">
+								<li><a class="dropdown-item" href="#">Profile</a></li>
+								<li><a class="dropdown-item" href="#">Settings</a></li>
+								<li><hr class="dropdown-divider"></li>
+								<li><a class="dropdown-item" href="login.html">Logout</a></li>
+							</ul>
+						</li>
 						<li><a class="nav-link" href="cart.html"><i class="fa fa-shopping-cart"></i></a></li> <!-- Cart Icon -->
 					</ul>
 
@@ -51,6 +61,104 @@
 				
 		</nav>
 		<!-- End Header/Navigation -->
+
+		<!-- User Profile Update Modal -->
+		<div class="modal fade" id="userProfileModal" tabindex="-1" aria-labelledby="userProfileModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header text-white" style="background-color: #222222;">
+						<h5 class="modal-title" id="userProfileModalLabel">Update Profile</h5>
+						<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body p-4">
+						<form id="userProfileForm">
+							<div class="row">
+								<!-- Left Column -->
+								<div class="col-md-6">
+									<div class="mb-3">
+										<label for="userName" class="form-label">Full Name</label>
+										<input type="text" class="form-control" id="userName" name="name"
+											   pattern="^[A-Za-z ]+$" required
+											   minlength="2" maxlength="50">
+										<div class="invalid-feedback">Name must contain only letters and spaces (2-50 characters)</div>
+									</div>
+
+									<div class="mb-3">
+										<label for="userEmail" class="form-label">Email</label>
+										<input type="email" class="form-control" id="userEmail" name="email" required>
+										<div class="invalid-feedback">Please enter a valid email address</div>
+									</div>
+
+									<div class="mb-3">
+										<label for="userAddress" class="form-label">Address</label>
+										<input type="text" class="form-control" id="userAddress" name="address"
+											   pattern="^[A-Za-z0-9 ]+$" required>
+										<div class="invalid-feedback">Address must contain only letters, numbers and spaces</div>
+									</div>
+								</div>
+
+								<!-- Right Column -->
+								<div class="col-md-6">
+									<div class="mb-3">
+										<label for="userContact" class="form-label">Phone Number</label>
+										<input type="text" class="form-control" id="userContact" name="contact"
+											   pattern="^(0\d{9}|\+94\d{9})$" required>
+										<div class="invalid-feedback">Phone number must be in format 0XXXXXXXXX or +94XXXXXXXXX</div>
+									</div>
+
+									<div class="mb-3">
+										<label for="userNic" class="form-label">NIC Number</label>
+										<input type="text" class="form-control" id="userNic" name="nic"
+											   pattern="^(\d{9}V|\d{12})$" required>
+										<div class="invalid-feedback">NIC must be in format XXXXXXXXX or XXXXXXXXXXXX</div>
+									</div>
+
+									<div class="mb-3">
+										<label for="userPassword" class="form-label">Password</label>
+										<div class="input-group">
+											<input type="password" class="form-control" id="userPassword" name="password"
+												   pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$">
+											<button class="btn btn-outline-secondary" type="button" id="togglePassword">
+												<i class="bi bi-eye-slash" id="passwordToggleIcon"></i>
+											</button>
+										</div>
+										<div class="form-text text-muted">Leave blank to keep current password</div>
+										<div class="invalid-feedback">Password must be at least 8 characters with at least one letter and one number</div>
+									</div>
+								</div>
+							</div>
+
+							<!-- Full width admin fields -->
+							<div class="row admin-only" style="display: none;">
+								<div class="col-md-6">
+									<div class="mb-3">
+										<label for="userRole" class="form-label">Role</label>
+										<select class="form-select" id="userRole" name="role">
+											<option value="USER">User</option>
+											<option value="ADMIN">Admin</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="mb-3">
+										<label for="userStatus" class="form-label">Status</label>
+										<select class="form-select" id="userStatus" name="status">
+											<option value="Active">Active</option>
+											<option value="Inactive">Inactive</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer" style="background-color: #f8f9fa;">
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+						<button type="button" class="btn text-white" id="saveUserProfile" style="background-color: #1d2e28;">Save Changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+<!--		End User Profile Modal 	-->
 
 		<!-- Start Hero Section -->
 			<div class="hero">
@@ -111,6 +219,7 @@
         </span>
 						</a>
 					</div>
+
 
 					<!-- End Column 2 -->
 
@@ -220,7 +329,7 @@
 					<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
 						<div class="product-item-sm d-flex">
 							<div class="thumbnail">
-								<img src="images/product-1.png" alt="Image" class="img-fluid">
+								<img src="images/Smart%20Phone.jpg" alt="Image" class="img-fluid">
 							</div>
 							<div class="pt-3">
 								<h3>Smartphone Bundle</h3>
@@ -233,7 +342,7 @@
 					<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
 						<div class="product-item-sm d-flex">
 							<div class="thumbnail">
-								<img src="images/product-2.png" alt="Image" class="img-fluid">
+								<img src="images/SmartWatches.jpg" alt="Image" class="img-fluid">
 							</div>
 							<div class="pt-3">
 								<h3>Luxury Watch</h3>
@@ -246,7 +355,7 @@
 					<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
 						<div class="product-item-sm d-flex">
 							<div class="thumbnail">
-								<img src="images/product-3.png" alt="Image" class="img-fluid">
+								<img src="images/GamingLaptop.jpg" alt="Image" class="img-fluid">
 							</div>
 							<div class="pt-3">
 								<h3>Gaming Laptop</h3>
@@ -524,11 +633,17 @@
 
 			</div>
 		</footer>
-		<!-- End Footer Section -->	
+		<!-- End Footer Section -->
 
-
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script src="js/bootstrap.bundle.min.js"></script>
 		<script src="/js/tiny-slider.js"></script>
 		<script src="/js/custom.js"></script>
+		<script src="js/UserProfileUpdate.js"></script>
+		<!-- JavaScript for the profile modal -->
+		<script>
+
+		</script>
+
 	</body>
 </html>

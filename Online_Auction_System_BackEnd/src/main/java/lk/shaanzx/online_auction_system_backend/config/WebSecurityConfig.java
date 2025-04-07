@@ -47,6 +47,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable).cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/api/v1/bids/**",
                                 "/api/v1/auth/authenticate",
                                 "/api/v1/user/register",
                                 "/api/v1/auth/refreshToken",
@@ -74,6 +75,8 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.POST,"/api/v1/items/**").hasAnyAuthority("ADMIN", "USER")
                                 .requestMatchers(HttpMethod.PUT,"/api/v1/items/**").hasAuthority("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE,"/api/v1/items/**").hasAuthority("ADMIN")
+
+
                                 .anyRequest().
                                 authenticated()
                 )

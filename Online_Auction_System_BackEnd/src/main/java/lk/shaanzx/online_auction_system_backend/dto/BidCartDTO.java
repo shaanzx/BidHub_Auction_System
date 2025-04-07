@@ -13,4 +13,5 @@ public class BidCartDTO {
     private String description;
     private String imagePath;
     private double highestBidPrice;
+    private String status;
 }
