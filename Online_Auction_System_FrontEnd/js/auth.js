@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         alert('Registration successful!');
 
                         // Redirect to dashboard or home page
-                        window.location.href = 'index.html';
+                        window.location.href = 'userIndex.html';
                     } else if (response.status === 406) { // Not Acceptable
                         alert('Email already in use. Please use a different email.');
                     } else {
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         alert('Login successful!');
 
                         // Redirect to dashboard or home page
-                        window.location.href = 'index.html';
+                        window.location.href = 'userIndex.html';
                     })
                     .catch(error => {
                         console.error('Login error:', error);

@@ -1,0 +1,132 @@
+/* Custom styles */
+:root {
+    --primary-color: #1a4789;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Top Bar */
+.top-bar {
+    font-size: 0.875rem;
+}
+
+.top-bar a:hover {
+    color: #f8f9fa !important;
+}
+
+/* Navigation */
+.navbar {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    color: var(--primary-color) !important;
+}
+
+/* Featured Auction Banner */
+.featured-auction {
+    height: 500px;
+    overflow: hidden;
+}
+
+.featured-auction img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7);
+}
+
+/* Auction Cards */
+.auction-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.auction-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.auction-card .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.lot-number {
+    color: var(--secondary-color);
+    font-size: 0.875rem;
+}
+
+.current-bid {
+    color: var(--primary-color);
+}
+
+/* Category Cards */
+.category-card {
+    color: inherit;
+}
+
+.category-card:hover .card {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.category-card .card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #153a6f;
+    border-color: #153a6f;
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Footer */
+footer {
+    background-color: #1a1a1a;
+}
+
+footer a:hover {
+    color: #fff !important;
+    opacity: 0.8;
+}
+
+/* Modal customization */
+.modal-content {
+    border-radius: 0.5rem;
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .featured-auction {
+        height: 300px;
+    }
+
+    .featured-auction h1 {
+        font-size: 2rem;
+    }
+}

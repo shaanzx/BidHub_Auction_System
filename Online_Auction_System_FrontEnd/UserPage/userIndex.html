@@ -1,0 +1,657 @@
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BidHub - Online Auction Platform</title>
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/node_modules/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="../css/userPageCSS/Loginstyle.css">
+</head>
+<body>
+&lt;!&ndash; Navigation Bar &ndash;&gt;
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary" href="/">
+            <i class="bi bi-hammer"></i> BidHub
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auctions">Auctions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/calendar">Calendar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/blog">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/for-seller">For Seller</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About Us</a>
+                </li>
+            </ul>
+            <form class="d-flex me-3">
+                <div class="input-group">
+                    <input class="form-control" type="search" placeholder="Search auctions...">
+                    <button class="btn btn-outline-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <div class="d-flex" id="authButtons">
+                <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signupModal">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+&lt;!&ndash; Hero Section with Swiper &ndash;&gt;
+<section class="hero-section mt-5 pt-4">
+    <div class="swiper heroSwiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1595078475328-1ab05d0a6a0e?auto=format&fit=crop&w=1600&h=600&q=80"
+                         class="w-100" alt="Luxury Watch Auction">
+                    <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
+                        <h1 class="display-4 fw-bold">Discover Unique Treasures</h1>
+                        <p class="lead">Bid on exclusive items from around the world</p>
+                        <a href="/auctions" class="btn btn-primary btn-lg">Start Bidding</a>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1600&h=600&q=80"
+                         class="w-100" alt="Art Auction">
+                    <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
+                        <h1 class="display-4 fw-bold">Fine Art & Collectibles</h1>
+                        <p class="lead">Curated selection of premium artworks</p>
+                        <a href="/auctions/art" class="btn btn-primary btn-lg">Explore Art</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+</section>
+
+&lt;!&ndash; New Arrivals Section &ndash;&gt;
+<section class="container my-5">
+    <h2 class="text-center mb-4">New Arrivals</h2>
+    <div class="row g-4">
+        &lt;!&ndash; Example Auction Item Card &ndash;&gt;
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=400&h=300&q=80"
+                         class="card-img-top" alt="Vintage Watch">
+                    <div class="position-absolute top-0 end-0 m-2">
+                        <span class="badge bg-danger">Hot</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Vintage Omega Speedmaster</h5>
+                    <p class="card-text">1969 Limited Edition chronograph in excellent condition. Original box and papers included.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-0">Current Bid:</p>
+                            <h4 class="text-primary">$12,500</h4>
+                        </div>
+                        <div class="text-end">
+                            <small class="text-muted">Ends in:</small>
+                            <p class="mb-0 text-danger">2d 14h 35m</p>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-primary w-100 mt-3">Place Bid</a>
+                </div>
+            </div>
+        </div>
+        &lt;!&ndash; Add more auction items here &ndash;&gt;
+    </div>
+</section>
+
+&lt;!&ndash; Featured Categories &ndash;&gt;
+<section class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Featured Categories</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="bi bi-watch fs-1 text-primary"></i>
+                        <h5 class="card-title mt-3">Watches</h5>
+                        <p class="card-text">Luxury & Vintage Timepieces</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="bi bi-palette fs-1 text-primary"></i>
+                        <h5 class="card-title mt-3">Art</h5>
+                        <p class="card-text">Fine Art & Paintings</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="bi bi-gem fs-1 text-primary"></i>
+                        <h5 class="card-title mt-3">Jewelry</h5>
+                        <p class="card-text">Precious Gems & Jewelry</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="bi bi-car-front fs-1 text-primary"></i>
+                        <h5 class="card-title mt-3">Cars</h5>
+                        <p class="card-text">Classic & Luxury Vehicles</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+&lt;!&ndash; Footer &ndash;&gt;
+<footer class="bg-dark text-light py-5 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5 class="mb-3">About BidHub</h5>
+                <p>Your trusted platform for online auctions. Discover unique items and bid with confidence.</p>
+            </div>
+            <div class="col-md-4">
+                <h5 class="mb-3">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/auctions" class="text-light">Current Auctions</a></li>
+                    <li><a href="/how-it-works" class="text-light">How It Works</a></li>
+                    <li><a href="/contact" class="text-light">Contact Us</a></li>
+                    <li><a href="/terms" class="text-light">Terms & Conditions</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5 class="mb-3">Newsletter</h5>
+                <p>Subscribe to get updates on new auctions</p>
+                <form class="mb-3">
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Enter your email">
+                        <button class="btn btn-primary" type="submit">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr class="my-4">
+        <div class="text-center">
+            <p class="mb-0">&copy; 2023 BidHub. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+&lt;!&ndash; Login Modal &ndash;&gt;
+<div class="modal fade" id="loginModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Login to BidHub</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="loginEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="loginEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+&lt;!&ndash; Sign Up Modal &ndash;&gt;
+<div class="modal fade" id="signupModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="signupForm">
+                    <div class="mb-3">
+                        <label for="signupName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="signupName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="signupEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="signupEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="signupPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="signupPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/node_modules/swiper/swiper-bundle.min.js"></script>
+<script src="../js/userPageJS/main.js"></script>
+</body>
+</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BidHub - Premium Online Auctions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="../css/userIndex.css">
+</head>
+<body>
+<!-- Top Bar -->
+<div class="top-bar bg-dark text-white py-2">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <small>
+                    <i class="bi bi-telephone"></i> +94 111 222-4567 |
+                    <i class="bi bi-envelope"></i> support@bidhub.com
+                </small>
+            </div>
+            <div class="col-md-6 text-end">
+                <small>
+                    <a href="#" class="text-white me-3">Auction Calendar</a>
+                    <a href="#" class="text-white me-3">Sell with Us</a>
+                    <a href="#" class="text-white">Help</a>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/">
+            <i class=""></i> BidHub
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        Categories
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Fine Art</a></li>
+                        <li><a class="dropdown-item" href="#">Jewelry</a></li>
+                        <li><a class="dropdown-item" href="#">Watches</a></li>
+                        <li><a class="dropdown-item" href="#">Furniture</a></li>
+                        <li><a class="dropdown-item" href="#">Decorative Art</a></li>
+                        <li><a class="dropdown-item" href="#">Asian Art</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Live Auctions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Upcoming</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Past Sales</a>
+                </li>
+            </ul>
+            <div class="d-flex align-items-center">
+                <form class="d-flex me-3">
+                    <div class="input-group">
+                        <input type="search" class="form-control" placeholder="Search lots...">
+                        <button class="btn btn-outline-primary" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <div id="authButtons">
+                    <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Sign In</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signupModal">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Featured Auction Banner -->
+<section class="featured-auction position-relative">
+    <img src="https://images.unsplash.com/photo-1577083288073-40892c0860a4?auto=format&fit=crop&w=1600&q=80"
+         class="w-100" alt="Featured Auction">
+    <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
+        <h1 class="display-4 fw-bold mb-4">Fine Art & Antiques</h1>
+        <p class="lead mb-4">Live Bidding Starts December 15th at 12:00 PM EST</p>
+        <a href="#" class="btn btn-primary btn-lg">View Catalog</a>
+    </div>
+</section>
+
+<!-- Live Auctions -->
+<section class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Live Auctions</h2>
+        <a href="#" class="btn btn-outline-primary">View All</a>
+    </div>
+    <div class="row g-4">
+        <!-- Auction Item 1 -->
+        <div class="col-md-3">
+            <div class="auction-card card h-100">
+                <img src="https://images.unsplash.com/photo-1577083287809-1c229a750bba?auto=format&fit=crop&w=300&h=200&q=80"
+                     class="card-img-top" alt="Antique Vase">
+                <div class="card-body">
+                    <div class="lot-number mb-2">Lot 1234</div>
+                    <h5 class="card-title">Chinese Ming Dynasty Vase</h5>
+                    <p class="card-text text-muted">Circa 1500, blue and white porcelain</p>
+                    <div class="bid-info">
+                        <div class="current-bid mb-2">
+                            Current Bid: <span class="fw-bold">$25,000</span>
+                        </div>
+                        <div class="estimate text-muted">
+                            Estimate: $20,000 - $30,000
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white">
+                    <button class="btn btn-primary w-100">Place Bid</button>
+                </div>
+            </div>
+        </div>
+        <!-- Auction Item 2 -->
+        <div class="col-md-3">
+            <div class="auction-card card h-100">
+                <img src="https://images.unsplash.com/photo-1577083287849-712b8c4d5270?auto=format&fit=crop&w=300&h=200&q=80"
+                     class="card-img-top" alt="Vintage Watch">
+                <div class="card-body">
+                    <div class="lot-number mb-2">Lot 1235</div>
+                    <h5 class="card-title">Patek Philippe Nautilus</h5>
+                    <p class="card-text text-muted">Ref. 5711, Steel, Box & Papers</p>
+                    <div class="bid-info">
+                        <div class="current-bid mb-2">
+                            Current Bid: <span class="fw-bold">$85,000</span>
+                        </div>
+                        <div class="estimate text-muted">
+                            Estimate: $80,000 - $100,000
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white">
+                    <button class="btn btn-primary w-100">Place Bid</button>
+                </div>
+            </div>
+        </div>
+        <!-- Add more auction items as needed -->
+    </div>
+</section>
+
+<!-- Featured Categories -->
+<section class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Browse by Category</h2>
+        <div class="row g-4">
+            <div class="col-md-2 col-6">
+                <a href="#" class="category-card text-center text-decoration-none">
+                    <div class="card border-0 bg-white shadow-sm h-100">
+                        <div class="card-body">
+                            <i class="bi bi-palette display-4 text-primary"></i>
+                            <h6 class="mt-3">Fine Art</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-2 col-6">
+                <a href="#" class="category-card text-center text-decoration-none">
+                    <div class="card border-0 bg-white shadow-sm h-100">
+                        <div class="card-body">
+                            <i class="bi bi-watch display-4 text-primary"></i>
+                            <h6 class="mt-3">Watches</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-2 col-6">
+                <a href="#" class="category-card text-center text-decoration-none">
+                    <div class="card border-0 bg-white shadow-sm h-100">
+                        <div class="card-body">
+                            <i class="bi bi-gem display-4 text-primary"></i>
+                            <h6 class="mt-3">Jewelry</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-2 col-6">
+                <a href="#" class="category-card text-center text-decoration-none">
+                    <div class="card border-0 bg-white shadow-sm h-100">
+                        <div class="card-body">
+                            <i class="bi bi-lamp display-4 text-primary"></i>
+                            <h6 class="mt-3">Furniture</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-2 col-6">
+                <a href="#" class="category-card text-center text-decoration-none">
+                    <div class="card border-0 bg-white shadow-sm h-100">
+                        <div class="card-body">
+                            <i class="bi bi-house-heart display-4 text-primary"></i>
+                            <h6 class="mt-3">Decorative</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-2 col-6">
+                <a href="#" class="category-card text-center text-decoration-none">
+                    <div class="card border-0 bg-white shadow-sm h-100">
+                        <div class="card-body">
+                            <i class="bi bi-buildings display-4 text-primary"></i>
+                            <h6 class="mt-3">Asian Art</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Upcoming Auctions -->
+<section class="container my-5">
+    <h2 class="text-center mb-5">Upcoming Auctions</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1577083287627-6c9aab496c6c?auto=format&fit=crop&w=400&h=250&q=80"
+                     class="card-img-top" alt="Upcoming Auction">
+                <div class="card-body">
+                    <h5 class="card-title">Modern & Contemporary Art</h5>
+                    <p class="card-text">December 20, 2023 at 2:00 PM EST</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-muted">432 Lots</span>
+                        <a href="#" class="btn btn-outline-primary">View Catalog</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Add more upcoming auctions -->
+    </div>
+</section>
+
+<!-- Auction Houses Section -->
+<section class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Featured Auction Houses</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <img src="https://via.placeholder.com/150" class="mb-3" alt="Auction House">
+                        <h5>Christie's</h5>
+                        <p class="text-muted">New York, NY</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Add more auction houses -->
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-light py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <h5 class="mb-4">About BidHub</h5>
+                <p>Your premier destination for fine art, antiques, and luxury items. Discover exceptional pieces from renowned auction houses worldwide.</p>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h5 class="mb-4">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-light text-decoration-none mb-2 d-block">How to Bid</a></li>
+                    <li><a href="#" class="text-light text-decoration-none mb-2 d-block">Sell with Us</a></li>
+                    <li><a href="#" class="text-light text-decoration-none mb-2 d-block">Auction Calendar</a></li>
+                    <li><a href="#" class="text-light text-decoration-none mb-2 d-block">Buyer's Guide</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h5 class="mb-4">Contact Us</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="bi bi-geo-alt"></i> 123 Auction Ave, NY 10001</li>
+                    <li class="mb-2"><i class="bi bi-telephone"></i> +1 (555) 123-4567</li>
+                    <li class="mb-2"><i class="bi bi-envelope"></i> support@bidhub.com</li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h5 class="mb-4">Newsletter</h5>
+                <p>Subscribe to receive updates about upcoming auctions</p>
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Email address">
+                        <button class="btn btn-primary" type="submit">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr class="my-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <p class="mb-md-0">© 2023 BidHub. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a href="#" class="text-light me-3"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="text-light me-3"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="text-light me-3"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="text-light"><i class="bi bi-linkedin"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sign In to BidHub</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="loginEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="loginEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="loginPassword" required>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Remember me</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Sign In</button>
+                </form>
+                <div class="text-center mt-3">
+                    <a href="#" class="text-decoration-none">Forgot password?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal fade" id="signupModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="signupForm">
+                    <div class="mb-3">
+                        <label for="signupName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="signupName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="signupEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="signupEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="signupPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="signupPassword" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="signupConfirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="signupConfirmPassword" required>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="termsAccept" required>
+                        <label class="form-check-label" for="termsAccept">
+                            I accept the <a href="#">Terms and Conditions</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="../js/userIndex.js"></script>
+</body>
+</html>
