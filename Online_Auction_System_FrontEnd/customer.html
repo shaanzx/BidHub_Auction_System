@@ -94,8 +94,8 @@
                         <div class="col-md-3">
                             <select class="form-select" id="statusFilter">
                                 <option value="">Filter by Status</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
+                                <option value="inactive">Active</option>
+                                <option value="active">Inactive</option>
                             </select>
                         </div>
                         <div class="col-md-3">
@@ -185,8 +185,8 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
@@ -218,7 +218,7 @@
         // Load all admins
         function loadUsres() {
             $.ajax({
-                url: 'http://localhost:8082/api/vi/admin/getUsers',
+                url: 'http://localhost:8082/api/v1/admin/getUsers',
                 type: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('authToken')
@@ -255,19 +255,11 @@
                     <td>${admin.contact}</td>
                     <td>${admin.nic}</td>
                     <td>${admin.role}</td>
+                    <td><span class="badge rounded-pill px-2 ${admin.status ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'}">
+                            ${admin.status ? "Active" : "Inactive"}</span></td>
                     <td>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" ${admin.active ? 'checked' : ''}
-                                onchange="toggleAdminStatus('${admin.email}', this)">
-                            <label class="form-check-label">${admin.active ? 'Active' : 'Inactive'}</label>
-                        </div>
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary me-1 edit-btn">
-                            <i class="bi bi-pencil"></i>
-                        </button>
                         <button class="btn btn-sm btn-outline-danger delete-btn">
-                            <i class="bi bi-trash"></i>
+                            <i class="bi bi-trash mx-auto"></i>
                         </button>
                     </td>
                 </tr>
@@ -322,8 +314,8 @@
                 status: 'Active'
             };
 
-            const url = isEditing ? 'http://localhost:8082/api/vi/admin/updateUser'
-                : 'http://localhost:8082/api/vi/admin/register';
+            const url = isEditing ? 'http://localhost:8082/api/v1/admin/updateUser'
+                : 'http://localhost:8082/api/v1/admin/register';
             const method = isEditing ? 'PUT' : 'POST';
 
             $.ajax({
@@ -355,7 +347,7 @@
             const label = $(checkbox).next('label');
 
             $.ajax({
-                url: 'http://localhost:8082/api/vi/admin/updateUser',
+                url: 'http://localhost:8082/api/v1/admin/updateUser',
                 type: 'PUT',
                 contentType: 'application/json',
                 headers: {
@@ -393,7 +385,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: 'http://localhost:8082/api/vi/admin/deleteUser',
+                        url: 'http://localhost:8082/api/v1/admin/deleteUser',
                         type: 'DELETE',
                         contentType: 'application/json',
                         headers: {
@@ -417,6 +409,7 @@
                 }
             });
         }
+
 
         // Search and filter functionality
         $('#searchInput, #statusFilter, #sortBy').on('input change', function() {

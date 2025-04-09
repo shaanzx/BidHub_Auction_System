@@ -20,10 +20,10 @@ public class BidController {
 
     @PostMapping(value = "/addBid")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<ResponseDTO> addBid(@Valid @RequestBody ItemDTO itemDTO) {
-        if (bidService.saveBid(itemDTO) == VarList.Created) {
+    public ResponseEntity<ResponseDTO> addBid(@Valid @RequestBody ItemDTO itemDTO  ,@RequestParam("userId") String userId) {
+        if (bidService.saveBid(itemDTO, userId) == VarList.Created) {
             return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDTO(VarList.Created, "Success", itemDTO));
-        } else if (bidService.saveBid(itemDTO) == VarList.Not_Acceptable) {
+        } else if (bidService.saveBid(itemDTO, userId) == VarList.Not_Acceptable) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ResponseDTO(VarList.Not_Acceptable, "Bid already exists", null));
         } else {
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
@@ -31,8 +31,9 @@ public class BidController {
     }
 
     @PutMapping(value = "/updateHighestBidPrice")
-    public ResponseEntity<ResponseDTO> updateHighestBidPrice(@Valid @RequestBody ItemDTO itemDTO) {
-        int result = bidService.updateHighestBidPrice(itemDTO.getCode(), itemDTO.getPrice());
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<ResponseDTO> updateHighestBidPrice(@Valid @RequestBody ItemDTO itemDTO, @RequestParam("userId") String userId) {
+        int result = bidService.updateHighestBidPrice(itemDTO.getCode(), itemDTO.getPrice(),userId);
         return switch (result) {
             case VarList.OK -> ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseDTO(VarList.OK, "Success", itemDTO));

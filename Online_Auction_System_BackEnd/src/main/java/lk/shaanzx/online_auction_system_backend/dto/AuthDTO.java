@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,4 +16,5 @@ public class AuthDTO {
     private String email;
     private String token;
     private String role;
+    private UUID userId;
 }

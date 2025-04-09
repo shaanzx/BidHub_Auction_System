@@ -17,7 +17,7 @@ public class ItemDTO {
     @Pattern(regexp = "^[A-Za-z ]+$", message = "Description must be at least 3 characters long")
     private String description;
     //Image Setting
-    private MultipartFile image;
+        private MultipartFile image;
     //Image Getting From DB
     private String imagePath;
     private double price;

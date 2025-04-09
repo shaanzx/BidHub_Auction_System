@@ -13,4 +13,6 @@ public class CategoryDTO {
     private String categoryCode;
     private String categoryName;
     private String categoryDescription;
+    @Pattern(regexp = "^(Active|Inactive)$", message = "Invalid user status format")
+    private String status;
 }

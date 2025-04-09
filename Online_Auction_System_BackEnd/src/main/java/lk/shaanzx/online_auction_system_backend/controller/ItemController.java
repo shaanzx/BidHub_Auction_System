@@ -24,6 +24,7 @@ public class ItemController {
     private ItemService itemService;
 
     @PostMapping(value = "/addItem" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ResponseEntity<ResponseDTO> addItem(
             @Valid
             @RequestParam("code") String code,
@@ -46,7 +47,6 @@ public class ItemController {
             itemDTO.setImage(image);
 
             int result = itemService.addItem(itemDTO);
-
             if (result == VarList.Created) {
                 return ResponseEntity.status(HttpStatus.CREATED)
                         .body(new ResponseDTO(VarList.Created, "Success", itemDTO));
@@ -65,6 +65,7 @@ public class ItemController {
 
 
     @PutMapping(value = "/updateItem", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ResponseDTO> updateItem(
             @Valid
             @RequestParam("code") String code,
@@ -109,6 +110,7 @@ public class ItemController {
     }
 
     @DeleteMapping(value = "/deleteItem")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ResponseDTO> deleteItem(@Valid @RequestBody ItemDTO itemDTO){
         if (itemService.deleteItem(itemDTO.getCode()) == VarList.OK) {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", null));
@@ -120,7 +122,7 @@ public class ItemController {
     }
 
     @GetMapping(value = "/getItems")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ResponseEntity<ResponseDTO> getAllItems(){
         if (itemService.getItems() != null) {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", itemService.getItems()));
@@ -130,10 +132,23 @@ public class ItemController {
     }
 
     @GetMapping(value = "/getNextItemCode")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ResponseEntity<ResponseDTO> getNextItemCode(){
         String itemCode=itemService.getNextItemCode();
         if (itemCode != null) {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success",itemCode));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
+        }
+    }
+
+    @PutMapping(value = "/updateItemStatus")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<ResponseDTO> updateItemStatus(@Valid @RequestBody ItemDTO itemDTO){
+        if (itemService.updateItemStatus(itemDTO) == VarList.OK) {
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", null));
+        } else if (itemService.updateItemStatus(itemDTO) == VarList.Not_Found) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDTO(VarList.Not_Found, "Item not found", null));
         } else {
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
         }

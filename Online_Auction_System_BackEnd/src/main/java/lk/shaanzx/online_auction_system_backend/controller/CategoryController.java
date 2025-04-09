@@ -45,7 +45,7 @@ public class CategoryController {
     }
 
     @DeleteMapping(value = "/deleteCategory")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ResponseDTO> deleteCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
         int response = categoryService.deleteCategory(categoryDTO.getCategoryCode());
         if (response == VarList.OK) {

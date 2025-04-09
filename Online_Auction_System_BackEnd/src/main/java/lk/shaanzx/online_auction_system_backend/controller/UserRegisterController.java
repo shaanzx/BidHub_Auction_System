@@ -34,6 +34,8 @@ public class UserRegisterController {
                     AuthDTO authDTO = new AuthDTO();
                     authDTO.setEmail(userDTO.getEmail());
                     authDTO.setToken(token);
+                    authDTO.setRole(userDTO.getRole());
+                    authDTO.setUserId(userDTO.getUserId());
                     return ResponseEntity.status(HttpStatus.CREATED)
                             .body(new ResponseDTO(VarList.Created, "Success", authDTO));
                 }

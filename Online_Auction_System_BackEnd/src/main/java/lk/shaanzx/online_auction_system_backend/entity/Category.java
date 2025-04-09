@@ -19,4 +19,6 @@ public class Category {
     private String name;
     @Column(name = "category_description")
     private String description;
+    @Column(name = "category_status")
+    private String status;
 }

@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class ItemServiceImpl implements ItemService {
 
-    private static final String UPLOAD_DIR = "uploads/";
+    private static final String UPLOAD_DIR = "D:/IJSE/2nd Semester/Online_Auction_System/Online_Auction_System_FrontEnd/uploads";
 
 
     @Autowired
@@ -47,7 +47,7 @@ public class ItemServiceImpl implements ItemService {
             item.setCode(itemDTO.getCode());
             item.setName(itemDTO.getName());
             item.setDescription(itemDTO.getDescription());
-            item.setImagePath(filePath.toString());  // Store path, not bytes
+            item.setImagePath("uploads/" + fileName);  // Store path, not bytes
             item.setPrice(itemDTO.getPrice());
             item.setStatus(itemDTO.getStatus());
 
@@ -139,7 +139,7 @@ public class ItemServiceImpl implements ItemService {
             itemDTO.setUserId(item.getUserId().getId().toString());
 
             if (item.getImagePath() != null) {
-                itemDTO.setImagePath("http://localhost:8080/uploads/" + item.getImagePath());
+                itemDTO.setImagePath(item.getImagePath());
             } else {
                 itemDTO.setImagePath(null);
             }
@@ -154,5 +154,17 @@ public class ItemServiceImpl implements ItemService {
     public String getNextItemCode() {
         long count = itemRepo.count() + 1;
         return String.format("ITM-%04d", count);
+    }
+
+    @Override
+    public int updateItemStatus(ItemDTO itemDTO) {
+        Optional<Item> optionalItem = itemRepo.findById(itemDTO.getCode());
+        if (optionalItem.isEmpty()) {
+            return VarList.Not_Found;
+        }
+        Item item = optionalItem.get();
+        item.setStatus(itemDTO.getStatus());
+        itemRepo.save(item);
+        return VarList.OK;
     }
 }

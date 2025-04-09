@@ -1,6 +1,7 @@
 package lk.shaanzx.online_auction_system_backend.service.impl;
 
 
+import jakarta.transaction.Transactional;
 import lk.shaanzx.online_auction_system_backend.dto.CategoryDTO;
 import lk.shaanzx.online_auction_system_backend.dto.UserDTO;
 import lk.shaanzx.online_auction_system_backend.entity.User;
@@ -51,15 +52,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }
     }
 
+    @Transactional
     @Override
     public int deleteUser(String email) {
         if (userRepo.existsByEmail(email)) {
-            boolean isDeleted = userRepo.deleteByEmail(email);
-            if (isDeleted) {
-                return VarList.OK;
-            } else {
-                return VarList.Not_Found;
-            }
+            userRepo.deleteByEmail(email);
+            return VarList.OK;
         } else {
             return VarList.Not_Found;
         }

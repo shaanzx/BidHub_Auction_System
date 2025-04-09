@@ -15,7 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/vi/admin")
+@RequestMapping("api/v1/admin")
 @CrossOrigin(origins = "*")
 public class AdminController {
 
@@ -36,6 +36,8 @@ public class AdminController {
                     AuthDTO authDTO = new AuthDTO();
                     authDTO.setEmail(userDTO.getEmail());
                     authDTO.setToken(token);
+                    authDTO.setRole(userDTO.getRole());
+                    authDTO.setUserId(userDTO.getUserId());
                     return ResponseEntity.status(HttpStatus.CREATED)
                             .body(new ResponseDTO(VarList.Created, "Success", authDTO));
                 }
@@ -89,11 +91,12 @@ public class AdminController {
     }
 
     @DeleteMapping(value = "/deleteUser")
-   // @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<ResponseDTO> deleteUser(@Valid @RequestParam("email")String email) {
-        if (userService.deleteUser(email) == VarList.OK) {
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<ResponseDTO> deleteUser(@Valid @RequestBody UserDTO userDTO) {
+        System.out.println(userDTO.getEmail());
+        if (userService.deleteUser(userDTO.getEmail()) == VarList.OK) {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", null));
-        } else if (userService.deleteUser(email) == VarList.Not_Found) {
+        } else if (userService.deleteUser(userDTO.getEmail()) == VarList.Not_Found) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDTO(VarList.Not_Found, "User not found", null));
         } else {
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));

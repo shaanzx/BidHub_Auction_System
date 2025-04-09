@@ -36,7 +36,7 @@ public class BidServiceImpl implements BidService {
         return String.format("BID-%04d", count);
     }
     @Override
-    public int saveBid(ItemDTO itemDTO) {
+    public int saveBid(ItemDTO itemDTO , String userId) {
         try {
             if (bidRepo.existsById(itemDTO.getCode())) {
                 return VarList.Not_Acceptable;
@@ -57,7 +57,7 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public int updateHighestBidPrice(String itemCode, Double highestPrice) {
+    public int updateHighestBidPrice(String itemCode, Double highestPrice, String userId) {
         try {
             Bid bid = bidRepo.findByItemCode(itemCode);
             if (bid == null) {
