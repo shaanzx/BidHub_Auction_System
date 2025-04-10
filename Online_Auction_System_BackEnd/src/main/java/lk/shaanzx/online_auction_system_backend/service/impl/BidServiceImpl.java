@@ -36,7 +36,7 @@ public class BidServiceImpl implements BidService {
         return String.format("BID-%04d", count);
     }
     @Override
-    public int saveBid(ItemDTO itemDTO , String userId) {
+    public int saveBid(ItemDTO itemDTO) {
         try {
             if (bidRepo.existsById(itemDTO.getCode())) {
                 return VarList.Not_Acceptable;

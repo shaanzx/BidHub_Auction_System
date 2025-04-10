@@ -4,6 +4,7 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.validation.Valid;
 import lk.shaanzx.online_auction_system_backend.dto.ItemDTO;
 import lk.shaanzx.online_auction_system_backend.dto.ResponseDTO;
+import lk.shaanzx.online_auction_system_backend.service.BidService;
 import lk.shaanzx.online_auction_system_backend.service.ItemService;
 import lk.shaanzx.online_auction_system_backend.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class ItemController {
 
     @Autowired
     private ItemService itemService;
+    @Autowired
+    private BidService bidService;
 
     @PostMapping(value = "/addItem" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
@@ -144,13 +147,47 @@ public class ItemController {
 
     @PutMapping(value = "/updateItemStatus")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<ResponseDTO> updateItemStatus(@Valid @RequestBody ItemDTO itemDTO){
-        if (itemService.updateItemStatus(itemDTO) == VarList.OK) {
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", null));
-        } else if (itemService.updateItemStatus(itemDTO) == VarList.Not_Found) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDTO(VarList.Not_Found, "Item not found", null));
+    public ResponseEntity<ResponseDTO> updateItemStatus(@Valid @RequestBody ItemDTO itemDTO) {
+        int status = itemService.updateItemStatus(itemDTO);
+
+        if ("Approved".equals(itemDTO.getStatus())) {
+            switch (status) {
+                case VarList.OK:
+                    int response = bidService.saveBid(itemDTO);
+                    return switch (response) {
+                        case VarList.Created -> ResponseEntity.status(HttpStatus.CREATED)
+                                .body(new ResponseDTO(VarList.Created, "Bid Add Successfully", null));
+                        case VarList.Not_Acceptable -> ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                                .body(new ResponseDTO(VarList.Not_Acceptable, "Bid already exists", null));
+                        default -> ResponseEntity.status(HttpStatus.OK)
+                                .body(new ResponseDTO(VarList.OK, "Item Status Updated and Bid Add Successfully", null));
+                    };
+
+                case VarList.Not_Found:
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .body(new ResponseDTO(VarList.Not_Found, "Item not found", null));
+
+                default:
+                    return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                            .body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
+            }
+
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
+            // If status is not Approved, we only update item status, no bidding
+            switch (status) {
+                case VarList.OK:
+                    return ResponseEntity.status(HttpStatus.OK)
+                            .body(new ResponseDTO(VarList.OK, "Item Status Updated", null));
+
+                case VarList.Not_Found:
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .body(new ResponseDTO(VarList.Not_Found, "Item not found", null));
+
+                default:
+                    return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                            .body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
+            }
         }
     }
+
 }

@@ -1,9 +1,11 @@
 package lk.shaanzx.online_auction_system_backend.service.impl;
 
+import jakarta.transaction.Transactional;
 import lk.shaanzx.online_auction_system_backend.dto.ItemDTO;
 import lk.shaanzx.online_auction_system_backend.entity.Category;
 import lk.shaanzx.online_auction_system_backend.entity.Item;
 import lk.shaanzx.online_auction_system_backend.entity.User;
+import lk.shaanzx.online_auction_system_backend.repo.BidRepo;
 import lk.shaanzx.online_auction_system_backend.repo.ItemRepo;
 import lk.shaanzx.online_auction_system_backend.service.ItemService;
 import lk.shaanzx.online_auction_system_backend.util.VarList;
@@ -30,6 +32,8 @@ public class ItemServiceImpl implements ItemService {
     private ItemRepo itemRepo;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private BidRepo bidRepo;
 
     @Override
     public int addItem(ItemDTO itemDTO) {
@@ -165,6 +169,7 @@ public class ItemServiceImpl implements ItemService {
         Item item = optionalItem.get();
         item.setStatus(itemDTO.getStatus());
         itemRepo.save(item);
+
         return VarList.OK;
     }
 }

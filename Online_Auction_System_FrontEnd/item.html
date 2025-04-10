@@ -27,41 +27,20 @@
 <div class="wrapper">
     <nav id="sidebar" class="active">
         <div class="sidebar-header">
-            <h3>Admin Panel</h3>
+            <h2 class="logo"><a href="dashboard.html">BidHUB.</a></h2>
         </div>
 
         <ul class="list-unstyled components">
-            <li>
-                <a href="dashboard.html">
-                    <i class="bi bi-house-door"></i> Home
-                </a>
-            </li>
-            <li>
-                <a href="customer.html">
-                    <i class="bi bi-people"></i> Admins
-                </a>
-            </li>
-            <li>
-                <a href="category.html">
-                    <i class="bi bi-grid"></i> Categories
-                </a>
-            </li>
-            <li class="active">
-                <a href="item.html">
-                    <i class="bi bi-box"></i> Items
-                </a>
-            </li>
-            <li>
-                <a href="bids.html">
-                    <i class="bi bi-graph-up"></i> Bid Management
-                </a>
-            </li>
-            <li>
-                <a href="payments.html">
-                    <i class="bi bi-credit-card"></i> Payments
-                </a>
-            </li>
+            <li><a href="dashboard.html"><i class="bi bi-house-door"></i> Home</a></li>
+            <li><a href="customer.html"><i class="bi bi-people"></i>Users</a></li>
+            <li><a href="category.html"><i class="bi bi-grid"></i> Categories</a></li>
+            <li class="active"><a href="item.html"><i class="bi bi-box"></i> Items</a></li>
+            <li><a href="bids.html"><i class="bi bi-graph-up"></i> Bid Management</a></li>
+            <li><a href="payments.html"><i class="bi bi-credit-card"></i> Payments</a></li>
         </ul>
+        <div class="nav-banner-image">
+            <img src="images/SideBarImage.png" alt="Bid Banner" />
+        </div>
     </nav>
 
     <!-- Page Content -->
@@ -214,6 +193,7 @@
             <div class="modal-body">
                 <form id="statusForm">
                     <input type="hidden" id="statusItemCode">
+                    <input type="hidden" id="statusItemPrice">
                     <div class="mb-3">
                         <label for="statusSelect" class="form-label">Status</label>
                         <select class="form-select" id="statusSelect">
@@ -237,25 +217,44 @@
 <script>
     // Initialize Notyf with custom settings
     const notyf = new Notyf({
-        duration: 3000,
-        position: { x: 'right', y: 'top' },
+        duration: 4000,
+        ripple: true, // 💧 Smooth effect
+        position: {
+            x: 'right',
+            y: 'bottom'
+        },
         types: [
             {
                 type: 'success',
-                background: '#28a745',
-                icon: { className: 'bi bi-check-circle', tagName: 'i', color: '#fff' },
+                background: 'linear-gradient(to right, #00b09b, #96c93d)',
+                icon: {
+                    className: 'bi bi-check-circle-fill',
+                    tagName: 'i',
+                    color: '#ffffff'
+                },
+                className: 'custom-toast success-toast',
                 dismissible: true
             },
             {
                 type: 'error',
-                background: '#dc3545',
-                icon: { className: 'bi bi-exclamation-circle', tagName: 'i', color: '#fff' },
+                background: 'linear-gradient(to right, #e52d27, #b31217)',
+                icon: {
+                    className: 'bi bi-x-circle-fill',
+                    tagName: 'i',
+                    color: '#ffffff'
+                },
+                className: 'custom-toast error-toast',
                 dismissible: true
             },
             {
                 type: 'warning',
-                background: '#ffc107',
-                icon: { className: 'bi bi-exclamation-triangle', tagName: 'i', color: '#fff' },
+                background: 'linear-gradient(to right, #f7971e, #ffd200)',
+                icon: {
+                    className: 'bi bi-exclamation-triangle-fill',
+                    tagName: 'i',
+                    color: '#000'
+                },
+                className: 'custom-toast warning-toast',
                 dismissible: true
             }
         ]
@@ -265,9 +264,11 @@
         // Initialize variables
         const API_BASE_URL = 'http://localhost:8082/api/v1';
         const token = localStorage.getItem('authToken');
+        const userId = localStorage.getItem('userId');
         const itemModal = new bootstrap.Modal('#itemModal');
         const statusModal = new bootstrap.Modal('#statusModal');
         let currentItemCode = null;
+        let currentItemPrice = null;
 
         // Sidebar toggle
         $('#sidebarCollapse').click(function() {
@@ -335,6 +336,7 @@
                 success: function(response) {
                     if(response.code === 200) {
                         const $filter = $('#categoryFilter');
+                        $filter.empty().append('<option value="">Filter by Category</option>');
                         response.data.forEach(category => {
                             $filter.append(`<option value="${category.categoryCode}">${category.categoryName}</option>`);
                         });
@@ -387,7 +389,7 @@
                     <td>${item.categoryCode || 'N/A'}</td>
                     <td>${item.status}</td>
                     <td>
-                        <button class="btn btn-sm btn-outline-primary me-1 edit-status-btn" data-id="${item.code}">
+                        <button class="btn btn-sm btn-outline-primary me-1 edit-status-btn" data-id="${item.code}" data-price="${item.price}">
                             <i class="bi bi-pencil"></i>
                         </button>
                         <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${item.code}">
@@ -402,11 +404,14 @@
             // Attach event handlers
             $('.edit-status-btn').click(function() {
                 const itemCode = $(this).data('id');
+                const itemPrice = $(this).data('price');
                 const row = $(this).closest('tr');
                 const item = JSON.parse(row.attr('data-item'));
 
                 currentItemCode = itemCode;
+                currentItemPrice = itemPrice;
                 $('#statusItemCode').val(itemCode);
+                $('#statusItemPrice').val(itemPrice);
                 $('#statusSelect').val(item.status);
                 statusModal.show();
             });
@@ -439,18 +444,13 @@
             formData.append('price', $('#itemPrice').val());
             formData.append('categoryCode', $('#itemCategory').val());
             formData.append('status', 'Pending');
-            formData.append('userId', localStorage.getItem('userId'));
+            formData.append('userId', userId);
 
-           /* const imageFile = $('#itemImage')[0].files[0];
+            const imageFile = $('#itemImage')[0].files[0];
             if (imageFile) {
                 formData.append('image', imageFile);
-            }*/
-            const fileInput = $("#itemImage")[0];
-            if (fileInput.files.length > 0) {
-                formData.append("image", fileInput.files[0]); // Changed from "input-file"
             }
 
-            console.log(formData)
             $.ajax({
                 url: `${API_BASE_URL}/items/addItem`,
                 type: 'POST',
@@ -459,7 +459,7 @@
                 contentType: false,
                 headers: { 'Authorization': `Bearer ${token}` },
                 success: function(response) {
-                    if(response.code === 201) {
+                    if(response.code === 201 || response.code === 200) {
                         loadItems();
                         itemModal.hide();
                         notyf.success('Item added successfully');
@@ -467,8 +467,8 @@
                         notyf.error(response.message || 'Failed to add item');
                     }
                 },
-                error: function() {
-                    notyf.error('Failed to add item');
+                error: function(xhr) {
+                    notyf.error(xhr.responseJSON?.message || 'Failed to add item');
                 }
             });
         });
@@ -476,6 +476,7 @@
         // Update item status
         $('#updateStatusBtn').click(function() {
             const newStatus = $('#statusSelect').val();
+            const itemPrice = parseFloat($('#statusItemPrice').val());
 
             $.ajax({
                 url: `${API_BASE_URL}/items/updateItemStatus`,
@@ -484,10 +485,11 @@
                 headers: { 'Authorization': `Bearer ${token}` },
                 data: JSON.stringify({
                     code: currentItemCode,
-                    status: newStatus
+                    status: newStatus,
+                    price: itemPrice
                 }),
                 success: function(response) {
-                    if(response.code === 200) {
+                    if(response.code === 201 || response.code === 200) {
                         loadItems();
                         statusModal.hide();
                         notyf.success('Status updated successfully');
@@ -495,8 +497,8 @@
                         notyf.error(response.message || 'Failed to update status');
                     }
                 },
-                error: function() {
-                    notyf.error('Failed to update status');
+                error: function(xhr) {
+                    notyf.error(xhr.responseJSON?.message || 'Failed to update status');
                 }
             });
         });
@@ -553,8 +555,8 @@
                         notyf.error(response.message || 'Failed to delete item');
                     }
                 },
-                error: function() {
-                    notyf.error('Failed to delete item');
+                error: function(xhr) {
+                    notyf.error(xhr.responseJSON?.message || 'Failed to delete item');
                 }
             });
         }
@@ -568,11 +570,11 @@
             $('#itemTableBody tr').each(function() {
                 const code = $(this).find('td:eq(0)').text().toLowerCase();
                 const name = $(this).find('td:eq(2)').text().toLowerCase();
-                const status = $(this).find('td:eq(5)').text().toLowerCase();
+                const status = $(this).find('td:eq(5)').text();
                 const category = $(this).find('td:eq(4)').text();
 
                 const matchesSearch = code.includes(searchText) || name.includes(searchText);
-                const matchesStatus = !statusFilter || status === statusFilter.toLowerCase();
+                const matchesStatus = !statusFilter || status === statusFilter;
                 const matchesCategory = !categoryFilter || category === categoryFilter;
 
                 $(this).toggle(matchesSearch && matchesStatus && matchesCategory);
@@ -600,6 +602,7 @@
         $('#statusModal').on('hidden.bs.modal', function() {
             $('#statusForm')[0].reset();
             currentItemCode = null;
+            currentItemPrice = null;
         });
     });
 </script>
