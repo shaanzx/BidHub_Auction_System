@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,6 +21,6 @@ public class BidDetails {
     private int bidDetailsId;
     private double bidPrice;
     private LocalDateTime bidDateTime;
-    private String userId;
+    private UUID userId;
     private String bidCode;
 }

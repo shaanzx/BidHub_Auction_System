@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping(value = "api/v1/bids")
 @CrossOrigin(origins = "*")
@@ -33,8 +35,10 @@ public class BidController {
     }
 
     @PutMapping("/updateHighestBidPrice")
-    public ResponseEntity<ResponseDTO> updateHighestBidPrice(@Valid @RequestBody BidDTO bidDTO, @RequestParam("userId") String userId) {
-
+    public ResponseEntity<ResponseDTO> updateHighestBidPrice(@Valid @RequestBody BidDTO bidDTO, @RequestParam("userId") UUID userId) {
+        System.out.println(bidDTO.getBidCode());
+        System.out.println(bidDTO.getHighestBidPrice());
+        System.out.println(userId);
         try {
             int result = bidService.updateHighestBidPrice(bidDTO.getBidCode(), bidDTO.getHighestBidPrice(), userId);
 

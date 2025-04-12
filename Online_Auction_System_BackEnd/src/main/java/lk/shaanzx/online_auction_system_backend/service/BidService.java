@@ -7,11 +7,12 @@ import lk.shaanzx.online_auction_system_backend.dto.BidDetailsDTO;
 import lk.shaanzx.online_auction_system_backend.dto.ItemDTO;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface BidService {
     int saveBid(ItemDTO itemDTO);
 
-    int updateHighestBidPrice(String bidCode,Double highestPrice, String userId);
+    int updateHighestBidPrice(String bidCode,Double highestPrice, UUID userId);
 
     double getHighestBidPrice(String itemCode);
 

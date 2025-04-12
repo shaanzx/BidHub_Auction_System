@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -68,7 +69,7 @@ public class BidServiceImpl implements BidService {
 
     @Transactional
     @Override
-    public int updateHighestBidPrice(String bidCode, Double highestPrice, String userId) {
+    public int updateHighestBidPrice(String bidCode, Double highestPrice, UUID userId) {
         try {
             // Validate inputs
             if (bidCode == null || highestPrice == null || userId == null) {
