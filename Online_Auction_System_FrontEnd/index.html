@@ -12,6 +12,7 @@
 		<!-- Bootstrap CSS -->
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 		<link href="css/tiny-slider.css" rel="stylesheet">
 		<link href="css/style.css" rel="stylesheet">
 		<title>Homepage</title>
@@ -58,7 +59,7 @@
 
 				</div>
 			</div>
-				
+
 		</nav>
 		<!-- End Header/Navigation -->
 
@@ -194,34 +195,15 @@
 						<p><a href="shop.html" class="btn">Explore</a></p>
 					</div>
 
-					<!-- Start Column 2 -->
-					<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-						<a class="product-item" href="cart.html">
-							<img src="images/product-1.png" class="img-fluid product-thumbnail" alt="Nordic Chair">
-
-							<!-- Product Title -->
-							<h3 class="product-title">Nordic Chair</h3>
-
-							<!-- Product Description -->
-							<p class="product-description">High-quality ergonomic design to support all your working needs.</p>
-
-							<!-- Current Bid and Estimate -->
-							<div class="product-price-info">
-								<div class="current-bid">Current Bid: $50.00</div>
-							</div>
-
-							<!-- Price -->
-							<strong class="product-price">$50.00</strong>
-
-							<!-- Cross Icon (Remove item) -->
-							<span class="icon-cross">
-            <img src="images/cross.svg" class="img-fluid" alt="Remove item">
-        </span>
-						</a>
+					<div>
+						<h3 class="mb-4 section-title text-center">Newest Bids</h3>
 					</div>
+					<!--Item Loaded-->
 
-
-					<!-- End Column 2 -->
+					<div class="row" id="productCardContainer">
+						<!-- AJAX එකෙන් load වෙන item cards මෙහි appear වෙනවා -->
+					</div>
+<!--End-->
 
 				</div>
 			</div>
@@ -424,7 +406,7 @@
 
 												<div class="author-info">
 													<div class="author-pic">
-														<img src="images/person-2.png" alt="Sarah Williams" class="img-fluid">
+														<img src="images/person-1.png" alt="Sarah Williams" class="img-fluid">
 													</div>
 													<h3 class="font-weight-bold">Sarah Williams</h3>
 													<span class="position d-block mb-3">Frequent Bidder</span>
@@ -447,7 +429,7 @@
 
 												<div class="author-info">
 													<div class="author-pic">
-														<img src="images/person-3.png" alt="David Brown" class="img-fluid">
+														<img src="images/person-1.png" alt="David Brown" class="img-fluid">
 													</div>
 													<h3 class="font-weight-bold">David Brown</h3>
 													<span class="position d-block mb-3">Happy Customer</span>
@@ -522,7 +504,7 @@
 			</div>
 		</div>
 
-		<!-- End Blog Section -->	
+		<!-- End Blog Section -->
 
 		<!-- Start Footer Section -->
 		<footer class="footer-section">
@@ -629,21 +611,102 @@
 						</div>
 					</div>
 				</div>
-
-
 			</div>
 		</footer>
 		<!-- End Footer Section -->
 
-		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 		<script src="js/bootstrap.bundle.min.js"></script>
 		<script src="/js/tiny-slider.js"></script>
 		<script src="/js/custom.js"></script>
 		<script src="js/UserProfileUpdate.js"></script>
 		<!-- JavaScript for the profile modal -->
 		<script>
+			const notyf = new Notyf({
+				duration: 4000,
+				ripple: true,
+				position: { x: 'right', y: 'bottom' },
+				types: [
+					{
+						type: 'success',
+						background: 'linear-gradient(to right, #00b09b, #96c93d)',
+						icon: { className: 'bi bi-check-circle-fill', tagName: 'i', color: '#ffffff' },
+						className: 'custom-toast success-toast',
+						dismissible: true
+					},
+					{
+						type: 'error',
+						background: 'linear-gradient(to right, #e52d27, #b31217)',
+						icon: { className: 'bi bi-x-circle-fill', tagName: 'i', color: '#ffffff' },
+						className: 'custom-toast error-toast',
+						dismissible: true
+					},
+					{
+						type: 'warning',
+						background: 'linear-gradient(to right, #f7971e, #ffd200)',
+						icon: { className: 'bi bi-exclamation-triangle-fill', tagName: 'i', color: '#000' },
+						className: 'custom-toast warning-toast',
+						dismissible: true
+					}
+				]
+			});
 
+			$(document).ready(function () {
+				const API_BASE_URL = 'http://localhost:8082/api/v1';
+				const token = localStorage.getItem('authToken');
+				const userId = localStorage.getItem('userId');
+
+				loadNewestItems();
+
+				function loadNewestItems() {
+					$.ajax({
+						url: `${API_BASE_URL}/items/getItems`,
+						type: 'GET',
+						headers: { 'Authorization': `Bearer ${token}` },
+						success: function (response) {
+							if (response.code === 200) {
+								renderItems(response.data);
+							} else {
+								notyf.error(response.message || 'Failed to load items');
+							}
+						},
+						error: function () {
+							notyf.error('Failed to load items');
+						}
+					});
+				}
+
+				function renderItems(items) {
+					const container = $('#productCardContainer');
+					container.empty();
+
+					if (!items || items.length === 0) {
+						container.append('<div class="text-center">No items found</div>');
+						return;
+					}
+
+					items.forEach(item => {
+						const card = `
+                    <div class="col-12 col-md-4 col-lg-3 mb-5">
+                        <a class="product-item" href="cart.html">
+                            <img src="${item.imagePath || 'images/default-item.jpg'}" class="img-fluid product-thumbnail" alt="${item.name}">
+                            <h3 class="product-title">${item.name}</h3>
+                            <p class="product-description">${item.description || 'No description provided.'}</p>
+                            <div class="product-price-info">
+                                <div class="current-bid">Current Bid: $${item.price.toFixed(2)}</div>
+                            </div>
+                            <strong class="product-price">$${item.price.toFixed(2)}</strong>
+                            <span class="icon-cross">
+                                <img src="images/cross.svg" class="img-fluid" alt="Remove item">
+                            </span>
+                        </a>
+                    </div>
+                `;
+						container.append(card);
+					});
+				}
+			});
 		</script>
-
 	</body>
 </html>

@@ -2,6 +2,6 @@
 <project version="4">
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$" libraries="{swiper}" />
-    <file url="file://$PROJECT_DIR$/Online_Auction_System_FrontEnd" libraries="{boxicons, swiper}" />
+    <file url="file://$PROJECT_DIR$/Online_Auction_System_FrontEnd" libraries="{boxicons, notyf, swiper}" />
   </component>
 </project>

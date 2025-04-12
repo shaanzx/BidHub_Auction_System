@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bid Management - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <link rel="stylesheet" href="css/adminForm.css">
+</head>
+<body>
+<div class="wrapper">
+    <nav id="sidebar" class="active">
+        <div class="sidebar-header">
+            <h2 class="logo"><a href="dashboard.html">BidHUB.</a></h2>
+        </div>
+
+        <ul class="list-unstyled components">
+            <li><a href="dashboard.html"><i class="bi bi-house-door"></i> Home</a></li>
+            <li><a href="customer.html"><i class="bi bi-people"></i>Users</a></li>
+            <li><a href="category.html"><i class="bi bi-grid"></i> Categories</a></li>
+            <li><a href="item.html"><i class="bi bi-box"></i> Items</a></li>
+            <li class="active"><a href="bids.html"><i class="bi bi-graph-up"></i> Bid Management</a></li>
+            <li><a href="payments.html"><i class="bi bi-credit-card"></i> Payments</a></li>
+        </ul>
+        <div class="nav-banner-image">
+            <img src="images/SideBarImage.png" alt="Bid Banner" />
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div id="content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <button type="button" id="sidebarCollapse" class="btn btn-dark">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="ms-auto d-flex align-items-center">
+                    <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle text-dark" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> Admin
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="login.html">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Bids Content -->
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Bid Management</h2>
+                <button class="btn btn-primary" id="viewBidHistoryBtn">
+                    <i class="bi bi-clock-history"></i> View Bid History
+                </button>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search bids...">
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="statusFilter">
+                                <option value="">Filter by Status</option>
+                                <option value="Active">Active</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="date" class="form-control" id="dateFilter" placeholder="Filter by date">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bids Table -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th class="sortable" data-sort="bidId">Bid ID <i class="bi bi-arrow-down-up sort-icon"></i></th>
+                                <th class="sortable" data-sort="itemName">Item Name <i class="bi bi-arrow-down-up sort-icon"></i></th>
+                                <th class="sortable" data-sort="currentPrice">Current Price <i class="bi bi-arrow-down-up sort-icon"></i></th>
+                                <th class="sortable" data-sort="endTime">Bid End Time <i class="bi bi-arrow-down-up sort-icon"></i></th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody id="bidTableBody">
+                            <!-- Bids will be loaded via AJAX -->
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bid History Modal -->
+<div class="modal fade bid-history-modal" id="bidHistoryModal" tabindex="-1" data-bs-backdrop="static"
+     data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Bid History</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Search and Filter for Bid History -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="historySearchInput" placeholder="Search bid history...">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="date" class="form-control" id="historyDateFilter">
+                    </div>
+                </div>
+
+                <!-- Bid History Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th class="sortable" data-sort="historyBidId">Bid Details ID <i class="bi bi-arrow-down-up sort-icon"></i></th>
+                            <th class="sortable" data-sort="historyBidId">Bid ID <i class="bi bi-arrow-down-up sort-icon"></i></th>
+                            <th class="sortable" data-sort="historyBidPrice">Bid Price <i class="bi bi-arrow-down-up sort-icon"></i></th>
+                            <th class="sortable" data-sort="historyBidDate">Bid Date & Time <i class="bi bi-arrow-down-up sort-icon"></i></th>
+                            <th class="sortable" data-sort="historyUserId">User ID <i class="bi bi-arrow-down-up sort-icon"></i></th>
+                        </tr>
+                        </thead>
+                        <tbody id="bidHistoryTableBody">
+                        <!-- Bid history will be loaded via AJAX -->
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<script>
+    // Initialize Notyf with custom settings
+    const notyf = new Notyf({
+        duration: 4000,
+        ripple: true, // 💧 Smooth effect
+        position: {
+            x: 'right',
+            y: 'bottom'
+        },
+        types: [
+            {
+                type: 'success',
+                background: 'linear-gradient(to right, #00b09b, #96c93d)',
+                icon: {
+                    className: 'bi bi-check-circle-fill',
+                    tagName: 'i',
+                    color: '#ffffff'
+                },
+                className: 'custom-toast success-toast',
+                dismissible: true
+            },
+            {
+                type: 'error',
+                background: 'linear-gradient(to right, #e52d27, #b31217)',
+                icon: {
+                    className: 'bi bi-x-circle-fill',
+                    tagName: 'i',
+                    color: '#ffffff'
+                },
+                className: 'custom-toast error-toast',
+                dismissible: true
+            },
+            {
+                type: 'warning',
+                background: 'linear-gradient(to right, #f7971e, #ffd200)',
+                icon: {
+                    className: 'bi bi-exclamation-triangle-fill',
+                    tagName: 'i',
+                    color: '#000'
+                },
+                className: 'custom-toast warning-toast',
+                dismissible: true
+            }
+        ]
+    });
+
+    $(document).ready(function() {
+        // Initialize variables
+        const API_BASE_URL = 'http://localhost:8082/api/v1';
+        const token = localStorage.getItem('authToken');
+        const bidHistoryModal = new bootstrap.Modal('#bidHistoryModal');
+        let currentSortColumn = 'bidId';
+        let currentSortDirection = 'asc';
+        let currentHistorySortColumn = 'historyBidId';
+        let currentHistorySortDirection = 'asc';
+
+        // Sidebar toggle
+        $('#sidebarCollapse').click(function() {
+            $('#sidebar').toggleClass('active');
+        });
+
+        // Load initial data
+        loadBids();
+
+        // View bid history button click
+        $('#viewBidHistoryBtn').click(function() {
+            loadAllBidHistory();
+            bidHistoryModal.show();
+        });
+
+        // View history for specific bid
+        $(document).on('click', '.view-history-btn', function() {
+            const bidId = $(this).data('id');
+            loadBidHistory(bidId);
+            bidHistoryModal.show();
+        });
+
+        // Load all bids
+        function loadBids() {
+            $.ajax({
+                url: `${API_BASE_URL}/bids/getBids`,
+                type: 'GET',
+                headers: { 'Authorization': `Bearer ${token}` },
+                success: function(response) {
+                    if(response.code === 200) {
+                        renderBids(response.data);
+                    } else {
+                        notyf.error(response.message || 'Failed to load bids');
+                    }
+                },
+                error: function(xhr) {
+                    notyf.error(xhr.responseJSON?.message || 'Failed to load bids');
+                }
+            });
+        }
+
+// Render bids in table
+        function renderBids(bids) {
+            const tableBody = $('#bidTableBody');
+            tableBody.empty();
+
+            if(!bids || bids.length === 0) {
+                tableBody.append('<tr><td colspan="5" class="text-center">No bids found</td></tr>');
+                return;
+            }
+
+            // First, we need to get item names since the DTO only contains itemCode
+            // We'll either need to:
+            // 1. Modify the backend to include itemName in the response, or
+            // 2. Make an additional API call to get item details, or
+            // 3. Use the itemCode directly (as shown in this example)
+
+            bids.forEach(bid => {
+                const row = `
+        <tr data-bid='${JSON.stringify(bid)}'>
+            <td>${bid.bidCode}</td>
+            <td>${bid.itemCode}</td>
+            <td>$${bid.highestBidPrice.toFixed(2)}</td>
+            <td>${formatDateTime(bid.bidEndTime)}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary view-history-btn" data-id="${bid.bidCode}">
+                    <i class="bi bi-eye"></i> View History
+                </button>
+            </td>
+        </tr>
+        `;
+                tableBody.append(row);
+            });
+        }
+
+// Format date and time
+        function formatDateTime(dateTimeString) {
+            if (!dateTimeString) return 'N/A';
+
+            // If it's already a LocalDateTime object from Java (ISO format)
+            const date = new Date(dateTimeString);
+
+            // Format as: YYYY-MM-DD HH:MM AM/PM
+            return date.toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            }).replace(',', '');
+        }
+
+        // Load bid history for specific bid
+        function loadBidHistory(bidCode) {
+            showLoadingSpinner(); // Show loading indicator
+
+            $.ajax({
+                url: `${API_BASE_URL}/bids/getBidDetailsByBidCode?bidCode=${bidCode}`,
+
+                type: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                success: function(response) {
+                    hideLoadingSpinner();
+
+                    if(response.code === 200 || response.status === "SUCCESS") {
+                        renderBidHistory(response.data);
+                        $('#bidHistoryModal .modal-title').text(`Bid History - ${bidCode}`);
+                    } else {
+                        notyf.error(response.message || 'No bid history found');
+                        $('#bidHistoryTableBody').html('<tr><td colspan="5" class="text-center">No history available</td></tr>');
+                    }
+                },
+                error: function(xhr) {
+                    hideLoadingSpinner();
+                    let errorMsg = xhr.responseJSON?.message || 'Failed to load bid history';
+                    notyf.error(errorMsg);
+                    console.error("Error:", xhr.responseText);
+                }
+            });
+        }
+
+// Load all bid history
+        function loadAllBidHistory() {
+            showLoadingSpinner();
+
+            $.ajax({
+                url: `${API_BASE_URL}/bids/GetAllBidDetails`,
+                type: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+                success: function(response) {
+                    hideLoadingSpinner();
+
+                    if(response.code === 200 || response.status === "SUCCESS") {
+                        renderBidHistory(response.data);
+                        $('#bidHistoryModal .modal-title').text('All Bid History');
+                    } else {
+                        notyf.error(response.message || 'Failed to load history');
+                    }
+                },
+                error: function(xhr) {
+                    hideLoadingSpinner();
+                    notyf.error(xhr.responseJSON?.message || 'Server error occurred');
+                    console.error("Error:", xhr.status, xhr.responseText);
+                }
+            });
+        }
+
+// Render bid history in table (updated)
+        function renderBidHistory(history) {
+            const tableBody = $('#bidHistoryTableBody');
+            tableBody.empty();
+
+            if(!history || history.length === 0) {
+                tableBody.append('<tr><td colspan="5" class="text-center text-muted">No bid history records found</td></tr>');
+                return;
+            }
+
+            // Sort by bid date (newest first)
+            history.sort((a, b) => new Date(b.bidDateTime) - new Date(a.bidDateTime));
+
+            history.forEach((record, index) => {
+                const row = `
+        <tr>
+            <td>${record.bidCode || 'N/A'}</td>
+            <td>$${record.bidPrice?.toFixed(2) || '0.00'}</td>
+            <td>${formatDateTime(record.bidDateTime)}</td>
+            <td>${record.userId || 'Anonymous'}</td>
+            <td>${index + 1}</td>
+        </tr>
+        `;
+                tableBody.append(row);
+            });
+        }
+
+// Helper functions
+        function showLoadingSpinner() {
+            $('#bidHistoryTableBody').html('<tr><td colspan="5" class="text-center"><div class="spinner-border text-primary" role="status"></div></td></tr>');
+        }
+
+        function hideLoadingSpinner() {
+            // Implement if you have a specific spinner to hide
+        }
+
+// Improved date formatting
+        function formatDateTime(dateTimeString) {
+            if (!dateTimeString) return 'N/A';
+
+            try {
+                const date = new Date(dateTimeString);
+                return date.toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+            } catch (e) {
+                console.error("Date formatting error:", e);
+                return dateTimeString; // Return raw string if formatting fails
+            }
+        }
+
+        // Search and filter functionality for bids
+        $('#searchInput, #statusFilter, #dateFilter').on('input change', function() {
+            const searchText = $('#searchInput').val().toLowerCase();
+            const statusFilter = $('#statusFilter').val();
+            const dateFilter = $('#dateFilter').val();
+
+            $('#bidTableBody tr').each(function() {
+                const bidId = $(this).find('td:eq(0)').text().toLowerCase();
+                const itemName = $(this).find('td:eq(1)').text().toLowerCase();
+                const endTime = $(this).find('td:eq(3)').text();
+                const bidData = JSON.parse($(this).attr('data-bid') || '{}');
+                const status = bidData.status || '';
+
+                const matchesSearch = bidId.includes(searchText) || itemName.includes(searchText);
+                const matchesStatus = !statusFilter || status === statusFilter;
+                const matchesDate = !dateFilter || endTime.includes(dateFilter);
+
+                $(this).toggle(matchesSearch && matchesStatus && matchesDate);
+            });
+        });
+
+        // Search and filter functionality for bid history
+        $('#historySearchInput, #historyDateFilter').on('input change', function() {
+            const searchText = $('#historySearchInput').val().toLowerCase();
+            const dateFilter = $('#historyDateFilter').val();
+
+            $('#bidHistoryTableBody tr').each(function() {
+                const bidId = $(this).find('td:eq(0)').text().toLowerCase();
+                const userId = $(this).find('td:eq(3)').text().toLowerCase();
+                const bidDate = $(this).find('td:eq(2)').text();
+
+                const matchesSearch = bidId.includes(searchText) || userId.includes(searchText);
+                const matchesDate = !dateFilter || bidDate.includes(dateFilter);
+
+                $(this).toggle(matchesSearch && matchesDate);
+            });
+        });
+
+        // Sort functionality for bids table
+        $('.sortable[data-sort]').click(function() {
+            const column = $(this).data('sort');
+            const $table = $(this).closest('table');
+            const $tbody = $table.find('tbody');
+            const $rows = $tbody.find('tr').get();
+
+            // Determine sort direction
+            if (currentSortColumn === column) {
+                currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSortColumn = column;
+                currentSortDirection = 'asc';
+            }
+
+            // Update sort indicators
+            $table.find('.sort-icon').removeClass('bi-arrow-up bi-arrow-down').addClass('bi-arrow-down-up');
+            const $icon = $(this).find('.sort-icon');
+            $icon.removeClass('bi-arrow-down-up').addClass(currentSortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down');
+
+            // Sort rows
+            $rows.sort((a, b) => {
+                const aVal = $(a).find(`td:eq(${getColumnIndex(column)})`).text();
+                const bVal = $(b).find(`td:eq(${getColumnIndex(column)})`).text();
+
+                if (column === 'currentPrice') {
+                    const aNum = parseFloat(aVal.replace('$', ''));
+                    const bNum = parseFloat(bVal.replace('$', ''));
+                    return currentSortDirection === 'asc' ? aNum - bNum : bNum - aNum;
+                } else if (column === 'endTime') {
+                    const aDate = new Date(aVal);
+                    const bDate = new Date(bVal);
+                    return currentSortDirection === 'asc' ? aDate - bDate : bDate - aDate;
+                } else {
+                    return currentSortDirection === 'asc'
+                        ? aVal.localeCompare(bVal)
+                        : bVal.localeCompare(aVal);
+                }
+            });
+
+            // Reattach sorted rows
+            $.each($rows, (index, row) => {
+                $tbody.append(row);
+            });
+        });
+
+        // Sort functionality for bid history table
+        $('.bid-history-modal .sortable[data-sort]').click(function() {
+            const column = $(this).data('sort');
+            const $table = $(this).closest('table');
+            const $tbody = $table.find('tbody');
+            const $rows = $tbody.find('tr').get();
+
+            // Determine sort direction
+            if (currentHistorySortColumn === column) {
+                currentHistorySortDirection = currentHistorySortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentHistorySortColumn = column;
+                currentHistorySortDirection = 'asc';
+            }
+
+            // Update sort indicators
+            $table.find('.sort-icon').removeClass('bi-arrow-up bi-arrow-down').addClass('bi-arrow-down-up');
+            const $icon = $(this).find('.sort-icon');
+            $icon.removeClass('bi-arrow-down-up').addClass(currentHistorySortDirection === 'asc' ? 'bi-arrow-up' : 'bi-arrow-down');
+
+            // Sort rows
+            $rows.sort((a, b) => {
+                const aVal = $(a).find(`td:eq(${getHistoryColumnIndex(column)})`).text();
+                const bVal = $(b).find(`td:eq(${getHistoryColumnIndex(column)})`).text();
+
+                if (column === 'historyBidPrice') {
+                    const aNum = parseFloat(aVal.replace('$', ''));
+                    const bNum = parseFloat(bVal.replace('$', ''));
+                    return currentHistorySortDirection === 'asc' ? aNum - bNum : bNum - aNum;
+                } else if (column === 'historyBidDate') {
+                    const aDate = new Date(aVal);
+                    const bDate = new Date(bVal);
+                    return currentHistorySortDirection === 'asc' ? aDate - bDate : bDate - aDate;
+                } else {
+                    return currentHistorySortDirection === 'asc'
+                        ? aVal.localeCompare(bVal)
+                        : bVal.localeCompare(aVal);
+                }
+            });
+
+            // Reattach sorted rows
+            $.each($rows, (index, row) => {
+                $tbody.append(row);
+            });
+        });
+
+        // Get column index for sorting
+        function getColumnIndex(columnName) {
+            const columns = ['bidId', 'itemName', 'currentPrice', 'endTime', ''];
+            return columns.indexOf(columnName);
+        }
+
+        // Get history column index for sorting
+        function getHistoryColumnIndex(columnName) {
+            const columns = ['historyBidId', 'historyBidPrice', 'historyBidDate', 'historyUserId'];
+            return columns.indexOf(columnName);
+        }
+
+        // Handle responsive behavior
+        function handleResize() {
+            if (window.innerWidth <= 768) {
+                $('#sidebar').addClass('active');
+            } else {
+                $('#sidebar').removeClass('active');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+    });
+</script>
+</body>
+</html>

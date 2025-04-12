@@ -84,7 +84,6 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.PUT,"/api/v1/items/**").hasAuthority("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE,"/api/v1/items/**").hasAuthority("ADMIN")
 
-
                                 .anyRequest().
                                 authenticated()
                 )
