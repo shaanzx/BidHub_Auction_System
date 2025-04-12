@@ -56,6 +56,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth->auth*/
                         .requestMatchers(
                                 "/api/v1/bids/**",
+                                "/api/v1/bidCart/**",
                                 "/api/v1/auth/authenticate",
                                 "/api/v1/user/register",
                                 "/api/v1/auth/refreshToken",

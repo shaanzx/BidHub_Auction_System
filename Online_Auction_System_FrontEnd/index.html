@@ -203,7 +203,7 @@
 					<div class="row" id="productCardContainer">
 						<!-- AJAX එකෙන් load වෙන item cards මෙහි appear වෙනවා -->
 					</div>
-<!--End-->
+						<!--End-->
 
 				</div>
 			</div>
@@ -657,52 +657,56 @@
 				const token = localStorage.getItem('authToken');
 				const userId = localStorage.getItem('userId');
 
-				loadNewestItems();
+				loadBidCart();
 
-				function loadNewestItems() {
+				function loadBidCart() {
 					$.ajax({
-						url: `${API_BASE_URL}/items/getItems`,
-						type: 'GET',
-						headers: { 'Authorization': `Bearer ${token}` },
-						success: function (response) {
-							if (response.code === 200) {
-								renderItems(response.data);
+						url: 'http://localhost:8082/api/v1/bidCart/getBidCartItems',
+						method: 'GET',
+						headers: {
+							'Authorization': `Bearer ${token}`
+						},
+						success: function(response) {
+							if(response.code === 200) {
+								renderBidCart(response.data);
 							} else {
-								notyf.error(response.message || 'Failed to load items');
+								notyf.error('Failed to load bid cart items');
 							}
 						},
-						error: function () {
-							notyf.error('Failed to load items');
+						error: function() {
+							notyf.error('Something went wrong');
 						}
 					});
 				}
 
-				function renderItems(items) {
-					const container = $('#productCardContainer');
+				function renderBidCart(items) {
+					const container = $('#productCardContainer'); // id eka wena widiyata set kranna
 					container.empty();
 
 					if (!items || items.length === 0) {
-						container.append('<div class="text-center">No items found</div>');
+						container.append('<div class="col-12 text-center">No active bids found.</div>');
 						return;
 					}
 
 					items.forEach(item => {
 						const card = `
-                    <div class="col-12 col-md-4 col-lg-3 mb-5">
-                        <a class="product-item" href="cart.html">
-                            <img src="${item.imagePath || 'images/default-item.jpg'}" class="img-fluid product-thumbnail" alt="${item.name}">
-                            <h3 class="product-title">${item.name}</h3>
-                            <p class="product-description">${item.description || 'No description provided.'}</p>
-                            <div class="product-price-info">
-                                <div class="current-bid">Current Bid: $${item.price.toFixed(2)}</div>
-                            </div>
-                            <strong class="product-price">$${item.price.toFixed(2)}</strong>
-                            <span class="icon-cross">
-                                <img src="images/cross.svg" class="img-fluid" alt="Remove item">
-                            </span>
-                        </a>
+            <div class="col-12 col-md-4 col-lg-3 mb-5">
+                <a class="product-item" href="cart.html">
+                    <img src="${item.imagePath}" class="img-fluid product-thumbnail" alt="${item.name}">
+                    <h3 class="product-title">${item.name}</h3>
+                    <p class="product-description">${item.description}</p>
+                    <div class="product-price-info">
+                        <div class="current-bid">Current Bid: $${item.highestBidPrice.toFixed(2)}</div>
+                        <div class="bid-id">Bid ID: ${item.bidCode}</div>
+                        <div class="end-time">Ends: ${new Date(item.bidEndTime).toLocaleString()}</div>
                     </div>
-                `;
+                    <strong class="product-price">$${item.price.toFixed(2)}</strong>
+                    <span class="icon-cross">
+                        <img src="images/cross.svg" class="img-fluid" alt="Remove item">
+                    </span>
+                </a>
+            </div>
+        `;
 						container.append(card);
 					});
 				}

@@ -125,33 +125,9 @@ public class BidServiceImpl implements BidService {
 
     @Override
     public List<BidCartDTO> getAllActiveBids() {
-        List<Item> items = itemRepo.findAll();
-        List<Bid> bids = bidRepo.findAll();
-        List<BidCartDTO> bidCartDTOs = new ArrayList<>();
-
-        // Loop through both lists and map to BidCartDTO
-        for (int i = 0; i < items.size(); i++) {
-            Item item = items.get(i);
-            Bid bid = bids.stream()
-                    .filter(b -> b.getItemCode().equals(item.getCode())) // matching the itemCode with the bid
-                    .findFirst()
-                    .orElse(null); // If no matching bid is found, return null
-
-            if (bid != null && item.getStatus().equals("Approved")) { // Make sure the item is active
-                BidCartDTO bidCartDTO = new BidCartDTO();
-                bidCartDTO.setItemCode(item.getCode());
-                bidCartDTO.setName(item.getName());
-                bidCartDTO.setDescription(item.getDescription());
-                bidCartDTO.setImagePath(item.getImagePath());
-                bidCartDTO.setHighestBidPrice(bid.getHighestPrice());
-                bidCartDTO.setStatus(item.getStatus());
-
-                bidCartDTOs.add(bidCartDTO);
-            }
-        }
-        System.out.println(bidCartDTOs);
-        return bidCartDTOs;
+        return List.of();
     }
+
 
     @Override
     public List<BidDTO> getBids() {

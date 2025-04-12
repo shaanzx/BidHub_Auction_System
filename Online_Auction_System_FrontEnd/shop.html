@@ -12,10 +12,9 @@
 	<!-- Bootstrap CSS -->
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 	<link href="css/tiny-slider.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet">
-	<!-- SweetAlert CSS -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 	<title>My Bids | BidHUB</title>
 </head>
 
@@ -369,279 +368,101 @@
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/tiny-slider.js"></script>
 <script src="js/custom.js"></script>
 <script src="js/UserProfileUpdate.js"></script>
 
-<!-- SweetAlert JS -->
-<!--
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
--->
 
 <script>
-	$(document).ready(function() {
-		// Load active bids
-		loadActiveBids();
-		// Load watchlist
-		loadWatchlist();
-		// Load bid history
-		loadBidHistory();
+	const notyf = new Notyf({
+		duration: 4000,
+		ripple: true,
+		position: { x: 'right', y: 'bottom' },
+		types: [
+			{
+				type: 'success',
+				background: 'linear-gradient(to right, #00b09b, #96c93d)',
+				icon: { className: 'bi bi-check-circle-fill', tagName: 'i', color: '#ffffff' },
+				className: 'custom-toast success-toast',
+				dismissible: true
+			},
+			{
+				type: 'error',
+				background: 'linear-gradient(to right, #e52d27, #b31217)',
+				icon: { className: 'bi bi-x-circle-fill', tagName: 'i', color: '#ffffff' },
+				className: 'custom-toast error-toast',
+				dismissible: true
+			},
+			{
+				type: 'warning',
+				background: 'linear-gradient(to right, #f7971e, #ffd200)',
+				icon: { className: 'bi bi-exclamation-triangle-fill', tagName: 'i', color: '#000' },
+				className: 'custom-toast warning-toast',
+				dismissible: true
+			}
+		]
+	});
 
-		// Function to load active bids
-		function loadActiveBids() {
+	$(document).ready(function () {
+		const API_BASE_URL = 'http://localhost:8082/api/v1';
+		const token = localStorage.getItem('authToken');
+		const userId = localStorage.getItem('userId');
+
+		loadBidCart();
+
+		function loadBidCart() {
 			$.ajax({
-				url: 'http://localhost:8082/api/v1/items/getItems',
-				type: 'GET',
-				dataType: 'json',
+				url: 'http://localhost:8082/api/v1/bidCart/getBidCartItems',
+				method: 'GET',
 				headers: {
-					'Authorization': 'Bearer ' + localStorage.getItem('token')
+					'Authorization': `Bearer ${token}`
 				},
 				success: function(response) {
-					if (response.code === 200) {
-						const items = response.content;
-						let html = '';
-
-						items.forEach(item => {
-							// Determine bid status based on your business logic
-							let status = 'Pending';
-							let statusClass = 'bg-secondary';
-
-							// Example logic - you should adjust this based on your actual requirements
-							if (item.status === 'On Bid') {
-								status = 'Active';
-								statusClass = 'bg-primary';
-							} else if (item.status === 'Sold Out') {
-								status = 'Closed';
-								statusClass = 'bg-dark';
-							}
-
-							// Calculate time left (mock data - replace with actual calculation)
-							const hoursLeft = Math.floor(Math.random() * 48) + 1;
-							const minutesLeft = Math.floor(Math.random() * 60);
-
-							html += `
-                            <div class="col-12 col-md-6 col-lg-4 mb-5">
-                                <div class="product-item bid-item">
-                                    <div class="bid-status badge ${statusClass}">${status}</div>
-                                    <img src="${item.imagePath || 'images/product-1.png'}" class="img-fluid product-thumbnail" alt="${item.name}">
-                                    <h3 class="product-title">${item.name}</h3>
-                                    <div class="bid-info">
-                                        <div class="current-bid">Current Bid: $${item.price.toFixed(2)}</div>
-                                        <div class="description">${item.description}</div>
-                                        <div class="time-left"><i class="fa fa-clock"></i> ${hoursLeft}h ${minutesLeft}m left</div>
-                                    </div>
-                                    <div class="bid-actions">
-                                        <button class="btn btn-sm btn-primary bid-btn" data-item-id="${item.code}" data-item-name="${item.name}" data-current-bid="${item.price}">Place Bid</button>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-						});
-
-						$('#activeBidsContainer').html(html);
+					if(response.code === 200) {
+						renderBidCart(response.data);
 					} else {
-						$('#activeBidsContainer').html('<div class="col-12"><p class="text-center">No active bids found.</p></div>');
+						notyf.error('Failed to load bid cart items');
 					}
 				},
-				error: function(xhr, status, error) {
-					console.error('Error loading active bids:', error);
-					$('#activeBidsContainer').html('<div class="col-12"><p class="text-center text-danger">Error loading active bids. Please try again later.</p></div>');
+				error: function() {
+					notyf.error('Something went wrong');
 				}
 			});
 		}
 
-		// Function to load watchlist
-		function loadWatchlist() {
-			// Mock data - replace with actual AJAX call to your watchlist endpoint
-			const watchlistItems = [
-				{
-					id: 'ITM-0001',
-					name: 'Picasso Sketch',
-					image: 'images/product-1.png',
-					currentBid: 12000,
-					timeLeft: '3d 2h'
-				},
-				{
-					id: 'ITM-0002',
-					name: '1967 Ford Mustang',
-					image: 'images/product-2.png',
-					currentBid: 45000,
-					timeLeft: '6h 45m'
-				}
-			];
+		function renderBidCart(items) {
+			const container = $('#activeBidsContainer'); // id eka wena widiyata set kranna
+			container.empty();
 
-			let html = '';
-
-			if (watchlistItems.length > 0) {
-				watchlistItems.forEach(item => {
-					html += `
-                    <div class="col-12 col-md-6 col-lg-4 mb-5">
-                        <div class="product-item watchlist-item">
-                            <button class="watchlist-remove"><i class="fa fa-times"></i></button>
-                            <img src="${item.image}" class="img-fluid product-thumbnail" alt="${item.name}">
-                            <h3 class="product-title">${item.name}</h3>
-                            <div class="bid-info">
-                                <div class="current-bid">Current Bid: $${item.currentBid.toFixed(2)}</div>
-                                <div class="time-left"><i class="fa fa-clock"></i> ${item.timeLeft} left</div>
-                            </div>
-                            <div class="bid-actions">
-                                <button class="btn btn-sm btn-primary">Place Bid</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-				});
-			} else {
-				html = '<div class="col-12"><p class="text-center">Your watchlist is empty.</p></div>';
-			}
-
-			$('#watchlistContainer').html(html);
-		}
-
-		// Function to load bid history
-		function loadBidHistory() {
-			// Mock data - replace with actual AJAX call to your bid history endpoint
-			const bidHistory = [
-				{
-					id: 'ITM-0003',
-					name: 'Rolex Daytona',
-					image: 'images/product-1.png',
-					yourBid: 3200,
-					highestBid: 3500,
-					status: 'Closed',
-					date: 'May 15, 2023'
-				},
-				{
-					id: 'ITM-0004',
-					name: 'Victorian Desk',
-					image: 'images/product-2.png',
-					yourBid: 850,
-					highestBid: 850,
-					status: 'Won',
-					date: 'May 10, 2023'
-				},
-				{
-					id: 'ITM-0005',
-					name: 'Ancient Coin',
-					image: 'images/product-3.png',
-					yourBid: 1200,
-					highestBid: 1450,
-					status: 'Closed',
-					date: 'May 5, 2023'
-				}
-			];
-
-			let html = '';
-
-			if (bidHistory.length > 0) {
-				bidHistory.forEach(item => {
-					let statusClass = 'bg-secondary';
-					if (item.status === 'Won') {
-						statusClass = 'bg-success';
-					}
-
-					html += `
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <img src="${item.image}" class="img-thumbnail" width="60" alt="${item.name}">
-                                <div class="ms-3">${item.name}</div>
-                            </div>
-                        </td>
-                        <td>$${item.yourBid.toFixed(2)}</td>
-                        <td>$${item.highestBid.toFixed(2)}</td>
-                        <td><span class="badge ${statusClass}">${item.status}</span></td>
-                        <td>${item.date}</td>
-                    </tr>
-                `;
-				});
-			} else {
-				html = '<tr><td colspan="5" class="text-center">No bid history found.</td></tr>';
-			}
-
-			$('#bidHistoryBody').html(html);
-		}
-
-		// Handle bid button click
-		$(document).on('click', '.bid-btn', function() {
-			const itemId = $(this).data('item-id');
-			const itemName = $(this).data('item-name');
-			const currentBid = $(this).data('current-bid');
-
-			// Set modal values
-			$('#itemId').val(itemId);
-			$('#itemName').val(itemName);
-			$('#currentBid').val('$' + currentBid.toFixed(2));
-			$('#bidAmount').val('');
-			$('#bidAmount').attr('min', currentBid + 1);
-
-			// Show modal
-			const bidModal = new bootstrap.Modal(document.getElementById('bidModal'));
-			bidModal.show();
-		});
-
-		// Handle bid submission
-		$('#submitBid').click(function() {
-			const itemId = $('#itemId').val();
-			const itemName = $('#itemName').val();
-			const bidAmount = parseFloat($('#bidAmount').val());
-			const currentBid = parseFloat($('#currentBid').val().replace('$', ''));
-
-			if (isNaN(bidAmount) || bidAmount <= currentBid) {
-				Swal.fire({
-					icon: 'error',
-					title: 'Invalid Bid Amount',
-					text: 'Please enter a bid amount higher than the current bid.',
-				});
+			if (!items || items.length === 0) {
+				container.append('<div class="col-12 text-center">No active bids found.</div>');
 				return;
 			}
 
-			// Here you would typically make an AJAX call to submit the bid
-			// For now, we'll just show a success message
-			Swal.fire({
-				icon: 'success',
-				title: 'Bid Placed!',
-				text: `Your bid of $${bidAmount.toFixed(2)} for ${itemName} has been placed successfully.`,
-			}).then(() => {
-				// Close the modal
-				$('#bidModal').modal('hide');
-
-				// Reload the active bids to reflect the new bid
-				loadActiveBids();
+			items.forEach(item => {
+				const card = `
+            <div class="col-12 col-md-4 col-lg-3 mb-5">
+                <a class="product-item" href="cart.html">
+                    <img src="${item.imagePath}" class="img-fluid product-thumbnail" alt="${item.name}">
+                    <h3 class="product-title">${item.name}</h3>
+                    <p class="product-description">${item.description}</p>
+                    <div class="product-price-info">
+                        <div class="current-bid">Current Bid: $${item.highestBidPrice.toFixed(2)}</div>
+                        <div class="bid-id">Bid ID: ${item.bidCode}</div>
+                        <div class="end-time">Ends: ${new Date(item.bidEndTime).toLocaleString()}</div>
+                    </div>
+                    <strong class="product-price">$${item.price.toFixed(2)}</strong>
+                    <span class="icon-cross">
+                        <img src="images/cross.svg" class="img-fluid" alt="Remove item">
+                    </span>
+                </a>
+            </div>
+        `;
+				container.append(card);
 			});
-		});
-
-		// Handle watchlist remove button click
-		$(document).on('click', '.watchlist-remove', function() {
-			const itemCard = $(this).closest('.watchlist-item');
-			const itemName = itemCard.find('.product-title').text();
-
-			Swal.fire({
-				title: 'Remove from Watchlist?',
-				text: `Are you sure you want to remove ${itemName} from your watchlist?`,
-				icon: 'question',
-				showCancelButton: true,
-				confirmButtonText: 'Yes, remove it',
-				cancelButtonText: 'Cancel'
-			}).then((result) => {
-				if (result.isConfirmed) {
-					// Here you would typically make an AJAX call to remove from watchlist
-					itemCard.closest('.col-12').fadeOut(300, function() {
-						$(this).remove();
-						if ($('#watchlistContainer .col-12').length === 0) {
-							$('#watchlistContainer').html('<div class="col-12"><p class="text-center">Your watchlist is empty.</p></div>');
-						}
-					});
-
-					Swal.fire(
-							'Removed!',
-							`${itemName} has been removed from your watchlist.`,
-							'success'
-					);
-				}
-			});
-		});
+		}
 	});
 </script>
 </body>

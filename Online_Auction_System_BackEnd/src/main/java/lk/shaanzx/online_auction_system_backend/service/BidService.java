@@ -22,4 +22,5 @@ public interface BidService {
     List<BidDetailsDTO> getAllBidDetails();
 
     List <BidDetailsDTO> getBidDetailsByBidCode(String bidCode);
+
 }
