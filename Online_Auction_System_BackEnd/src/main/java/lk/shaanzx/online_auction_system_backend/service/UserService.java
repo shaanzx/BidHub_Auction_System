@@ -5,6 +5,7 @@ import lk.shaanzx.online_auction_system_backend.dto.UserDTO;
 import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService {
 
@@ -19,4 +20,8 @@ public interface UserService {
     int updateUser(UserDTO userDTO);
 
     int updateUserStatus(@Valid UserDTO userDTO);
+
+    UserDTO getUserById(String email);
+
+    int updateUserByEmail(@Valid UserDTO userDTO);
 }

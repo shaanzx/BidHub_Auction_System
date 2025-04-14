@@ -18,9 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserDetailsService, UserService {
@@ -30,6 +28,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Autowired
     private ModelMapper modelMapper;
+
 
     @Override
     public int saveUser(UserDTO userDTO) {
@@ -82,6 +81,42 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             return VarList.Not_Found;
         }
     }
+
+    @Override
+    public UserDTO getUserById(String email) {
+        if (userRepo.existsByEmail(email)) {
+            User user = userRepo.findByEmail(email);
+            return modelMapper.map(user, UserDTO.class);
+        } else {
+            return null; // User not found
+        }
+    }
+
+    @Override
+    public int updateUserByEmail(UserDTO userDTO) {
+        User existingUser = userRepo.findByEmail(userDTO.getEmail());
+
+        if (existingUser != null) {
+            // ID එක keep කරලා map කරනවා - update වෙන්න ඔනි
+            User updatedUser = modelMapper.map(userDTO, User.class);
+            updatedUser.setId(existingUser.getId());
+            if (userDTO.getPassword() != null) {
+                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                updatedUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+            }else {
+                updatedUser.setPassword(existingUser.getPassword());
+            }
+            updatedUser.setRole(existingUser.getRole());
+            updatedUser.setStatus(existingUser.getStatus());
+
+            userRepo.save(updatedUser);
+            return VarList.OK;
+        } else {
+            return VarList.Not_Found;
+        }
+    }
+
+
 
     @Override
     public UserDTO searchUser(String username) {

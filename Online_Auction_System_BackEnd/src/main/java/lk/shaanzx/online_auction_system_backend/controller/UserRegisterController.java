@@ -56,8 +56,36 @@ public class UserRegisterController {
         }
     }
 
-    @GetMapping(value = "getUSerDetailsById")
-    public ResponseEntity<ResponseDTO> getUserById(@Valid @RequestParam("userId")UUID userId){
-        return null;
+    @PutMapping(value = "/updateUser")
+    public ResponseEntity<ResponseDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
+        System.out.println(userDTO.toString());
+        try {
+            int res = userService.updateUserByEmail(userDTO);
+            switch (res) {
+                case VarList.OK -> {
+                    return ResponseEntity.status(HttpStatus.OK)
+                            .body(new ResponseDTO(VarList.OK, "Success", null));
+                }
+                default -> {
+                    return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                            .body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
+                }
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
+        }
+    }
+
+    @GetMapping(value = "getUserDetailsById")
+    public ResponseEntity<ResponseDTO> getUserById(@RequestParam("email") String email) {
+        try {
+            UserDTO userDTO = userService.getUserById(email);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseDTO(VarList.OK, "Success", userDTO));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
+        }
     }
 }

@@ -1,3 +1,4 @@
+<!--
 <!doctype html>
 <html lang="en">
 <head>
@@ -9,7 +10,7 @@
 	<meta name="description" content="" />
 	<meta name="keywords" content="bootstrap, bootstrap4" />
 
-	<!-- Bootstrap CSS -->
+	&lt;!&ndash; Bootstrap CSS &ndash;&gt;
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
@@ -46,7 +47,7 @@
 </head>
 <body>
 
-<!-- Start Header/Navigation -->
+&lt;!&ndash; Start Header/Navigation &ndash;&gt;
 <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
 	<div class="container">
@@ -85,9 +86,9 @@
 		</div>
 	</div>
 </nav>
-<!-- End Header/Navigation -->
+&lt;!&ndash; End Header/Navigation &ndash;&gt;
 
-<!-- User Profile Update Modal -->
+&lt;!&ndash; User Profile Update Modal &ndash;&gt;
 <div class="modal fade" id="userProfileModal" tabindex="-1" aria-labelledby="userProfileModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-mx	 modal-dialog-centered">
 		<div class="modal-content">
@@ -171,6 +172,803 @@
 							</div>
 						</div>
 					</div>
+				</form>
+			</div>
+			<div class="modal-footer" style="background-color: #f8f9fa;">
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+				<button type="button" class="btn text-white" id="saveUserProfile" style="background-color: #1d2e28;">Save Changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+&lt;!&ndash; Start Hero Section &ndash;&gt;
+<div class="hero">
+	<div class="container">
+		<div class="row justify-content-between">
+			<div class="col-lg-5">
+				<div class="intro-excerpt">
+					<h1>BidHub <span clsas="d-block">Auction Platform</span></h1>
+					<p class="mb-4">Buy and sell with ease on BidHub. Experience real-time auctions, secure transactions, and the best deals on a wide range of products.</p>
+					<p><a href="" class="btn btn-secondary me-2">Start Bidding</a><a href="#" class="btn btn-white-outline">Learn More</a></p>
+				</div>
+			</div>
+			<div class="col-lg-7">
+				<div class="hero-img-wrap">
+					<img src="images/couch.png" class="img-fluid">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+&lt;!&ndash; End Hero Section &ndash;&gt;
+
+&lt;!&ndash; Start Product Section &ndash;&gt;
+<div class="product-section">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
+				<h2 class="mb-4 section-title">Seamless and Secure Bidding.</h2>
+				<p class="mb-4">Join BidHub for a smooth and secure auction experience. Place bids in real-time, discover exclusive deals, and win the best offers effortlessly.</p>
+				<p><a href="shop.html" class="btn">Explore</a></p>
+			</div>
+
+			<div>
+				<h3 class="mb-4 section-title text-center">Newest Bids</h3>
+			</div>
+
+			<div class="row" id="productCardContainer">
+				&lt;!&ndash; Items will be loaded here via AJAX &ndash;&gt;
+			</div>
+		</div>
+	</div>
+</div>
+&lt;!&ndash; End Product Section &ndash;&gt;
+
+&lt;!&ndash; Update Bid Modal &ndash;&gt;
+<div class="modal fade" id="updateBidModal" tabindex="-1" aria-labelledby="updateBidModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+		<div class="modal-content rounded-4 shadow-lg">
+			<div class="modal-header bg-primary text-white">
+				<h5 class="modal-title" id="updateBidModalLabel">Update Your Bid</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row align-items-center">
+					<div class="col-md-5 text-center">
+						<img id="modalImage" src="" class="img-fluid rounded-3" style="max-height: 220px;" />
+					</div>
+					<div class="col-md-7">
+						<h4 id="modalTitle" class="fw-bold mb-2"></h4>
+						<p id="modalDescription" class="text-muted small"></p>
+						<p><strong>Current Price:</strong> <span id="modalPrice"></span></p>
+
+						<div class="form-group mb-3">
+							<label for="newPrice" class="form-label">Your Bid (Min 10% higher)</label>
+							<input type="number" id="newPrice" class="form-control" step="0.01" min="0" />
+							<small class="text-muted">Minimum bid: <span id="minBidAmount"></span></small>
+						</div>
+
+						<button id="submitBidBtn" class="btn btn-success w-100">Submit Bid</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+&lt;!&ndash; Start Why Choose Us Section &ndash;&gt;
+<div class="why-choose-section">
+	<div class="container">
+		<div class="row justify-content-between">
+			<div class="col-lg-6">
+				<h2 class="section-title">Why Choose BidHub</h2>
+				<p>Experience seamless online auctions with BidHub. Secure, transparent, and user-friendly—making buying and selling effortless.</p>
+
+				<div class="row my-5">
+					<div class="col-6 col-md-6">
+						<div class="feature">
+							<div class="icon">
+								<img src="images/truck.svg" alt="Image" class="imf-fluid">
+							</div>
+							<h3>Fast Transactions</h3>
+							<p>Bid and win in real-time with quick and secure payment processing for a hassle-free experience.</p>
+						</div>
+					</div>
+
+					<div class="col-6 col-md-6">
+						<div class="feature">
+							<div class="icon">
+								<img src="images/bag.svg" alt="Image" class="imf-fluid">
+							</div>
+							<h3>User-Friendly Platform</h3>
+							<p>Our intuitive interface ensures a smooth and enjoyable bidding experience for everyone.</p>
+						</div>
+					</div>
+
+					<div class="col-6 col-md-6">
+						<div class="feature">
+							<div class="icon">
+								<img src="images/support.svg" alt="Image" class="imf-fluid">
+							</div>
+							<h3>24/7 Support</h3>
+							<p>Get assistance anytime with our dedicated support team, always ready to help you.</p>
+						</div>
+					</div>
+
+					<div class="col-6 col-md-6">
+						<div class="feature">
+							<div class="icon">
+								<img src="images/return.svg" alt="Image" class="imf-fluid">
+							</div>
+							<h3>Secure Transactions</h3>
+							<p>Bid with confidence knowing that all transactions are secure and protected.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-5">
+				<div class="img-wrap">
+					<img src="images/why-choose-us-img.jpg" alt="Image" class="img-fluid">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+&lt;!&ndash; End Why Choose Us Section &ndash;&gt;
+
+&lt;!&ndash; Start We Help Section &ndash;&gt;
+<div class="we-help-section">
+	<div class="container">
+		<div class="row justify-content-between">
+			<div class="col-lg-7 mb-5 mb-lg-0">
+				<div class="imgs-grid">
+					<div class="grid grid-1"><img src="images/img-grid-1.jpg" alt="BidHub"></div>
+					<div class="grid grid-2"><img src="images/img-grid-2.jpg" alt="BidHub"></div>
+					<div class="grid grid-3"><img src="images/img-grid-3.jpg" alt="BidHub"></div>
+				</div>
+			</div>
+			<div class="col-lg-5 ps-lg-5">
+				<h2 class="section-title mb-4">We Help You Win the Best Deals</h2>
+				<p>BidHub makes online auctions simple and transparent. Find the best deals, place competitive bids, and secure your desired items with ease. Enjoy a seamless, secure, and fast auction experience.</p>
+
+				<ul class="list-unstyled custom-list my-4">
+					<li>Real-time bidding with instant updates</li>
+					<li>Secure and verified sellers</li>
+					<li>Fast and reliable payment processing</li>
+					<li>24/7 customer support for assistance</li>
+				</ul>
+				<p><a href="#" class="btn">Explore</a></p>
+			</div>
+		</div>
+	</div>
+</div>
+&lt;!&ndash; End We Help Section &ndash;&gt;
+
+&lt;!&ndash; Start Popular Product &ndash;&gt;
+<div class="popular-product">
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
+				<div class="product-item-sm d-flex">
+					<div class="thumbnail">
+						<img src="images/Smart%20Phone.jpg" alt="Image" class="img-fluid">
+					</div>
+					<div class="pt-3">
+						<h3>Smartphone Bundle</h3>
+						<p>Get the latest smartphones at unbeatable prices. Secure your bid now!</p>
+						<p><a href="#">Read More</a></p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
+				<div class="product-item-sm d-flex">
+					<div class="thumbnail">
+						<img src="images/SmartWatches.jpg" alt="Image" class="img-fluid">
+					</div>
+					<div class="pt-3">
+						<h3>Luxury Watch</h3>
+						<p>Bid on premium timepieces and add elegance to your collection.</p>
+						<p><a href="#">Read More</a></p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
+				<div class="product-item-sm d-flex">
+					<div class="thumbnail">
+						<img src="images/GamingLaptop.jpg" alt="Image" class="img-fluid">
+					</div>
+					<div class="pt-3">
+						<h3>Gaming Laptop</h3>
+						<p>High-performance gaming laptops at competitive auction prices.</p>
+						<p><a href="#">Read More</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+&lt;!&ndash; End Popular Product &ndash;&gt;
+
+&lt;!&ndash; Start Testimonial Slider &ndash;&gt;
+<div class="testimonial-section">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-7 mx-auto text-center">
+				<h2 class="section-title">What Our Users Say</h2>
+			</div>
+		</div>
+
+		<div class="row justify-content-center">
+			<div class="col-lg-12">
+				<div class="testimonial-slider-wrap text-center">
+					<div id="testimonial-nav">
+						<span class="prev" data-controls="prev"><span class="fa fa-chevron-left"></span></span>
+						<span class="next" data-controls="next"><span class="fa fa-chevron-right"></span></span>
+					</div>
+
+					<div class="testimonial-slider">
+						<div class="item">
+							<div class="row justify-content-center">
+								<div class="col-lg-8 mx-auto">
+									<div class="testimonial-block text-center">
+										<blockquote class="mb-5">
+											<p>&ldquo;BidHub has completely changed the way I shop online. The bidding process is smooth, and I always find the best deals. Highly recommended!&rdquo;</p>
+										</blockquote>
+										<div class="author-info">
+											<div class="author-pic">
+												<img src="images/person-1.png" alt="John Doe" class="img-fluid">
+											</div>
+											<h3 class="font-weight-bold">John Doe</h3>
+											<span class="position d-block mb-3">Verified Buyer</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						&lt;!&ndash; END item &ndash;&gt;
+
+						<div class="item">
+							<div class="row justify-content-center">
+								<div class="col-lg-8 mx-auto">
+									<div class="testimonial-block text-center">
+										<blockquote class="mb-5">
+											<p>&ldquo;I won a brand-new laptop for almost half the retail price! BidHub is a game-changer for online auctions.&rdquo;</p>
+										</blockquote>
+										<div class="author-info">
+											<div class="author-pic">
+												<img src="images/person-1.png" alt="Sarah Williams" class="img-fluid">
+											</div>
+											<h3 class="font-weight-bold">Sarah Williams</h3>
+											<span class="position d-block mb-3">Frequent Bidder</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						&lt;!&ndash; END item &ndash;&gt;
+
+						<div class="item">
+							<div class="row justify-content-center">
+								<div class="col-lg-8 mx-auto">
+									<div class="testimonial-block text-center">
+										<blockquote class="mb-5">
+											<p>&ldquo;The customer support team at BidHub is fantastic! They helped me resolve an issue quickly. The site is reliable and easy to use.&rdquo;</p>
+										</blockquote>
+										<div class="author-info">
+											<div class="author-pic">
+												<img src="images/person-1.png" alt="David Brown" class="img-fluid">
+											</div>
+											<h3 class="font-weight-bold">David Brown</h3>
+											<span class="position d-block mb-3">Happy Customer</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						&lt;!&ndash; END item &ndash;&gt;
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+&lt;!&ndash; End Testimonial Slider &ndash;&gt;
+
+&lt;!&ndash; Start Blog Section &ndash;&gt;
+<div class="blog-section">
+	<div class="container">
+		<div class="row mb-5">
+			<div class="col-md-6">
+				<h2 class="section-title">Antique & Vintage Finds</h2>
+			</div>
+			<div class="col-md-6 text-start text-md-end">
+				<a href="#" class="more">View All Articles</a>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
+				<div class="post-entry">
+					<a href="#" class="post-thumbnail"><img src="images/post-1.jpg" alt="Vintage Clock" class="img-fluid"></a>
+					<div class="post-content-entry">
+						<h3><a href="#">The Timeless Beauty of Vintage Clocks</a></h3>
+						<div class="meta">
+							<span>by <a href="#">Emily Carter</a></span> <span>on <a href="#">March 22, 2025</a></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
+				<div class="post-entry">
+					<a href="#" class="post-thumbnail"><img src="images/post-2.jpg" alt="Rare Coins" class="img-fluid"></a>
+					<div class="post-content-entry">
+						<h3><a href="#">Rare Coins: Hidden Treasures Worth Thousands</a></h3>
+						<div class="meta">
+							<span>by <a href="#">Michael Smith</a></span> <span>on <a href="#">March 18, 2025</a></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
+				<div class="post-entry">
+					<a href="#" class="post-thumbnail"><img src="images/post-3.jpg" alt="Vintage Typewriter" class="img-fluid"></a>
+					<div class="post-content-entry">
+						<h3><a href="#">The Charm of Vintage Typewriters</a></h3>
+						<div class="meta">
+							<span>by <a href="#">Sophia Johnson</a></span> <span>on <a href="#">March 10, 2025</a></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+&lt;!&ndash; End Blog Section &ndash;&gt;
+
+&lt;!&ndash; Start Footer Section &ndash;&gt;
+<footer class="footer-section">
+	<div class="container relative">
+		<div class="sofa-img">
+			<img src="images/sofa.png" alt="Image" class="img-fluid">
+		</div>
+
+		<div class="row">
+			<div class="col-lg-8">
+				<div class="subscription-form">
+					<h3 class="d-flex align-items-center"><span class="me-1"><img src="images/envelope-outline.svg" alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
+					<form action="#" class="row g-3">
+						<div class="col-auto">
+							<input type="text" class="form-control" placeholder="Enter your name">
+						</div>
+						<div class="col-auto">
+							<input type="email" class="form-control" placeholder="Enter your email">
+						</div>
+						<div class="col-auto">
+							<button class="btn btn-primary">
+								<span class="fa fa-paper-plane"></span>
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div class="row g-5 mb-5">
+			<div class="col-lg-4">
+				<div class="mb-4 footer-logo-wrap">
+					<a href="#" class="footer-logo">BidHUB<span>.</span></a>
+				</div>
+				<p class="mb-4">
+					Your trusted marketplace for rare collectibles, vintage treasures, and valuable antiques. Buy, sell, and bid on exclusive items with confidence.
+				</p>
+
+				<ul class="list-unstyled custom-social">
+					<li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
+					<li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
+					<li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
+					<li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
+				</ul>
+			</div>
+
+			<div class="col-lg-8">
+				<div class="row links-wrap">
+					<div class="col-6 col-sm-6 col-md-3">
+						<ul class="list-unstyled">
+							<li><a href="#">About Us</a></li>
+							<li><a href="#">How It Works</a></li>
+							<li><a href="#">Blog</a></li>
+							<li><a href="#">Contact Us</a></li>
+						</ul>
+					</div>
+
+					<div class="col-6 col-sm-6 col-md-3">
+						<ul class="list-unstyled">
+							<li><a href="#">Sell on BidHUB</a></li>
+							<li><a href="#">Bidding Guide</a></li>
+							<li><a href="#">Buyer Protection</a></li>
+						</ul>
+					</div>
+
+					<div class="col-6 col-sm-6 col-md-3">
+						<ul class="list-unstyled">
+							<li><a href="#">Careers</a></li>
+							<li><a href="#">Our Experts</a></li>
+							<li><a href="#">Terms & Privacy</a></li>
+						</ul>
+					</div>
+
+					<div class="col-6 col-sm-6 col-md-3">
+						<ul class="list-unstyled">
+							<li><a href="#">Antique Jewelry</a></li>
+							<li><a href="#">Rare Coins</a></li>
+							<li><a href="#">Classic Artworks</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="border-top copyright">
+			<div class="row pt-4">
+				<div class="col-lg-6">
+					<p class="mb-2 text-center text-lg-start">
+						Copyright &copy;<script>document.write(new Date().getFullYear());</script>.
+						All Rights Reserved. &mdash; Powered by <a href="#">BidHUB</a>.
+						Designed with passion for collectors and enthusiasts.
+					</p>
+				</div>
+
+				<div class="col-lg-6 text-center text-lg-end">
+					<ul class="list-unstyled d-inline-flex ms-auto">
+						<li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+						<li><a href="#">Privacy Policy</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+&lt;!&ndash; End Footer Section &ndash;&gt;
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="/js/tiny-slider.js"></script>
+<script src="/js/custom.js"></script>
+<script src="js/UserProfileUpdate.js"></script>
+
+<script>
+	const notyf = new Notyf({
+		duration: 4000,
+		ripple: true,
+		position: { x: 'right', y: 'bottom' },
+		types: [
+			{
+				type: 'success',
+				background: 'linear-gradient(to right, #00b09b, #96c93d)',
+				icon: { className: 'bi bi-check-circle-fill', tagName: 'i', color: '#ffffff' },
+				className: 'custom-toast success-toast',
+				dismissible: true
+			},
+			{
+				type: 'error',
+				background: 'linear-gradient(to right, #e52d27, #b31217)',
+				icon: { className: 'bi bi-x-circle-fill', tagName: 'i', color: '#ffffff' },
+				className: 'custom-toast error-toast',
+				dismissible: true
+			},
+			{
+				type: 'warning',
+				background: 'linear-gradient(to right, #f7971e, #ffd200)',
+				icon: { className: 'bi bi-exclamation-triangle-fill', tagName: 'i', color: '#000' },
+				className: 'custom-toast warning-toast',
+				dismissible: true
+			}
+		]
+	});
+
+	$(document).ready(function () {
+		const API_BASE_URL = 'http://localhost:8082/api/v1';
+		const token = localStorage.getItem('authToken');
+		const userId = localStorage.getItem('userId');
+		const email = localStorage.getItem('email');
+		let selectedBid = null;
+
+		// Load bid cart items
+		loadBidCart();
+
+		function loadBidCart() {
+			$.ajax({
+				url: `${API_BASE_URL}/bidCart/getBidCartItems`,
+				method: 'GET',
+				headers: {
+					'Authorization': `Bearer ${token}`
+				},
+				success: function(response) {
+					if(response.code === 200) {
+						renderBidCart(response.data);
+					} else {
+						notyf.error('Failed to load bid cart items');
+					}
+				},
+				error: function() {
+					notyf.error('Something went wrong while loading bid cart');
+				}
+			});
+		}
+
+		function renderBidCart(items) {
+			const container = $('#productCardContainer');
+			container.empty();
+
+			if (!items || items.length === 0) {
+				container.append('<div class="col-12 text-center">No active bids found.</div>');
+				return;
+			}
+
+			items.forEach(item => {
+				const card = `
+							<div class="col-12 col-md-4 col-lg-3 mb-5">
+								<div class="product-item">
+									<img src="${item.imagePath}" class="img-fluid product-thumbnail" alt="${item.name}">
+									<h3 class="product-title">${item.name}</h3>
+									<p class="product-description">${item.description}</p>
+									<div class="product-price-info">
+										<div class="current-bid">Current Bid: $${item.highestBidPrice.toFixed(2)}</div>
+										<div class="bid-id">Bid ID: ${item.bidCode}</div>
+										<div class="end-time">Ends: ${new Date(item.bidEndTime).toLocaleString()}</div>
+									</div>
+									<strong class="product-price">$${item.price.toFixed(2)}</strong>
+									<button class="btn btn-primary update-bid-btn"
+											data-bid-code="${item.bidCode}"
+											data-item-code="${item.code}"
+											data-current-price="${item.highestBidPrice}"
+											data-image="${item.imagePath}"
+											data-name="${item.name}"
+											data-description="${item.description}">
+										Update Bid
+									</button>
+									<span class="icon-cross">
+										<img src="images/cross.svg" class="img-fluid" alt="Remove item">
+									</span>
+								</div>
+							</div>
+						`;
+				container.append(card);
+			});
+		}
+
+		// Handle update bid button click
+		$(document).on('click', '.update-bid-btn', function() {
+			const button = $(this);
+			selectedBid = {
+				bidCode: button.data('bid-code'),
+				itemCode: button.data('item-code'),
+				currentPrice: parseFloat(button.data('current-price')),
+				imagePath: button.data('image'),
+				name: button.data('name'),
+				description: button.data('description')
+			};
+
+			// Populate modal with item data
+			$('#modalImage').attr('src', selectedBid.imagePath);
+			$('#modalTitle').text(selectedBid.name);
+			$('#modalDescription').text(selectedBid.description);
+			$('#modalPrice').text(`$${selectedBid.currentPrice.toFixed(2)}`);
+			$('#newPrice').val('');
+
+			// Calculate and show minimum bid amount
+			const minBid = (selectedBid.currentPrice * 1.1).toFixed(2);
+			$('#newPrice').attr('min', minBid);
+			$('#minBidAmount').text(`$${minBid}`);
+
+			// Show the modal
+			const modal = new bootstrap.Modal(document.getElementById('updateBidModal'));
+			modal.show();
+		});
+
+		// Handle bid submission
+		$('#submitBidBtn').click(function() {
+			const newPrice = parseFloat($('#newPrice').val());
+			const minRequired = selectedBid.currentPrice * 1.1;
+
+			if (!newPrice || isNaN(newPrice) || newPrice < minRequired) {
+				notyf.error(`New bid must be at least 10% higher than $${selectedBid.currentPrice.toFixed(2)} (Minimum: $${minRequired.toFixed(2)})`);
+				return;
+			}
+
+			const payload = {
+				bidCode: selectedBid.bidCode,
+				highestBidPrice: newPrice,
+			};
+
+			$.ajax({
+				url: `${API_BASE_URL}/bids/updateHighestBidPrice?userId=${userId}`,
+				type: 'PUT',
+				contentType: 'application/json',
+				headers: {
+					'Authorization': `Bearer ${token}`
+				},
+				data: JSON.stringify(payload),
+				success: function(res) {
+					if (res.code === 201 || res.code === 200) {
+						notyf.success("Bid updated successfully!");
+						$('#updateBidModal').modal('hide');
+						loadBidCart(); // Refresh the bid cart
+					} else {
+						notyf.error(res.message || "Failed to update bid.");
+					}
+				},
+				error: function(xhr, status, error) {
+					notyf.error("Failed to update bid: " + (xhr.responseJSON?.message || error));
+				}
+			});
+		});
+	});
+</script>
+</body>
+</html>-->
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Untree.co">
+	<link rel="shortcut icon" href="favicon.png">
+
+	<meta name="description" content="" />
+	<meta name="keywords" content="bootstrap, bootstrap4" />
+
+	<!-- Bootstrap CSS -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+	<link href="css/tiny-slider.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+	<title>Homepage</title>
+	<style>
+		.modal-header{
+			background-color: #1d2e28;
+
+		}
+		#updateBidModal .modal-content {
+			border-radius: 16px;
+			border: none;
+		}
+		#updateBidModal .modal-header {
+			border-bottom: 1px solid #dee2e6;
+		}
+		.product-item {
+			position: relative;
+			padding: 20px;
+			border: 1px solid #eee;
+			border-radius: 8px;
+			transition: all 0.3s ease;
+		}
+		.product-item:hover {
+			box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+		}
+		.update-bid-btn {
+			margin-top: 10px;
+			width: 100%;
+		}
+	</style>
+</head>
+<body>
+
+<!-- Start Header/Navigation -->
+<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+
+	<div class="container">
+		<a class="navbar-brand" href="index.html">BidHUB<span>.</span></a>
+
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarsFurni">
+			<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+				<li class="nav-item active">
+					<a class="nav-link" href="index.html">Home</a>
+				</li>
+				<li><a class="nav-link" href="shop.html">Auction</a></li>
+				<li><a class="nav-link" href="sellWithUs.html">Sell With Us</a></li>
+				<li><a class="nav-link" href="services.html">Services</a></li>
+				<li><a class="nav-link" href="blog.html">Blog</a></li>
+				<li><a class="nav-link" href="contact.html">Contact us</a></li>
+			</ul>
+
+			<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="fa fa-user"></i>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" style="font-size: 0.875rem;">
+						<li><a class="dropdown-item" href="#" id="editProfileBtn">Profile</a></li>
+						<li><a class="dropdown-item" href="#">Settings</a></li>
+						<li><hr class="dropdown-divider"></li>
+						<li><a class="dropdown-item" href="login.html">Logout</a></li>
+					</ul>
+				</li>
+				<li><a class="nav-link" href="cart.html"><i class="fa fa-shopping-cart"></i></a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+<!-- End Header/Navigation -->
+
+<!-- User Profile Update Modal -->
+<div class="modal fade" id="userProfileModal" tabindex="-1" aria-labelledby="userProfileModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header text-white" style="background-color: #1d2e28;">
+				<h5 class="modal-title" id="userProfileModalLabel">Update Profile</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body p-4">
+				<form id="userProfileForm">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="mb-3">
+								<label for="userName" class="form-label">Full Name</label>
+								<input type="text" class="form-control" id="userName" name="name"
+									   pattern="^[A-Za-z ]+$" required
+									   minlength="2" maxlength="50">
+								<div class="invalid-feedback">Name must contain only letters and spaces (2-50 characters)</div>
+							</div>
+
+							<div class="mb-3">
+								<label for="userEmail" class="form-label">Email</label>
+								<input type="email" class="form-control" id="userEmail" name="email" required readonly>
+								<div class="invalid-feedback">Please enter a valid email address</div>
+							</div>
+
+							<div class="mb-3">
+								<label for="userAddress" class="form-label">Address</label>
+								<input type="text" class="form-control" id="userAddress" name="address"
+									   pattern="^[A-Za-z0-9 ]+$" required>
+								<div class="invalid-feedback">Address must contain only letters, numbers and spaces</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="mb-3">
+								<label for="userContact" class="form-label">Phone Number</label>
+								<input type="text" class="form-control" id="userContact" name="contact"
+									   pattern="^(0\d{9}|\+94\d{9})$" required>
+								<div class="invalid-feedback">Phone number must be in format 0XXXXXXXXX or +94XXXXXXXXX</div>
+							</div>
+
+							<div class="mb-3">
+								<label for="userNic" class="form-label">NIC Number</label>
+								<input type="text" class="form-control" id="userNic" name="nic"
+									   pattern="^(\d{9}V|\d{12})$" required>
+								<div class="invalid-feedback">NIC must be in format XXXXXXXXX or XXXXXXXXXXXX</div>
+							</div>
+
+							<div class="mb-3">
+								<label for="userPassword" class="form-label">Password</label>
+								<div class="input-group">
+									<input type="password" class="form-control" id="userPassword" name="password"
+										   pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$">
+									<button class="btn btn-outline-secondary" type="button" id="togglePassword">
+										<i class="fas fa-eye-slash" id="passwordToggleIcon"></i>
+									</button>
+								</div>
+								<div class="form-text text-muted">Leave blank to keep current password</div>
+								<div class="invalid-feedback">Password must be at least 8 characters with at least one letter and one number</div>
+							</div>
+						</div>
+					</div>
+
+					<input type="hidden" id="userId" name="userId">
 				</form>
 			</div>
 			<div class="modal-footer" style="background-color: #f8f9fa;">
@@ -640,7 +1438,6 @@
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="/js/tiny-slider.js"></script>
 <script src="/js/custom.js"></script>
-<script src="js/UserProfileUpdate.js"></script>
 
 <script>
 	const notyf = new Notyf({
@@ -676,10 +1473,112 @@
 		const API_BASE_URL = 'http://localhost:8082/api/v1';
 		const token = localStorage.getItem('authToken');
 		const userId = localStorage.getItem('userId');
+		const email = localStorage.getItem('userEmail');
 		let selectedBid = null;
 
 		// Load bid cart items
 		loadBidCart();
+
+		// Toggle password visibility
+		$('#togglePassword').click(function() {
+			const passwordField = $('#userPassword');
+			const icon = $('#passwordToggleIcon');
+			const type = passwordField.attr('type') === 'password' ? 'text' : 'password';
+			passwordField.attr('type', type);
+			icon.toggleClass('fa-eye fa-eye-slash');
+		});
+
+		// Handle edit profile button click
+		$('#editProfileBtn').click(function(e) {
+			e.preventDefault();
+			fetchUserDetails();
+		});
+
+		// Fetch user details from backend
+		function fetchUserDetails() {
+			$.ajax({
+				url: `${API_BASE_URL}/user/getUserDetailsById?email=${email}`,
+				method: 'GET',
+				headers: {
+					'Authorization': `Bearer ${token}`
+				},
+				success: function(response) {
+					if(response.code === 200) {
+						const user = response.data;
+						populateUserForm(user);
+						const modal = new bootstrap.Modal(document.getElementById('userProfileModal'));
+						modal.show();
+					} else {
+						notyf.error(response.message || 'Failed to load user details');
+					}
+				},
+				error: function(xhr) {
+					notyf.error(xhr.responseJSON?.message || 'Failed to load user details');
+				}
+			});
+		}
+
+		// Populate user form with data
+		function populateUserForm(user) {
+			$('#userId').val(user.userId);
+			$('#userName').val(user.name);
+			$('#userEmail').val(user.email);
+			$('#userAddress').val(user.address);
+			$('#userContact').val(user.contact);
+			$('#userNic').val(user.nic);
+		}
+
+		// Handle save profile button click
+		$('#saveUserProfile').click(function() {
+			if(!validateUserForm()) {
+				return;
+			}
+
+			const userData = {
+				name: $('#userName').val(),
+				email: $('#userEmail').val(),
+				address: $('#userAddress').val(),
+				contact: $('#userContact').val(),
+				nic: $('#userNic').val(),
+				password: $('#userPassword').val() || null
+			};
+
+			updateUserProfile(userData);
+		});
+
+		// Validate user form
+		function validateUserForm() {
+			const form = document.getElementById('userProfileForm');
+			if (!form.checkValidity()) {
+				form.classList.add('was-validated');
+				return false;
+			}
+			return true;
+		}
+
+		// Update user profile
+		function updateUserProfile(userData) {
+			$.ajax({
+				url: `${API_BASE_URL}/user/updateUser`,
+				method: 'PUT',
+				contentType: 'application/json',
+				headers: {
+					'Authorization': `Bearer ${token}`
+				},
+				data: JSON.stringify(userData),
+				success: function(response) {
+					if(response.code === 200) {
+						notyf.success('Profile updated successfully!');
+						$('#userProfileModal').modal('hide');
+					} else {
+						notyf.error(response.message || 'Failed to update profile');
+					}
+				},
+				error: function(xhr) {
+					notyf.error(xhr.responseJSON?.message || 'Failed to update profile');
+				}
+			});
+		}
 
 		function loadBidCart() {
 			$.ajax({
@@ -712,32 +1611,32 @@
 
 			items.forEach(item => {
 				const card = `
-							<div class="col-12 col-md-4 col-lg-3 mb-5">
-								<div class="product-item">
-									<img src="${item.imagePath}" class="img-fluid product-thumbnail" alt="${item.name}">
-									<h3 class="product-title">${item.name}</h3>
-									<p class="product-description">${item.description}</p>
-									<div class="product-price-info">
-										<div class="current-bid">Current Bid: $${item.highestBidPrice.toFixed(2)}</div>
-										<div class="bid-id">Bid ID: ${item.bidCode}</div>
-										<div class="end-time">Ends: ${new Date(item.bidEndTime).toLocaleString()}</div>
+								<div class="col-12 col-md-4 col-lg-3 mb-5">
+									<div class="product-item">
+										<img src="${item.imagePath}" class="img-fluid product-thumbnail" alt="${item.name}">
+										<h3 class="product-title">${item.name}</h3>
+										<p class="product-description">${item.description}</p>
+										<div class="product-price-info">
+											<div class="current-bid">Current Bid: $${item.highestBidPrice.toFixed(2)}</div>
+											<div class="bid-id">Bid ID: ${item.bidCode}</div>
+											<div class="end-time">Ends: ${new Date(item.bidEndTime).toLocaleString()}</div>
+										</div>
+										<strong class="product-price">$${item.price.toFixed(2)}</strong>
+										<button class="btn btn-primary update-bid-btn"
+												data-bid-code="${item.bidCode}"
+												data-item-code="${item.code}"
+												data-current-price="${item.highestBidPrice}"
+												data-image="${item.imagePath}"
+												data-name="${item.name}"
+												data-description="${item.description}">
+											Update Bid
+										</button>
+										<span class="icon-cross">
+											<img src="images/cross.svg" class="img-fluid" alt="Remove item">
+										</span>
 									</div>
-									<strong class="product-price">$${item.price.toFixed(2)}</strong>
-									<button class="btn btn-primary update-bid-btn"
-											data-bid-code="${item.bidCode}"
-											data-item-code="${item.code}"
-											data-current-price="${item.highestBidPrice}"
-											data-image="${item.imagePath}"
-											data-name="${item.name}"
-											data-description="${item.description}">
-										Update Bid
-									</button>
-									<span class="icon-cross">
-										<img src="images/cross.svg" class="img-fluid" alt="Remove item">
-									</span>
 								</div>
-							</div>
-						`;
+							`;
 				container.append(card);
 			});
 		}
