@@ -36,12 +36,8 @@ public class BidController {
 
     @PutMapping("/updateHighestBidPrice")
     public ResponseEntity<ResponseDTO> updateHighestBidPrice(@Valid @RequestBody BidDTO bidDTO, @RequestParam("userId") UUID userId) {
-        System.out.println(bidDTO.getBidCode());
-        System.out.println(bidDTO.getHighestBidPrice());
-        System.out.println(userId);
         try {
             int result = bidService.updateHighestBidPrice(bidDTO.getBidCode(), bidDTO.getHighestBidPrice(), userId);
-
             return switch (result) {
                 case VarList.OK -> ResponseEntity.status(HttpStatus.OK)
                         .body(new ResponseDTO(VarList.OK, "Bid updated successfully!", bidDTO));

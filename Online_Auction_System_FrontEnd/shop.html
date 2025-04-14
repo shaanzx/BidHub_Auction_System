@@ -16,6 +16,34 @@
 	<link href="css/tiny-slider.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet">
 	<title>My Bids | BidHUB</title>
+	<style>
+		.modal-header{
+			background-color: #1d2e28;
+
+		}
+		#updateBidModal .modal-content {
+			border-radius: 16px;
+			border: none;
+		}
+		#updateBidModal .modal-header {
+			border-bottom: 1px solid #dee2e6;
+		}
+		.product-item {
+			position: relative;
+			padding: 20px;
+			border: 1px solid #eee;
+			border-radius: 8px;
+			transition: all 0.3s ease;
+		}
+		.product-item:hover {
+			box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+		}
+		.update-bid-btn {
+			margin-top: 10px;
+			width: 100%;
+		}
+	</style>
+
 </head>
 
 <body>
@@ -197,6 +225,39 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- Update Bid Modal -->
+		<div class="modal fade" id="updateBidModal" tabindex="-1" aria-labelledby="updateBidModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-centered">
+				<div class="modal-content rounded-4 shadow-lg">
+					<div class="modal-header bg-primary text-white">
+						<h5 class="modal-title" id="updateBidModalLabel">Update Your Bid</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row align-items-center">
+							<div class="col-md-5 text-center">
+								<img id="modalImage" src="" class="img-fluid rounded-3" style="max-height: 220px;" />
+							</div>
+							<div class="col-md-7">
+								<h4 id="modalTitle" class="fw-bold mb-2"></h4>
+								<p id="modalDescription" class="text-muted small"></p>
+								<p><strong>Current Price:</strong> <span id="modalPrice"></span></p>
+
+								<div class="form-group mb-3">
+									<label for="newPrice" class="form-label">Your Bid (Min 10% higher)</label>
+									<input type="number" id="newPrice" class="form-control" step="0.01" min="0" />
+									<small class="text-muted">Minimum bid: <span id="minBidAmount"></span></small>
+								</div>
+
+								<button id="submitBidBtn" class="btn btn-success w-100">Submit Bid</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 
 		<div class="row">
 			<div class="col-md-12">
@@ -409,12 +470,14 @@
 		const API_BASE_URL = 'http://localhost:8082/api/v1';
 		const token = localStorage.getItem('authToken');
 		const userId = localStorage.getItem('userId');
+		let selectBidId = null;
 
+		// Load bid cart items
 		loadBidCart();
 
 		function loadBidCart() {
 			$.ajax({
-				url: 'http://localhost:8082/api/v1/bidCart/getBidCartItems',
+				url: `${API_BASE_URL}/bidCart/getBidCartItems`,
 				method: 'GET',
 				headers: {
 					'Authorization': `Bearer ${token}`
@@ -427,13 +490,13 @@
 					}
 				},
 				error: function() {
-					notyf.error('Something went wrong');
+					notyf.error('Something went wrong while loading bid cart');
 				}
 			});
 		}
 
 		function renderBidCart(items) {
-			const container = $('#activeBidsContainer'); // id eka wena widiyata set kranna
+			const container = $('#activeBidsContainer');
 			container.empty();
 
 			if (!items || items.length === 0) {
@@ -443,26 +506,102 @@
 
 			items.forEach(item => {
 				const card = `
-            <div class="col-12 col-md-4 col-lg-3 mb-5">
-                <a class="product-item" href="cart.html">
-                    <img src="${item.imagePath}" class="img-fluid product-thumbnail" alt="${item.name}">
-                    <h3 class="product-title">${item.name}</h3>
-                    <p class="product-description">${item.description}</p>
-                    <div class="product-price-info">
-                        <div class="current-bid">Current Bid: $${item.highestBidPrice.toFixed(2)}</div>
-                        <div class="bid-id">Bid ID: ${item.bidCode}</div>
-                        <div class="end-time">Ends: ${new Date(item.bidEndTime).toLocaleString()}</div>
-                    </div>
-                    <strong class="product-price">$${item.price.toFixed(2)}</strong>
-                    <span class="icon-cross">
-                        <img src="images/cross.svg" class="img-fluid" alt="Remove item">
-                    </span>
-                </a>
-            </div>
-        `;
+							<div class="col-12 col-md-4 col-lg-3 mb-5">
+								<div class="product-item">
+									<img src="${item.imagePath}" class="img-fluid product-thumbnail" alt="${item.name}">
+									<h3 class="product-title">${item.name}</h3>
+									<p class="product-description">${item.description}</p>
+									<div class="product-price-info">
+										<div class="current-bid">Current Bid: $${item.highestBidPrice.toFixed(2)}</div>
+										<div class="bid-id">Bid ID: ${item.bidCode}</div>
+										<div class="end-time">Ends: ${new Date(item.bidEndTime).toLocaleString()}</div>
+									</div>
+									<strong class="product-price">$${item.price.toFixed(2)}</strong>
+									<button class="btn btn-primary update-bid-btn"
+											data-bid-code="${item.bidCode}"
+											data-item-code="${item.code}"
+											data-current-price="${item.highestBidPrice}"
+											data-image="${item.imagePath}"
+											data-name="${item.name}"
+											data-description="${item.description}">
+										Update Bid
+									</button>
+									<span class="icon-cross">
+										<img src="images/cross.svg" class="img-fluid" alt="Remove item">
+									</span>
+								</div>
+							</div>
+						`;
 				container.append(card);
 			});
 		}
+
+		// Handle update bid button click
+		$(document).on('click', '.update-bid-btn', function() {
+			const button = $(this);
+			selectedBid = {
+				bidCode: button.data('bid-code'),
+				itemCode: button.data('item-code'),
+				currentPrice: parseFloat(button.data('current-price')),
+				imagePath: button.data('image'),
+				name: button.data('name'),
+				description: button.data('description')
+			};
+
+			// Populate modal with item data
+			$('#modalImage').attr('src', selectedBid.imagePath);
+			$('#modalTitle').text(selectedBid.name);
+			$('#modalDescription').text(selectedBid.description);
+			$('#modalPrice').text(`$${selectedBid.currentPrice.toFixed(2)}`);
+			$('#newPrice').val('');
+
+			// Calculate and show minimum bid amount
+			const minBid = (selectedBid.currentPrice * 1.1).toFixed(2);
+			$('#newPrice').attr('min', minBid);
+			$('#minBidAmount').text(`$${minBid}`);
+
+			// Show the modal
+			const modal = new bootstrap.Modal(document.getElementById('updateBidModal'));
+			modal.show();
+		});
+
+		// Handle bid submission
+		$('#submitBidBtn').click(function() {
+			const newPrice = parseFloat($('#newPrice').val());
+			const minRequired = selectedBid.currentPrice * 1.1;
+
+			if (!newPrice || isNaN(newPrice) || newPrice < minRequired) {
+				notyf.error(`New bid must be at least 10% higher than $${selectedBid.currentPrice.toFixed(2)} (Minimum: $${minRequired.toFixed(2)})`);
+				return;
+			}
+
+			const payload = {
+				bidCode: selectedBid.bidCode,
+				highestBidPrice: newPrice,
+			};
+
+			$.ajax({
+				url: `${API_BASE_URL}/bids/updateHighestBidPrice?userId=${userId}`,
+				type: 'PUT',
+				contentType: 'application/json',
+				headers: {
+					'Authorization': `Bearer ${token}`
+				},
+				data: JSON.stringify(payload),
+				success: function(res) {
+					if (res.code === 201 || res.code === 200) {
+						notyf.success("Bid updated successfully!");
+						$('#updateBidModal').modal('hide');
+						loadBidCart(); // Refresh the bid cart
+					} else {
+						notyf.error(res.message || "Failed to update bid.");
+					}
+				},
+				error: function(xhr, status, error) {
+					notyf.error("Failed to update bid: " + (xhr.responseJSON?.message || error));
+				}
+			});
+		});
 	});
 </script>
 </body>
