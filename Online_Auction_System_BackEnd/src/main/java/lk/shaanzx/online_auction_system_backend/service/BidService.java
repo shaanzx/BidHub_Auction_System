@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface BidService {
     int saveBid(ItemDTO itemDTO);
 
-    int updateHighestBidPrice(String bidCode,Double highestPrice, UUID userId);
+    int updateHighestBidPrice(String bidCode,Double highestPrice, UUID userId, String email);
 
     double getHighestBidPrice(String itemCode);
 
@@ -24,4 +24,5 @@ public interface BidService {
 
     List <BidDetailsDTO> getBidDetailsByBidCode(String bidCode);
 
+    List<BidDetailsDTO> getBidDetailsBtEmail(String email);
 }

@@ -1686,7 +1686,7 @@
 			};
 
 			$.ajax({
-				url: `${API_BASE_URL}/bids/updateHighestBidPrice?userId=${userId}`,
+				url: `${API_BASE_URL}/bids/updateHighestBidPrice?userId=${userId} &email=${email}`,
 				type: 'PUT',
 				contentType: 'application/json',
 				headers: {

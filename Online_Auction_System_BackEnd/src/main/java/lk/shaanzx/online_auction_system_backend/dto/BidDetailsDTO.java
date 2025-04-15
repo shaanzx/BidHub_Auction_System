@@ -14,6 +14,7 @@ public class BidDetailsDTO {
     private int BidDetailsId;
     private double bidPrice;
     private LocalDateTime bidDateTime;
-    private UUID userId;
     private String BidCode;
+    private UUID userId;
+    private String email;
 }

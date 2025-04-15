@@ -42,6 +42,25 @@
 			margin-top: 10px;
 			width: 100%;
 		}
+
+		#bidHistoryBody {
+			display: block;
+			max-height: 50px;
+			overflow-y: auto;
+		}
+
+		#bidHistoryBody tr {
+			display: table;
+			width: 100%;
+			table-layout: fixed;
+		}
+
+		#bidHistoryTable thead, #bidHistoryBody {
+			width: 100%;
+			display: table;
+			table-layout: fixed;
+		}
+
 	</style>
 
 </head>
@@ -192,7 +211,7 @@
 		<div class="row justify-content-between">
 			<div class="col-lg-5">
 				<div class="intro-excerpt">
-					<h1>My Bids</h1>
+					<h1>Bidding Dashboard</h1>
 					<p class="mb-4">Track all your active bids, watchlist items, and auction history in one place.</p>
 				</div>
 			</div>
@@ -217,14 +236,14 @@
 			</div>
 		</div>
 
-		<div class="row mb-5">
+		<!--<div class="row mb-5">
 			<div class="col-md-12">
 				<h2 class="section-title mb-4">Watchlist</h2>
 				<div class="row" id="watchlistContainer">
-					<!-- Watchlist items will be loaded here via AJAX -->
+					&lt;!&ndash; Watchlist items will be loaded here via AJAX &ndash;&gt;
 				</div>
 			</div>
-		</div>
+		</div>-->
 
 		<!-- Update Bid Modal -->
 		<div class="modal fade" id="updateBidModal" tabindex="-1" aria-labelledby="updateBidModalLabel" aria-hidden="true">
@@ -266,11 +285,10 @@
 					<table class="table table-hover bid-history-table" id="bidHistoryTable">
 						<thead>
 						<tr>
-							<th>Item</th>
-							<th>Your Bids</th>
-							<th>Highest Bid</th>
-							<th>Status</th>
-							<th>Date</th>
+							<th>Bid Code</th>
+							<th>User Email</th>
+							<th>Bid Time</th>
+							<th>Price</th>
 						</tr>
 						</thead>
 						<tbody id="bidHistoryBody">
@@ -470,11 +488,55 @@
 		const API_BASE_URL = 'http://localhost:8082/api/v1';
 		const token = localStorage.getItem('authToken');
 		const userId = localStorage.getItem('userId');
+		const email = localStorage.getItem('userEmail');
 		let selectBidId = null;
 
 		// Load bid cart items
 		loadBidCart();
+		loadBidHistory();
 
+		function loadBidHistory() {
+			$.ajax({
+				url: `${API_BASE_URL}/bids/GetAllBidDetails`,
+				method: 'GET',
+				headers: {
+					'Authorization': `Bearer ${token}`
+				},
+				success: function(response) {
+					if(response.code === 200) {
+						renderBidHistory(response.data);
+						loadBidHistory();
+					} else {
+						notyf.error('Failed to load bid history');
+					}
+				},
+				error: function() {
+					notyf.error('Something went wrong while loading bid history');
+				}
+			});
+		}
+
+		function renderBidHistory(items) {
+			const container = $('#bidHistoryBody');
+			container.empty();
+
+			if (!items || items.length === 0) {
+				container.append('<tr><td colspan="4">No bid history found.</td></tr>');
+				return;
+			}
+
+			items.forEach(item => {
+				const row = `
+					<tr>
+						<td>${item.bidCode}</td>
+						<td>${item.email}</td>
+						<td>${item.bidDateTime.split('T')[0]}</td>
+						<td>${item.bidPrice.toFixed(2)}</td>
+					</tr>
+				`;
+				container.append(row);
+			})
+		}
 		function loadBidCart() {
 			$.ajax({
 				url: `${API_BASE_URL}/bidCart/getBidCartItems`,
@@ -581,7 +643,7 @@
 			};
 
 			$.ajax({
-				url: `${API_BASE_URL}/bids/updateHighestBidPrice?userId=${userId}`,
+				url: `${API_BASE_URL}/bids/updateHighestBidPrice?userId=${userId}&email=${email}`,
 				type: 'PUT',
 				contentType: 'application/json',
 				headers: {

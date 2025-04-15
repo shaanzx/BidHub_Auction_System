@@ -2,6 +2,7 @@ package lk.shaanzx.online_auction_system_backend.repo;
 
 import lk.shaanzx.online_auction_system_backend.entity.BidDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface BidDetailsRepo extends JpaRepository<BidDetails, String> {
 
     // Optional: Bid code එක exist වෙනවද කියලා check කරන්න
     boolean existsByBidCode(String bidCode);
+
+    List<BidDetails> findByEmail(String email);
 }

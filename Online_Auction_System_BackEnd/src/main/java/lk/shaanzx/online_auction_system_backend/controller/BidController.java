@@ -35,9 +35,12 @@ public class BidController {
     }
 
     @PutMapping("/updateHighestBidPrice")
-    public ResponseEntity<ResponseDTO> updateHighestBidPrice(@Valid @RequestBody BidDTO bidDTO, @RequestParam("userId") UUID userId) {
+    public ResponseEntity<ResponseDTO> updateHighestBidPrice(
+            @Valid @RequestBody BidDTO bidDTO,
+            @RequestParam("userId") UUID userId,
+            @RequestParam("email") String email) {
         try {
-            int result = bidService.updateHighestBidPrice(bidDTO.getBidCode(), bidDTO.getHighestBidPrice(), userId);
+            int result = bidService.updateHighestBidPrice(bidDTO.getBidCode(), bidDTO.getHighestBidPrice(), userId, email);
             return switch (result) {
                 case VarList.OK -> ResponseEntity.status(HttpStatus.OK)
                         .body(new ResponseDTO(VarList.OK, "Bid updated successfully!", bidDTO));
@@ -82,5 +85,10 @@ public class BidController {
         public ResponseEntity<ResponseDTO> getBidDetailsByBidCode(@RequestParam("bidCode") String bidCode) {
             System.out.println(bidCode);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", bidService.getBidDetailsByBidCode(bidCode)));
+    }
+
+    @GetMapping(value = "getBidDetailsByEmail")
+    public ResponseEntity<ResponseDTO> getBidDetailsByUserId(@RequestParam("email") String email) {
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", bidService.getBidDetailsBtEmail(email)));
     }
 }

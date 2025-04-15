@@ -129,7 +129,6 @@ public class ItemServiceImpl implements ItemService {
             return VarList.Not_Found;
         }
     }
-
     @Override
     public List<ItemDTO> getItems() {
         return itemRepo.findAll().stream().map(item -> {
@@ -151,6 +150,7 @@ public class ItemServiceImpl implements ItemService {
             return itemDTO;
         }).collect(Collectors.toList());
     }
+
 
 
 

@@ -5,13 +5,11 @@ import lk.shaanzx.online_auction_system_backend.dto.BidCartDTO;
 import lk.shaanzx.online_auction_system_backend.dto.BidDTO;
 import lk.shaanzx.online_auction_system_backend.dto.BidDetailsDTO;
 import lk.shaanzx.online_auction_system_backend.dto.ItemDTO;
-import lk.shaanzx.online_auction_system_backend.entity.Bid;
-import lk.shaanzx.online_auction_system_backend.entity.BidCart;
-import lk.shaanzx.online_auction_system_backend.entity.BidDetails;
-import lk.shaanzx.online_auction_system_backend.entity.Item;
+import lk.shaanzx.online_auction_system_backend.entity.*;
 import lk.shaanzx.online_auction_system_backend.repo.BidDetailsRepo;
 import lk.shaanzx.online_auction_system_backend.repo.BidRepo;
 import lk.shaanzx.online_auction_system_backend.repo.ItemRepo;
+import lk.shaanzx.online_auction_system_backend.repo.UserRepository;
 import lk.shaanzx.online_auction_system_backend.service.BidService;
 import lk.shaanzx.online_auction_system_backend.util.VarList;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +27,9 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class BidServiceImpl implements BidService {
+
+    @Autowired
+    private UserRepository userRepo;
 
     @Autowired
     private BidRepo bidRepo;
@@ -69,7 +70,7 @@ public class BidServiceImpl implements BidService {
 
     @Transactional
     @Override
-    public int updateHighestBidPrice(String bidCode, Double highestPrice, UUID userId) {
+    public int updateHighestBidPrice(String bidCode, Double highestPrice, UUID userId, String email) {
         try {
             // Validate inputs
             if (bidCode == null || highestPrice == null || userId == null) {
@@ -97,7 +98,10 @@ public class BidServiceImpl implements BidService {
             BidDetails bidDetails = new BidDetails();
             bidDetails.setBidCode(bid.getBidCode());
             bidDetails.setBidPrice(highestPrice);
-            bidDetails.setUserId(userId);
+            User user = new User();
+            user.setId(userId);
+            bidDetails.setUserId(user);
+            bidDetails.setEmail(email);
             bidDetails.setBidDateTime(LocalDateTime.now());
 
             bidDetailsRepo.save(bidDetails);
@@ -143,5 +147,10 @@ public class BidServiceImpl implements BidService {
     @Override
     public List<BidDetailsDTO> getBidDetailsByBidCode(String bidCode) {
         return modelMapper.map(bidDetailsRepo.findByBidCode(bidCode), new TypeToken<List<BidDetailsDTO>>(){}.getType());
+    }
+
+    @Override
+    public List<BidDetailsDTO> getBidDetailsBtEmail(String email) {
+        return modelMapper.map(bidDetailsRepo.findByEmail(email), new TypeToken<List<BidDetailsDTO>>(){}.getType());
     }
 }
