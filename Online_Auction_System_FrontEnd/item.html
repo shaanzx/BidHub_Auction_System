@@ -18,6 +18,10 @@
             object-fit: cover;
             border-radius: 50%;
         }
+        .card-table{
+            max-height: 400px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
@@ -99,7 +103,7 @@
 
             <!-- Items Table -->
             <div class="card">
-                <div class="card-body">
+                <div class="card-table">
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
@@ -433,7 +437,20 @@
         });
 
         // Save item (add new)
+        // Save Item with loading spinner and image validation
         $('#saveItemBtn').click(function() {
+            const saveBtn = $(this);
+            const imageFile = $('#itemImage')[0].files[0];
+
+            // Validate image size (max 10MB)
+            if (imageFile && imageFile.size > 10 * 1024 * 1024) {
+                notyf.error('Image size must be less than 10MB');
+                return;
+            }
+
+            // Show loading state
+            saveBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
+
             const formData = new FormData();
             formData.append('code', $('#itemCode').val());
             formData.append('name', $('#itemName').val());
@@ -443,7 +460,6 @@
             formData.append('status', 'Pending');
             formData.append('userId', userId);
 
-            const imageFile = $('#itemImage')[0].files[0];
             if (imageFile) {
                 formData.append('image', imageFile);
             }
@@ -465,15 +481,24 @@
                     }
                 },
                 error: function(xhr) {
-                    notyf.error(xhr.responseJSON?.message || 'Failed to add item');
+                    const errorMsg = xhr.responseJSON?.message || 'Failed to add item';
+                    notyf.error(errorMsg.includes("SizeLimitExceededException") ?
+                        'Image size exceeds maximum limit (10MB)' : errorMsg);
+                },
+                complete: function() {
+                    saveBtn.prop('disabled', false).html('Save Item');
                 }
             });
         });
 
-        // Update item status
+// Update item status with loading spinner
         $('#updateStatusBtn').click(function() {
+            const updateBtn = $(this);
             const newStatus = $('#statusSelect').val();
             const itemPrice = parseFloat($('#statusItemPrice').val());
+
+            // Show loading state
+            updateBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...');
 
             $.ajax({
                 url: `${API_BASE_URL}/items/updateItemStatus`,
@@ -496,6 +521,9 @@
                 },
                 error: function(xhr) {
                     notyf.error(xhr.responseJSON?.message || 'Failed to update status');
+                },
+                complete: function() {
+                    updateBtn.prop('disabled', false).html('Update Status');
                 }
             });
         });

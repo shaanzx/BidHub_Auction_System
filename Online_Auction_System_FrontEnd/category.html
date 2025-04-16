@@ -282,8 +282,8 @@
                     <td>${category.categoryCode}</td>
                     <td>${category.categoryName}</td>
                     <td>${category.categoryDescription}</td>
-                    <td><span class="badge rounded-pill px-2 ${category.active ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'}">
-                            ${category.active ? "Active" : "Inactive"}</span></td>
+                    <td><span class="badge rounded-pill px-2 ${category.status ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'}">
+                            ${category.status ? "Active" : "Inactive"}</span></td>
                     <td>
                         <button class="btn btn-sm btn-outline-primary me-1 edit-btn">
                             <i class="bi bi-pencil"></i>
@@ -308,7 +308,7 @@
                 $('#categoryCode').val(category.categoryCode);
                 $('#categoryName').val(category.categoryName);
                 $('#description').val(category.categoryDescription);
-                $('#statusSwitch').prop('checked', category.active);
+                $('#statusSwitch').prop('checked', category.status);
                 modal.show();
             });
 
@@ -325,7 +325,7 @@
                 categoryCode: $('#categoryCode').val(),
                 categoryName: $('#categoryName').val(),
                 categoryDescription: $('#description').val(),
-                active: $('#statusSwitch').is(':checked')
+                status: 'Active'
             };
 
             const url = isEditing ? 'http://localhost:8082/api/v1/categories/updateCategory'

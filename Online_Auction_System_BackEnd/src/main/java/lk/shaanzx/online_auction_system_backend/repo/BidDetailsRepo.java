@@ -17,4 +17,6 @@ public interface BidDetailsRepo extends JpaRepository<BidDetails, String> {
     boolean existsByBidCode(String bidCode);
 
     List<BidDetails> findByEmail(String email);
+
+    BidDetails findTopByBidCodeOrderByBidPriceDesc(String bidCode);
 }

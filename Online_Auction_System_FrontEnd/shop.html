@@ -61,6 +61,35 @@
 			table-layout: fixed;
 		}
 
+		/* Add this to your stylesheet */
+		.product-image-container {
+			width: 100%;
+			height: 200px; /* Fixed height for all images */
+			overflow: hidden;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: #f8f9fa; /* Light gray background if image doesn't fill */
+			margin-bottom: 15px;
+		}
+
+		.product-thumbnail {
+			max-height: 100%;
+			max-width: 100%;
+			object-fit: contain; /* Ensures image maintains aspect ratio */
+			transition: transform 0.3s ease;
+		}
+
+		.product-item:hover .product-thumbnail {
+			transform: scale(1.05); /* Slight zoom on hover */
+		}
+
+		/* Responsive adjustments */
+		@media (max-width: 768px) {
+			.product-image-container {
+				height: 150px;
+			}
+		}
 	</style>
 
 </head>
@@ -217,7 +246,7 @@
 			</div>
 			<div class="col-lg-7">
 				<div class="hero-img-wrap">
-					<img src="images/img-grid-2.jpg" class="img-fluid" alt="Bidding Dashboard">
+					<img src="images/couch.png" class="img-fluid" alt="Bidding Dashboard">
 				</div>
 			</div>
 		</div>
@@ -505,7 +534,6 @@
 				success: function(response) {
 					if(response.code === 200) {
 						renderBidHistory(response.data);
-						loadBidHistory();
 					} else {
 						notyf.error('Failed to load bid history');
 					}
@@ -538,6 +566,9 @@
 			})
 		}
 		function loadBidCart() {
+			// Show loading state
+			$('#productCardContainer').html('<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"></div> Loading bids...</div>');
+
 			$.ajax({
 				url: `${API_BASE_URL}/bidCart/getBidCartItems`,
 				method: 'GET',
@@ -549,10 +580,12 @@
 						renderBidCart(response.data);
 					} else {
 						notyf.error('Failed to load bid cart items');
+						$('#productCardContainer').html('<div class="col-12 text-center">Failed to load bids.</div>');
 					}
 				},
 				error: function() {
 					notyf.error('Something went wrong while loading bid cart');
+					$('#productCardContainer').html('<div class="col-12 text-center">Error loading bids.</div>');
 				}
 			});
 		}
@@ -568,32 +601,37 @@
 
 			items.forEach(item => {
 				const card = `
-							<div class="col-12 col-md-4 col-lg-3 mb-5">
-								<div class="product-item">
-									<img src="${item.imagePath}" class="img-fluid product-thumbnail" alt="${item.name}">
-									<h3 class="product-title">${item.name}</h3>
-									<p class="product-description">${item.description}</p>
-									<div class="product-price-info">
-										<div class="current-bid">Current Bid: $${item.highestBidPrice.toFixed(2)}</div>
-										<div class="bid-id">Bid ID: ${item.bidCode}</div>
-										<div class="end-time">Ends: ${new Date(item.bidEndTime).toLocaleString()}</div>
-									</div>
-									<strong class="product-price">$${item.price.toFixed(2)}</strong>
-									<button class="btn btn-primary update-bid-btn"
-											data-bid-code="${item.bidCode}"
-											data-item-code="${item.code}"
-											data-current-price="${item.highestBidPrice}"
-											data-image="${item.imagePath}"
-											data-name="${item.name}"
-											data-description="${item.description}">
-										Update Bid
-									</button>
-									<span class="icon-cross">
-										<img src="images/cross.svg" class="img-fluid" alt="Remove item">
-									</span>
-								</div>
-							</div>
-						`;
+            <div class="col-12 col-md-4 col-lg-3 mb-5">
+                <div class="product-item">
+                    <div class="product-image-container">
+                        <img src="${item.imagePath || 'images/default-item.jpg'}"
+                             class="img-fluid product-thumbnail"
+                             alt="${item.name}"
+                             onerror="this.src='images/default-item.jpg'">
+                    </div>
+                    <h3 class="product-title">${item.name}</h3>
+                    <p class="product-description">${item.description}</p>
+                    <div class="product-price-info">
+                        <div class="current-bid">Current Bid: $${item.highestBidPrice.toFixed(2)}</div>
+                        <div class="bid-id">Bid ID: ${item.bidCode}</div>
+                        <div class="end-time">Ends: ${new Date(item.bidEndTime).toLocaleString()}</div>
+                    </div>
+                    <strong class="product-price">$${item.price.toFixed(2)}</strong>
+                    <button class="btn btn-primary update-bid-btn"
+                            data-bid-code="${item.bidCode}"
+                            data-item-code="${item.code}"
+                            data-current-price="${item.highestBidPrice}"
+                            data-image="${item.imagePath}"
+                            data-name="${item.name}"
+                            data-description="${item.description}">
+                        Update Bid
+                    </button>
+                    <span class="icon-cross">
+                        <img src="images/cross.svg" class="img-fluid" alt="Remove item">
+                    </span>
+                </div>
+            </div>
+        `;
 				container.append(card);
 			});
 		}
@@ -601,6 +639,9 @@
 		// Handle update bid button click
 		$(document).on('click', '.update-bid-btn', function() {
 			const button = $(this);
+			// Show loading spinner when button is clicked
+			button.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...');
+
 			selectedBid = {
 				bidCode: button.data('bid-code'),
 				itemCode: button.data('item-code'),
@@ -625,10 +666,14 @@
 			// Show the modal
 			const modal = new bootstrap.Modal(document.getElementById('updateBidModal'));
 			modal.show();
+
+			// Reset button state after modal is shown
+			button.prop('disabled', false).html('Update Bid');
 		});
 
-		// Handle bid submission
+// Handle bid submission
 		$('#submitBidBtn').click(function() {
+			const submitBtn = $(this);
 			const newPrice = parseFloat($('#newPrice').val());
 			const minRequired = selectedBid.currentPrice * 1.1;
 
@@ -636,6 +681,12 @@
 				notyf.error(`New bid must be at least 10% higher than $${selectedBid.currentPrice.toFixed(2)} (Minimum: $${minRequired.toFixed(2)})`);
 				return;
 			}
+
+			// Show loading state on submit button
+			submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...');
+
+			// Also disable the close button during submission
+			$('.btn-close, .btn-secondary').prop('disabled', true);
 
 			const payload = {
 				bidCode: selectedBid.bidCode,
@@ -661,6 +712,11 @@
 				},
 				error: function(xhr, status, error) {
 					notyf.error("Failed to update bid: " + (xhr.responseJSON?.message || error));
+				},
+				complete: function() {
+					// Reset button states regardless of success/error
+					submitBtn.prop('disabled', false).html('Submit Bid');
+					$('.btn-close, .btn-secondary').prop('disabled', false);
 				}
 			});
 		});

@@ -22,4 +22,9 @@ public class BidCartController {
     public ResponseEntity<ResponseDTO> getBidCartItems() {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", bidCartService.getBidCartItems()));
     }
+
+    @GetMapping(value = "getNewestBidCartItems")
+    public ResponseEntity<ResponseDTO> getNewestBidCartItems() {
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", bidCartService.getNewestBidCartItems()));
+    }
 }

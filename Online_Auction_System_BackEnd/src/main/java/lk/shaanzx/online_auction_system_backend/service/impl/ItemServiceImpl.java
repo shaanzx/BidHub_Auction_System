@@ -10,6 +10,7 @@ import lk.shaanzx.online_auction_system_backend.repo.ItemRepo;
 import lk.shaanzx.online_auction_system_backend.service.ItemService;
 import lk.shaanzx.online_auction_system_backend.util.VarList;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -171,5 +173,16 @@ public class ItemServiceImpl implements ItemService {
         itemRepo.save(item);
 
         return VarList.OK;
+    }
+
+    @Override
+    public List<ItemDTO> getItemById(String code) {
+        Optional<Item> optionalItem = itemRepo.findById(code);
+        if (optionalItem.isEmpty()) {
+            return null;
+        }
+        Item item = optionalItem.get();
+        ItemDTO itemDTO = modelMapper.map(item, ItemDTO.class);
+        return Collections.singletonList(itemDTO);
     }
 }

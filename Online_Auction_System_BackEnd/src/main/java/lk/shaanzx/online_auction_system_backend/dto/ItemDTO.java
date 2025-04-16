@@ -21,7 +21,7 @@ public class ItemDTO {
     //Image Getting From DB
     private String imagePath;
     private double price;
-    @Pattern(regexp = "^(Pending|Approved|Disapproved|On Bid|Sold Out)$", message = "Invalid status format")
+    @Pattern(regexp = "^(Pending|Approved|Sold Out)$", message = "Invalid status format")
     private String status;
     @Pattern(regexp = "^CAT-\\d{4}$", message = "Invalid CAT format")
     private String categoryCode;

@@ -15,18 +15,21 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/api/v1/items")
-@MultipartConfig(fileSizeThreshold = 10 * 1024 * 1024, maxFileSize = 10 * 1024 * 1024, maxRequestSize = 10 * 1024 * 1024)
 @CrossOrigin(origins = "*")
 public class ItemController {
+
+    private static final long MAX_IMAGE_SIZE = 10 * 1024 * 1024; // 10MB
 
     @Autowired
     private ItemService itemService;
     @Autowired
     private BidService bidService;
 
-    @PostMapping(value = "/addItem" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/addItem", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ResponseEntity<ResponseDTO> addItem(
             @Valid
@@ -37,8 +40,22 @@ public class ItemController {
             @RequestParam("status") String status,
             @RequestParam("categoryCode") String categoryCode,
             @RequestParam("userId") String userId,
-            @RequestParam(value = "image") MultipartFile image) {  // 🔥 Change to MultipartFile
+            @RequestParam(value = "image", required = false) MultipartFile image) {
+
         try {
+            // Validate image size
+            if (image != null && !image.isEmpty()) {
+                if (image.getSize() > MAX_IMAGE_SIZE) {
+                    return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
+                            .body(new ResponseDTO(VarList.Payload_Too_Large, "Image size exceeds maximum limit (10MB)", null));
+                }
+
+                if (!image.getContentType().startsWith("image/")) {
+                    return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                            .body(new ResponseDTO(VarList.Unsupported_Media_Type, "Only image files are allowed", null));
+                }
+            }
+
             ItemDTO itemDTO = new ItemDTO();
             itemDTO.setCode(code);
             itemDTO.setName(name);
@@ -62,9 +79,10 @@ public class ItemController {
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDTO(VarList.Bad_Gateway, "Exception: " + e.getMessage(), null));
+                    .body(new ResponseDTO(VarList.Bad_Gateway, "Error processing request: " + e.getMessage(), null));
         }
     }
+
 
 
     @PutMapping(value = "/updateItem", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -190,4 +208,14 @@ public class ItemController {
         }
     }
 
+    @GetMapping(value = "/getItemById")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public ResponseEntity<ResponseDTO> getItemById(@Valid @RequestBody ItemDTO itemDTO) {
+        List<ItemDTO> item = itemService.getItemById(itemDTO.getCode());
+        if (item != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(VarList.OK, "Success", item));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
+        }
+    }
 }

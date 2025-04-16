@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 public interface BidRepo extends JpaRepository<Bid , String> {
     @Query("SELECT b FROM bid b WHERE b.itemCode.code = :itemCode")
     Bid findByItemCode(String itemCode);
+
+    List<Bid> findByEndBidDateBeforeAndItemCode_Status(LocalDateTime now, String status);
 }

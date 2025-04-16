@@ -265,7 +265,7 @@ a {
   height: 70%; }
 
 .why-choose-section {
-  padding: 7rem 0; }
+  padding: 7rem 0 0 0; }
   .why-choose-section .img-wrap {
     position: relative; }
     .why-choose-section .img-wrap:before {
@@ -500,7 +500,7 @@ a {
         background-color: #3b5d50; }
 
 .before-footer-section {
-  padding: 7rem 0 12rem 0 !important; }
+  padding: 0rem 0 12rem 0 !important; }
 
 .blog-section {
   padding: 7rem 0 12rem 0; }

@@ -833,6 +833,7 @@
 	<link href="css/tiny-slider.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet">
 	<title>Homepage</title>
+
 	<style>
 		.modal-header{
 			background-color: #1d2e28;
@@ -858,6 +859,73 @@
 		.update-bid-btn {
 			margin-top: 10px;
 			width: 100%;
+		}
+		/* Add this to your stylesheet */
+		.product-image-container {
+			width: 100%;
+			height: 200px; /* Fixed height for all images */
+			overflow: hidden;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: #f8f9fa; /* Light gray background if image doesn't fill */
+			margin-bottom: 15px;
+		}
+
+		.product-thumbnail {
+			max-height: 100%;
+			max-width: 100%;
+			object-fit: contain; /* Ensures image maintains aspect ratio */
+			transition: transform 0.3s ease;
+		}
+
+		.product-item:hover .product-thumbnail {
+			transform: scale(1.05); /* Slight zoom on hover */
+		}
+
+		/* Responsive adjustments */
+		@media (max-width: 768px) {
+			.product-image-container {
+				height: 150px;
+			}
+		}
+
+		/* Product thumbnail styling for small product items */
+		.product-item-sm {
+			gap: 15px;
+			align-items: flex-start;
+		}
+
+		.product-item-sm .thumbnail {
+			width: 120px;
+			height: 120px;
+			min-width: 120px;
+			overflow: hidden;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: #f8f9fa;
+			border-radius: 8px;
+		}
+
+		.product-thumbnail-sm {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			transition: transform 0.3s ease;
+		}
+
+		.product-item-sm:hover .product-thumbnail-sm {
+			transform: scale(1.05);
+		}
+
+		/* Responsive adjustments */
+		@media (max-width: 768px) {
+			.product-item-sm .thumbnail {
+				width: 100px;
+				height: 100px;
+				min-width: 100px;
+			}
 		}
 	</style>
 </head>
@@ -987,7 +1055,7 @@
 				<div class="intro-excerpt">
 					<h1>BidHub <span clsas="d-block">Auction Platform</span></h1>
 					<p class="mb-4">Buy and sell with ease on BidHub. Experience real-time auctions, secure transactions, and the best deals on a wide range of products.</p>
-					<p><a href="" class="btn btn-secondary me-2">Start Bidding</a><a href="#" class="btn btn-white-outline">Learn More</a></p>
+					<p><a href="shop.html" class="btn btn-secondary me-2">Start Bidding</a><a href="#" class="btn btn-white-outline">Learn More</a></p>
 				</div>
 			</div>
 			<div class="col-lg-7">
@@ -1004,11 +1072,11 @@
 <div class="product-section">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
+			<!--<div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
 				<h2 class="mb-4 section-title">Seamless and Secure Bidding.</h2>
 				<p class="mb-4">Join BidHub for a smooth and secure auction experience. Place bids in real-time, discover exclusive deals, and win the best offers effortlessly.</p>
 				<p><a href="shop.html" class="btn">Explore</a></p>
-			</div>
+			</div>-->
 
 			<div>
 				<h3 class="mb-4 section-title text-center">Newest Bids</h3>
@@ -1107,7 +1175,7 @@
 
 			<div class="col-lg-5">
 				<div class="img-wrap">
-					<img src="images/why-choose-us-img.jpg" alt="Image" class="img-fluid">
+					<img src="images/Watch-index.jpg" alt="Image" class="img-fluid">
 				</div>
 			</div>
 		</div>
@@ -1123,7 +1191,7 @@
 				<div class="imgs-grid">
 					<div class="grid grid-1"><img src="images/img-grid-1.jpg" alt="BidHub"></div>
 					<div class="grid grid-2"><img src="images/img-grid-2.jpg" alt="BidHub"></div>
-					<div class="grid grid-3"><img src="images/img-grid-3.jpg" alt="BidHub"></div>
+					<div class="grid grid-3"><img src="images/Necklace-index.jpg" alt="BidHub"></div>
 				</div>
 			</div>
 			<div class="col-lg-5 ps-lg-5">
@@ -1150,7 +1218,7 @@
 			<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
 				<div class="product-item-sm d-flex">
 					<div class="thumbnail">
-						<img src="images/Smart%20Phone.jpg" alt="Image" class="img-fluid">
+						<img src="images/Smart%20Phone.jpg" alt="Smartphone Bundle" class="img-fluid product-thumbnail-sm">
 					</div>
 					<div class="pt-3">
 						<h3>Smartphone Bundle</h3>
@@ -1163,7 +1231,7 @@
 			<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
 				<div class="product-item-sm d-flex">
 					<div class="thumbnail">
-						<img src="images/SmartWatches.jpg" alt="Image" class="img-fluid">
+						<img src="images/SmartWatches.jpg" alt="Luxury Watch" class="img-fluid product-thumbnail-sm">
 					</div>
 					<div class="pt-3">
 						<h3>Luxury Watch</h3>
@@ -1176,7 +1244,7 @@
 			<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
 				<div class="product-item-sm d-flex">
 					<div class="thumbnail">
-						<img src="images/GamingLaptop.jpg" alt="Image" class="img-fluid">
+						<img src="images/GamingLaptop.jpg" alt="Gaming Laptop" class="img-fluid product-thumbnail-sm">
 					</div>
 					<div class="pt-3">
 						<h3>Gaming Laptop</h3>
@@ -1290,7 +1358,7 @@
 		<div class="row">
 			<div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
 				<div class="post-entry">
-					<a href="#" class="post-thumbnail"><img src="images/post-1.jpg" alt="Vintage Clock" class="img-fluid"></a>
+					<a href="#" class="post-thumbnail"><img src="images/Vintage%20Clocks.jpeg" alt="Vintage Clock" class="img-fluid"></a>
 					<div class="post-content-entry">
 						<h3><a href="#">The Timeless Beauty of Vintage Clocks</a></h3>
 						<div class="meta">
@@ -1302,7 +1370,7 @@
 
 			<div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
 				<div class="post-entry">
-					<a href="#" class="post-thumbnail"><img src="images/post-2.jpg" alt="Rare Coins" class="img-fluid"></a>
+					<a href="#" class="post-thumbnail"><img src="images/Rare%20Coins.jpg" alt="Rare Coins" class="img-fluid"></a>
 					<div class="post-content-entry">
 						<h3><a href="#">Rare Coins: Hidden Treasures Worth Thousands</a></h3>
 						<div class="meta">
@@ -1314,7 +1382,7 @@
 
 			<div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
 				<div class="post-entry">
-					<a href="#" class="post-thumbnail"><img src="images/post-3.jpg" alt="Vintage Typewriter" class="img-fluid"></a>
+					<a href="#" class="post-thumbnail"><img src="images/VintageTypewriters.jpg" alt="Vintage Typewriter" class="img-fluid"></a>
 					<div class="post-content-entry">
 						<h3><a href="#">The Charm of Vintage Typewriters</a></h3>
 						<div class="meta">
@@ -1581,8 +1649,11 @@
 		}
 
 		function loadBidCart() {
+			// Show loading state
+			$('#productCardContainer').html('<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"></div> Loading bids...</div>');
+
 			$.ajax({
-				url: `${API_BASE_URL}/bidCart/getBidCartItems`,
+				url: `${API_BASE_URL}/bidCart/getNewestBidCartItems`,
 				method: 'GET',
 				headers: {
 					'Authorization': `Bearer ${token}`
@@ -1592,10 +1663,12 @@
 						renderBidCart(response.data);
 					} else {
 						notyf.error('Failed to load bid cart items');
+						$('#productCardContainer').html('<div class="col-12 text-center">Failed to load bids.</div>');
 					}
 				},
 				error: function() {
 					notyf.error('Something went wrong while loading bid cart');
+					$('#productCardContainer').html('<div class="col-12 text-center">Error loading bids.</div>');
 				}
 			});
 		}
@@ -1611,32 +1684,37 @@
 
 			items.forEach(item => {
 				const card = `
-								<div class="col-12 col-md-4 col-lg-3 mb-5">
-									<div class="product-item">
-										<img src="${item.imagePath}" class="img-fluid product-thumbnail" alt="${item.name}">
-										<h3 class="product-title">${item.name}</h3>
-										<p class="product-description">${item.description}</p>
-										<div class="product-price-info">
-											<div class="current-bid">Current Bid: $${item.highestBidPrice.toFixed(2)}</div>
-											<div class="bid-id">Bid ID: ${item.bidCode}</div>
-											<div class="end-time">Ends: ${new Date(item.bidEndTime).toLocaleString()}</div>
-										</div>
-										<strong class="product-price">$${item.price.toFixed(2)}</strong>
-										<button class="btn btn-primary update-bid-btn"
-												data-bid-code="${item.bidCode}"
-												data-item-code="${item.code}"
-												data-current-price="${item.highestBidPrice}"
-												data-image="${item.imagePath}"
-												data-name="${item.name}"
-												data-description="${item.description}">
-											Update Bid
-										</button>
-										<span class="icon-cross">
-											<img src="images/cross.svg" class="img-fluid" alt="Remove item">
-										</span>
-									</div>
-								</div>
-							`;
+            <div class="col-12 col-md-4 col-lg-3 mb-5">
+                <div class="product-item">
+                    <div class="product-image-container">
+                        <img src="${item.imagePath || 'images/default-item.jpg'}"
+                             class="img-fluid product-thumbnail"
+                             alt="${item.name}"
+                             onerror="this.src='images/default-item.jpg'">
+                    </div>
+                    <h3 class="product-title">${item.name}</h3>
+                    <p class="product-description">${item.description}</p>
+                    <div class="product-price-info">
+                        <div class="current-bid">Current Bid: $${item.highestBidPrice.toFixed(2)}</div>
+                        <div class="bid-id">Bid ID: ${item.bidCode}</div>
+                        <div class="end-time">Ends: ${new Date(item.bidEndTime).toLocaleString()}</div>
+                    </div>
+                    <strong class="product-price">$${item.price.toFixed(2)}</strong>
+                    <button class="btn btn-primary update-bid-btn"
+                            data-bid-code="${item.bidCode}"
+                            data-item-code="${item.code}"
+                            data-current-price="${item.highestBidPrice}"
+                            data-image="${item.imagePath}"
+                            data-name="${item.name}"
+                            data-description="${item.description}">
+                        Update Bid
+                    </button>
+                    <span class="icon-cross">
+                        <img src="images/cross.svg" class="img-fluid" alt="Remove item">
+                    </span>
+                </div>
+            </div>
+        `;
 				container.append(card);
 			});
 		}

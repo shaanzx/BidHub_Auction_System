@@ -19,4 +19,9 @@ public class BidCartServiceImpl implements BidCartService {
     public List<BidCartDTO> getBidCartItems() {
         return bidCartRepo.getAllActiveBidCartItems();
     }
+
+    @Override
+    public List<BidCartDTO> getNewestBidCartItems() {
+        return bidCartRepo.getAllNewestBidCartItems();
+    }
 }

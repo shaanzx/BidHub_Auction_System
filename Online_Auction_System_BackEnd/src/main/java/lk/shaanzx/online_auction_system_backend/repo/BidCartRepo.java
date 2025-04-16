@@ -15,7 +15,16 @@ public interface BidCartRepo extends JpaRepository<Bid, String> {
             "i.code, i.name, i.description, i.imagePath, i.price, " +
             "b.bidCode, b.highestPrice, b.endBidDate) " +
             "FROM bid b JOIN b.itemCode i " +
-            "WHERE b.endBidDate > CURRENT_TIMESTAMP")
+            "WHERE i.status = 'Approved'")
     List<BidCartDTO> getAllActiveBidCartItems();
+
+    @Query("SELECT new lk.shaanzx.online_auction_system_backend.dto.BidCartDTO(" +
+            "i.code, i.name, i.description, i.imagePath, i.price, " +
+            "b.bidCode, b.highestPrice, b.endBidDate) " +
+            "FROM bid b JOIN b.itemCode i " +
+            "WHERE i.status = 'Approved' " +
+            "ORDER BY b.bidCode DESC LIMIT 4")
+    List<BidCartDTO> getAllNewestBidCartItems();
+
 }
 

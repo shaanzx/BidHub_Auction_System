@@ -14,6 +14,7 @@
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 	<link href="css/tiny-slider.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css" rel="stylesheet">
 	<title>Sell With Us | BidHUB</title>
 </head>
 
@@ -33,7 +34,7 @@
 					<a class="nav-link" href="index.html">Home</a>
 				</li>
 				<li><a class="nav-link" href="shop.html">Auction</a></li>
-				<li  class="nav-item active"><a class="nav-link" href="sellWithUs.html">Sell With Us</a></li>
+				<li class="nav-item active"><a class="nav-link" href="sellWithUs.html">Sell With Us</a></li>
 				<li><a class="nav-link" href="services.html">Services</a></li>
 				<li><a class="nav-link" href="blog.html">Blog</a></li>
 				<li><a class="nav-link" href="contact.html">Contact us</a></li>
@@ -51,111 +52,12 @@
 						<li><a class="dropdown-item" href="login.html">Logout</a></li>
 					</ul>
 				</li>
-				<li><a class="nav-link" href="cart.html"><i class="fa fa-shopping-cart"></i></a></li> <!-- Cart Icon -->
+				<li><a class="nav-link" href="cart.html"><i class="fa fa-shopping-cart"></i></a></li>
 			</ul>
-
 		</div>
 	</div>
 </nav>
 <!-- End Header/Navigation -->
-
-<!-- User Profile Update Modal -->
-<div class="modal fade" id="userProfileModal" tabindex="-1" aria-labelledby="userProfileModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal-header text-white" style="background-color: #222222;">
-				<h5 class="modal-title" id="userProfileModalLabel">Update Profile</h5>
-				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body p-4">
-				<form id="userProfileForm">
-					<div class="row">
-						<!-- Left Column -->
-						<div class="col-md-6">
-							<div class="mb-3">
-								<label for="userName" class="form-label">Full Name</label>
-								<input type="text" class="form-control" id="userName" name="name"
-									   pattern="^[A-Za-z ]+$" required
-									   minlength="2" maxlength="50">
-								<div class="invalid-feedback">Name must contain only letters and spaces (2-50 characters)</div>
-							</div>
-
-							<div class="mb-3">
-								<label for="userEmail" class="form-label">Email</label>
-								<input type="email" class="form-control" id="userEmail" name="email" required>
-								<div class="invalid-feedback">Please enter a valid email address</div>
-							</div>
-
-							<div class="mb-3">
-								<label for="userAddress" class="form-label">Address</label>
-								<input type="text" class="form-control" id="userAddress" name="address"
-									   pattern="^[A-Za-z0-9 ]+$" required>
-								<div class="invalid-feedback">Address must contain only letters, numbers and spaces</div>
-							</div>
-						</div>
-
-						<!-- Right Column -->
-						<div class="col-md-6">
-							<div class="mb-3">
-								<label for="userContact" class="form-label">Phone Number</label>
-								<input type="text" class="form-control" id="userContact" name="contact"
-									   pattern="^(0\d{9}|\+94\d{9})$" required>
-								<div class="invalid-feedback">Phone number must be in format 0XXXXXXXXX or +94XXXXXXXXX</div>
-							</div>
-
-							<div class="mb-3">
-								<label for="userNic" class="form-label">NIC Number</label>
-								<input type="text" class="form-control" id="userNic" name="nic"
-									   pattern="^(\d{9}V|\d{12})$" required>
-								<div class="invalid-feedback">NIC must be in format XXXXXXXXX or XXXXXXXXXXXX</div>
-							</div>
-
-							<div class="mb-3">
-								<label for="userPassword" class="form-label">Password</label>
-								<div class="input-group">
-									<input type="password" class="form-control" id="userPassword" name="password"
-										   pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$">
-									<button class="btn btn-outline-secondary" type="button" id="togglePassword">
-										<i class="bi bi-eye-slash" id="passwordToggleIcon"></i>
-									</button>
-								</div>
-								<div class="form-text text-muted">Leave blank to keep current password</div>
-								<div class="invalid-feedback">Password must be at least 8 characters with at least one letter and one number</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- Full width admin fields -->
-					<div class="row admin-only" style="display: none;">
-						<div class="col-md-6">
-							<div class="mb-3">
-								<label for="userRole" class="form-label">Role</label>
-								<select class="form-select" id="userRole" name="role">
-									<option value="USER">User</option>
-									<option value="ADMIN">Admin</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="mb-3">
-								<label for="userStatus" class="form-label">Status</label>
-								<select class="form-select" id="userStatus" name="status">
-									<option value="Active">Active</option>
-									<option value="Inactive">Inactive</option>
-								</select>
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer" style="background-color: #f8f9fa;">
-				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-				<button type="button" class="btn text-white" id="saveUserProfile" style="background-color: #1d2e28;">Save Changes</button>
-			</div>
-		</div>
-	</div>
-</div>
-<!--		End User Profile Modal 	-->
 
 <!-- Start Hero Section -->
 <div class="hero">
@@ -169,7 +71,7 @@
 			</div>
 			<div class="col-lg-7">
 				<div class="hero-img-wrap">
-					<img src="images/sell-hero.png" class="img-fluid" alt="Sell Items on BidHUB">
+					<img src="images/couch.png" class="img-fluid" alt="Sell Items on BidHUB">
 				</div>
 			</div>
 		</div>
@@ -190,38 +92,28 @@
 								<!-- Item Code -->
 								<div class="col-md-6 mb-3">
 									<label for="code" class="form-label">Item Code <span class="text-danger">*</span></label>
-									<input type="text" class="form-control" id="code" name="code"
-										   pattern="^ITM-\d{4}$"
-										   title="Item code must be in format ITM-0000"
-										   required>
-									<small class="form-text text-muted">Format: ITM-0000</small>
+									<input type="text" class="form-control" id="code" name="code" required readonly>
+									<small class="form-text text-muted">Auto-generated item code</small>
 								</div>
 
 								<!-- Item Name -->
 								<div class="col-md-6 mb-3">
 									<label for="name" class="form-label">Item Title <span class="text-danger">*</span></label>
-									<input type="text" class="form-control" id="name" name="name"
-										   pattern="^[A-Za-z ]+$"
-										   title="Name must contain only letters and spaces"
-										   minlength="3" required>
+									<input type="text" class="form-control" id="name" name="name" minlength="3" required>
 								</div>
 							</div>
 
 							<!-- Description -->
 							<div class="mb-3">
 								<label for="description" class="form-label">Description <span class="text-danger">*</span></label>
-								<textarea class="form-control" id="description" name="description" rows="3"
-										  pattern="^[A-Za-z ]+$"
-										  title="Description must contain only letters and spaces"
-										  minlength="3" required></textarea>
+								<textarea class="form-control" id="description" name="description" rows="3" minlength="3" required></textarea>
 							</div>
 
 							<div class="row">
 								<!-- Price -->
 								<div class="col-md-6 mb-3">
 									<label for="price" class="form-label">Starting Price ($) <span class="text-danger">*</span></label>
-									<input type="number" class="form-control" id="price" name="price"
-										   step="0.01" min="0" required>
+									<input type="number" class="form-control" id="price" name="price" step="0.01" min="0" required>
 								</div>
 
 								<!-- Category -->
@@ -229,12 +121,7 @@
 									<label for="categoryCode" class="form-label">Category <span class="text-danger">*</span></label>
 									<select class="form-select" id="categoryCode" name="categoryCode" required>
 										<option value="" disabled selected>Select a category</option>
-										<option value="CAT-1001">Antiques</option>
-										<option value="CAT-1002">Art</option>
-										<option value="CAT-1003">Collectibles</option>
-										<option value="CAT-1004">Jewelry</option>
-										<option value="CAT-1005">Electronics</option>
-										<option value="CAT-1006">Furniture</option>
+										<!-- Categories will be loaded via AJAX -->
 									</select>
 								</div>
 							</div>
@@ -243,15 +130,21 @@
 							<div class="mb-4">
 								<label for="image" class="form-label">Item Image <span class="text-danger">*</span></label>
 								<input class="form-control" type="file" id="image" name="image" accept="image/*" required>
-								<small class="form-text text-muted">Upload a clear photo of your item (JPEG, PNG)</small>
+								<small class="form-text text-muted">Upload a clear photo of your item (JPEG, PNG, max 10MB)</small>
+								<div class="mt-2" id="imagePreviewContainer" style="display: none;">
+									<img id="imagePreview" src="#" alt="Preview" style="max-width: 100%; max-height: 200px;">
+								</div>
 							</div>
 
 							<!-- Status (hidden as it's default to Pending) -->
 							<input type="hidden" id="status" name="status" value="Pending">
+							<input type="hidden" id="userId" name="userId">
 
 							<!-- Submit Button -->
 							<div class="d-grid gap-2">
-								<button type="submit" class="btn btn-primary btn-lg">Submit for Approval</button>
+								<button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+									Submit for Approval
+								</button>
 							</div>
 						</form>
 					</div>
@@ -274,7 +167,7 @@
 					<div class="col-6 col-md-6">
 						<div class="feature">
 							<div class="icon">
-								<img src="images/truck.svg" alt="Fast Payments" class="imf-fluid">
+								<img src="images/truck.svg" alt="Fast Payments" class="img-fluid">
 							</div>
 							<h3>Fast Payments</h3>
 							<p>Get paid quickly after your item sells with our secure payment system.</p>
@@ -284,7 +177,7 @@
 					<div class="col-6 col-md-6">
 						<div class="feature">
 							<div class="icon">
-								<img src="images/bag.svg" alt="Large Audience" class="imf-fluid">
+								<img src="images/bag.svg" alt="Large Audience" class="img-fluid">
 							</div>
 							<h3>Large Audience</h3>
 							<p>Access thousands of serious bidders looking for unique items like yours.</p>
@@ -294,7 +187,7 @@
 					<div class="col-6 col-md-6">
 						<div class="feature">
 							<div class="icon">
-								<img src="images/support.svg" alt="Seller Support" class="imf-fluid">
+								<img src="images/support.svg" alt="Seller Support" class="img-fluid">
 							</div>
 							<h3>Seller Support</h3>
 							<p>Our team is here to help you with any questions about selling.</p>
@@ -304,7 +197,7 @@
 					<div class="col-6 col-md-6">
 						<div class="feature">
 							<div class="icon">
-								<img src="images/return.svg" alt="Low Fees" class="imf-fluid">
+								<img src="images/return.svg" alt="Low Fees" class="img-fluid">
 							</div>
 							<h3>Low Fees</h3>
 							<p>Competitive commission rates mean more money in your pocket.</p>
@@ -326,7 +219,6 @@
 <!-- Start Footer Section -->
 <footer class="footer-section">
 	<div class="container relative">
-
 		<div class="sofa-img">
 			<img src="images/sofa.png" alt="Image" class="img-fluid">
 		</div>
@@ -349,7 +241,6 @@
 							</button>
 						</div>
 					</form>
-
 				</div>
 			</div>
 		</div>
@@ -409,7 +300,6 @@
 			</div>
 		</div>
 
-
 		<div class="border-top copyright">
 			<div class="row pt-4">
 				<div class="col-lg-6">
@@ -428,65 +318,215 @@
 				</div>
 			</div>
 		</div>
-
-
 	</div>
-</footer><!-- End Footer Section -->
+</footer>
+<!-- End Footer Section -->
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/tiny-slider.js"></script>
 <script src="js/custom.js"></script>
-<script src=""></script>
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
 <script>
-	// Form validation
-	document.getElementById('itemForm').addEventListener('submit', function(e) {
-		e.preventDefault();
+	$(document).ready(function() {
+		// Initialize Notyf for notifications
+		const notyf = new Notyf({
+			duration: 4000,
+			ripple: true,
+			position: {
+				x: 'right',
+				y: 'bottom'
+			},
+			types: [
+				{
+					type: 'success',
+					background: 'linear-gradient(to right, #00b09b, #96c93d)',
+					icon: {
+						className: 'bi bi-check-circle-fill',
+						tagName: 'i',
+						color: '#ffffff'
+					},
+					dismissible: true
+				},
+				{
+					type: 'error',
+					background: 'linear-gradient(to right, #e52d27, #b31217)',
+					icon: {
+						className: 'bi bi-x-circle-fill',
+						tagName: 'i',
+						color: '#ffffff'
+					},
+					dismissible: true
+				}
+			]
+		});
 
-		// Validate form fields
-		const code = document.getElementById('code').value;
-		const name = document.getElementById('name').value;
-		const description = document.getElementById('description').value;
-		const price = document.getElementById('price').value;
-		const categoryCode = document.getElementById('categoryCode').value;
-		const image = document.getElementById('image').files[0];
+		// API configuration
+		const API_BASE_URL = 'http://localhost:8082/api/v1';
+		const token = localStorage.getItem('authToken');
+		const userId = localStorage.getItem('userId');
 
-		// Simple validation
-		if (!code.match(/^ITM-\d{4}$/)) {
-			alert('Please enter a valid item code in format ITM-0000');
-			return;
+		// Set user ID in form
+		$('#userId').val(userId);
+
+		// Load categories on page load
+		loadCategories();
+
+		// Get next item code
+		getNextItemCode();
+
+		// Image preview handler
+		$('#image').change(function() {
+			const file = this.files[0];
+			if (file) {
+				// Validate image size (max 10MB)
+				if (file.size > 10 * 1024 * 1024) {
+					notyf.error('Image size must be less than 10MB');
+					$(this).val('');
+					return;
+				}
+
+				const reader = new FileReader();
+				reader.onload = function(e) {
+					$('#imagePreview').attr('src', e.target.result);
+					$('#imagePreviewContainer').show();
+				}
+				reader.readAsDataURL(file);
+			}
+		});
+
+		// Form submission handler
+		$('#itemForm').submit(function(e) {
+			e.preventDefault();
+
+			const submitBtn = $('#submitBtn');
+			submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...');
+
+			const formData = new FormData(this);
+			const imageFile = $('#image')[0].files[0];
+
+			// Validate form
+			if (!validateForm()) {
+				submitBtn.prop('disabled', false).html('Submit for Approval');
+				return;
+			}
+
+			// Add image to form data if exists
+			if (imageFile) {
+				formData.append('image', imageFile);
+			}
+
+			// Submit form via AJAX
+			$.ajax({
+				url: `${API_BASE_URL}/items/addItem`,
+				type: 'POST',
+				data: formData,
+				processData: false,
+				contentType: false,
+				headers: {
+					'Authorization': `Bearer ${token}`
+				},
+				success: function(response) {
+					if (response.code === 200 || response.code === 201) {
+						notyf.success('Item submitted successfully for approval!');
+						$('#itemForm')[0].reset();
+						$('#imagePreviewContainer').hide();
+						getNextItemCode(); // Get new item code for next submission
+					} else {
+						notyf.error(response.message || 'Failed to submit item');
+					}
+				},
+				error: function(xhr) {
+					const errorMsg = xhr.responseJSON?.message || 'Failed to submit item';
+					notyf.error(errorMsg.includes("SizeLimitExceededException") ?
+							'Image size exceeds maximum limit (10MB)' : errorMsg);
+				},
+				complete: function() {
+					submitBtn.prop('disabled', false).html('Submit for Approval');
+				}
+			});
+		});
+
+		// Load categories for dropdown
+		function loadCategories() {
+			$.ajax({
+				url: `${API_BASE_URL}/categories/getCategories`,
+				type: 'GET',
+				headers: { 'Authorization': `Bearer ${token}` },
+				success: function(response) {
+					if (response.code === 200) {
+						const $dropdown = $('#categoryCode');
+						$dropdown.empty().append('<option value="" disabled selected>Select a category</option>');
+						response.data.forEach(category => {
+							$dropdown.append(`<option value="${category.categoryCode}">${category.categoryName}</option>`);
+						});
+					} else {
+						notyf.error(response.message || 'Failed to load categories');
+					}
+				},
+				error: function() {
+					notyf.error('Failed to load categories');
+				}
+			});
 		}
 
-		if (!name.match(/^[A-Za-z ]+$/) || name.length < 3) {
-			alert('Item title must contain only letters and be at least 3 characters long');
-			return;
+		// Get next item code
+		function getNextItemCode() {
+			$.ajax({
+				url: `${API_BASE_URL}/items/getNextItemCode`,
+				type: 'GET',
+				headers: { 'Authorization': `Bearer ${token}` },
+				success: function(response) {
+					if (response.code === 200) {
+						$('#code').val(response.data);
+					} else {
+						notyf.error(response.message || 'Failed to get item code');
+						$('#code').val('ITM-XXXX');
+					}
+				},
+				error: function() {
+					notyf.error('Failed to get item code');
+					$('#code').val('ITM-XXXX');
+				}
+			});
 		}
 
-		if (!description.match(/^[A-Za-z ]+$/) || description.length < 3) {
-			alert('Description must contain only letters and be at least 3 characters long');
-			return;
-		}
+		// Form validation
+		function validateForm() {
+			const name = $('#name').val();
+			const description = $('#description').val();
+			const price = $('#price').val();
+			const categoryCode = $('#categoryCode').val();
+			const image = $('#image')[0].files[0];
 
-		if (isNaN(price) || parseFloat(price) <= 0) {
-			alert('Please enter a valid price greater than 0');
-			return;
-		}
+			if (!name || name.length < 3) {
+				notyf.error('Item title must be at least 3 characters long');
+				return false;
+			}
 
-		if (categoryCode === '') {
-			alert('Please select a category');
-			return;
-		}
+			if (!description || description.length < 3) {
+				notyf.error('Description must be at least 3 characters long');
+				return false;
+			}
 
-		if (!image) {
-			alert('Please upload an image of your item');
-			return;
-		}
+			if (!price || isNaN(price) || parseFloat(price) <= 0) {
+				notyf.error('Please enter a valid price greater than 0');
+				return false;
+			}
 
-		// If all validations pass, submit the form
-		alert('Item submitted successfully for approval!');
-		// In a real application, you would submit to your backend here
-		// this.submit();
+			if (!categoryCode) {
+				notyf.error('Please select a category');
+				return false;
+			}
+
+			if (!image) {
+				notyf.error('Please upload an image of your item');
+				return false;
+			}
+
+			return true;
+		}
 	});
 </script>
 </body>
