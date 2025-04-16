@@ -125,12 +125,29 @@ Dual-dashboard architecture empowers **admins** with total control while giving 
 ## 📄 License
 Distributed under the MIT License. See `LICENSE` for more information.
 
-## 📧 Contact
-**Shan** - [shaanz11.11@gmail.com](mailto:shaanz11.11@gmail.com)  
-**GitHub**: [https://github.com/shaanzx](https://github.com/shaanzx)  
-**Project Link**: [https://github.com/shaanzx/BidHub_Auction_System](https://github.com/shaanzx/BidHub_Auction_System)
+## 📬 Get In Touch
 
----
+<div align="center">
+
+💌 **Reach out for collaborations or questions** 💌
+
+</div>
+
+<div align="center" style="display: flex; justify-content: center; gap: 20px; margin: 20px 0;">
+
+[![Email](https://img.shields.io/badge/-shaanz11.11%40gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:shaanz11.11@gmail.com)
+[![GitHub](https://img.shields.io/badge/-@shaanzx-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/shaanzx)
+[![Project](https://img.shields.io/badge/🚀_Bid_HUB_Project-4285F4?style=for-the-badge&logo=github&logoColor=white)](https://github.com/shaanzx/BidHub_Auction_System)
+
+</div>
+
+<div align="center">
+  
+✨ **Open for opportunities and contributions** ✨  
+🔐 **All sensitive communications PGP encrypted**  
+
+</div>
+
 
 <div align="center">
   <sub>Built with ❤️ by Shan | © 2025 Bid HUB</sub>
