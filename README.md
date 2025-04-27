@@ -57,6 +57,9 @@ Dual-dashboard architecture empowers **admins** with total control while giving 
 ![Git](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white)
 
+## 📸 Youtube Video Link
+https://youtu.be/22KZfXKiLZM?si=fIXFGLJydAhpaSaj
+
 ## 📸 System Screenshots
 
 ### Admin Dashboard
